@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E%F0%9F%8D%A6%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Sonetix Scoop: plataforma inteligente de fidelización para heladerías.">
+<title>Sonetix Scoop · La Dulce Esquina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F6F4; --surface:#FFFFFF; --surface-2:#F3F1EF; --surface-3:#E7E4E1;
+  --ink:#24212A; --ink-soft:#6B6772; --line:#E8E5E2;
+  --fresa:#C2416A; --fresa-soft:#FBEFF3;
+  --pistacho:#2F7D55; --pistacho-soft:#EDF6F0;
+  --mango:#A86A12; --mango-soft:#FBF4E8;
+  --menta:#5B6270; --menta-soft:#F0F1F4;
+  --mora:#24212A; --mora-soft:#F3F1F4;
+  --choco:#6B4E3D; --choco-soft:#F4F0ED;
+  --slate:#9AA0AA; --bar:#DCD8DE;
+  --wa:#25D366; --wa-bubble:#DCF8C6; --wa-bg:#EFEAE2;
+  --shadow:0 10px 30px -18px rgba(36,33,42,.28);
+  --display:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  --body:"Plus Jakarta Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16141A; --surface:#1F1C24; --surface-2:#27232D; --surface-3:#353039;
+    --ink:#F2EFF4; --ink-soft:#A9A3B0; --line:#34303B;
+    --fresa:#EE7498; --fresa-soft:#3A2230; --pistacho:#6CC895; --pistacho-soft:#1D3328;
+    --mango:#E3AE57; --mango-soft:#372B19; --menta:#B3B8C1; --menta-soft:#2A2E35;
+    --mora:#F2EFF4; --mora-soft:#2A2630; --choco:#D9A584; --choco-soft:#33281F;
+    --slate:#7E8590; --bar:#3D3845;
+    --wa-bubble:#1F4A35; --wa-bg:#141217; --shadow:0 10px 30px -18px rgba(0,0,0,.8); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16141A; --surface:#1F1C24; --surface-2:#27232D; --surface-3:#353039;
+    --ink:#F2EFF4; --ink-soft:#A9A3B0; --line:#34303B;
+    --fresa:#EE7498; --fresa-soft:#3A2230; --pistacho:#6CC895; --pistacho-soft:#1D3328;
+    --mango:#E3AE57; --mango-soft:#372B19; --menta:#B3B8C1; --menta-soft:#2A2E35;
+    --mora:#F2EFF4; --mora-soft:#2A2630; --choco:#D9A584; --choco-soft:#33281F;
+    --slate:#7E8590; --bar:#3D3845;
+    --wa-bubble:#1F4A35; --wa-bg:#141217; --shadow:0 10px 30px -18px rgba(0,0,0,.8); color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:1rem;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--display);margin:0;line-height:1.15;letter-spacing:-.01em}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mora);outline-offset:2px;border-radius:8px}
+svg{max-width:100%}
+
+/* ---------- Shell ---------- */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100%}
+.side{position:sticky;top:env(safe-area-inset-top,0px);height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:1.1rem .85rem;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:.6rem;padding:.2rem .5rem 1.2rem}
+.logo .cone{width:40px;height:40px;border-radius:14px;background:var(--fresa-soft);display:grid;place-items:center;font-size:1.35rem}
+.logo b{font-family:var(--display);font-size:1.15rem;display:block;line-height:1.1}
+.logo small{color:var(--ink-soft);font-size:.8rem}
+.nav-group{font-size:.78rem;color:var(--ink-soft);font-weight:600;padding:.9rem .7rem .35rem}
+.nav-btn{display:flex;align-items:center;gap:.7rem;width:100%;border:0;background:transparent;padding:.62rem .75rem;border-radius:12px;font-weight:600;font-size:.95rem;color:var(--ink-soft);cursor:pointer;text-align:left}
+.nav-btn .i{width:26px;text-align:center;font-size:1.05rem}
+.nav-btn:hover{background:var(--surface-2);color:var(--ink)}
+.nav-btn[aria-current="page"]{background:var(--fresa-soft);color:var(--ink)}
+.nav-btn .count{margin-left:auto;background:var(--fresa);color:#fff;border-radius:999px;font-size:.72rem;padding:.05rem .45rem;font-weight:700}
+.side-foot{margin-top:auto;padding-top:1rem;display:grid;gap:.4rem}
+.small-btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:.5rem .7rem;font-size:.85rem;font-weight:600;cursor:pointer;color:var(--ink-soft);text-align:left}
+.small-btn:hover{color:var(--ink);background:var(--surface-2)}
+.main{min-width:0;padding:1.4rem clamp(1rem,2.5vw,2.2rem) 6rem}
+.topbar{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.4rem}
+.topbar h1{font-size:clamp(1.5rem,3vw,2rem);font-weight:800}
+.topbar .sub{color:var(--ink-soft);font-size:.95rem}
+.topbar .right{margin-left:auto;display:flex;gap:.6rem;align-items:center}
+.menu-btn{display:none;border:1px solid var(--line);background:var(--surface);width:42px;height:42px;border-radius:12px;font-size:1.2rem;cursor:pointer}
+.demo-badge{font-size:.78rem;font-weight:600;color:var(--ink-soft);background:var(--surface-2);padding:.3rem .65rem;border-radius:999px}
+.scrim{display:none}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;bottom:0;height:auto;width:280px;z-index:40;transform:translateX(-105%);transition:transform .25s ease;padding-top:calc(1.1rem + env(safe-area-inset-top,0px));padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px));box-shadow:var(--shadow)}
+  .side.open{transform:none}
+  .scrim.open{display:block;position:fixed;inset:0;background:rgba(30,15,40,.4);z-index:35}
+  .menu-btn{display:grid;place-items:center}
+  .demo-badge{display:none}
+}
+
+/* ---------- Common ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;border-radius:999px;padding:.7rem 1.2rem;font-weight:700;font-size:.95rem;border:2px solid transparent;cursor:pointer;white-space:nowrap}
+.btn-primary{background:var(--fresa);color:#fff}
+.btn-primary:hover{filter:brightness(1.06)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed}
+.btn-soft{background:var(--surface-2);color:var(--ink)}
+.btn-soft:hover{background:var(--surface-3)}
+.btn-line{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn-wa{background:var(--wa);color:#073b1d}
+.btn-sm{padding:.45rem .85rem;font-size:.85rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.15rem 1.25rem;min-width:0}
+.card h3{font-size:1.08rem;margin-bottom:.8rem;display:flex;align-items:center;gap:.5rem;justify-content:space-between}
+.card h3 small{font-family:var(--body);font-size:.8rem;color:var(--ink-soft);font-weight:600}
+.grid{display:grid;gap:1rem}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g-21{grid-template-columns:1.6fr 1fr}.g-12{grid-template-columns:1fr 1.4fr}
+@media (max-width:1100px){.g3{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){.g2,.g3,.g-21,.g-12{grid-template-columns:1fr}}
+.pill{display:inline-flex;align-items:center;gap:.25rem;font-size:.75rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;white-space:nowrap}
+.lv-Premium{background:var(--mora);color:#fff}
+.lv-VIP{background:var(--mango-soft);color:var(--choco)}
+.lv-Frecuente{background:var(--menta-soft);color:var(--menta)}
+.lv-Ocasional{background:var(--surface-2);color:var(--ink-soft)}
+.lv-Inactivo{background:var(--fresa-soft);color:var(--fresa)}
+.av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:.88rem;flex-shrink:0;color:#3A1F4F}
+.muted{color:var(--ink-soft)}
+.field{display:grid;gap:.3rem;margin-bottom:.85rem}
+.field label{font-size:.85rem;font-weight:600;color:var(--ink-soft)}
+.input{width:100%;padding:.7rem .85rem;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);font-size:1rem}
+.input:focus{outline:none;border-color:var(--mora)}
+textarea.input{min-height:120px;resize:vertical;line-height:1.5}
+.row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.chips{display:flex;gap:.45rem;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:.4rem .85rem;font-size:.86rem;font-weight:600;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.empty{text-align:center;padding:2rem 1rem;color:var(--ink-soft)}
+.switch{position:relative;width:46px;height:26px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch span{position:absolute;inset:0;background:var(--surface-3);border-radius:999px;cursor:pointer;transition:background .2s}
+.switch span::after{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.switch input:checked+span{background:var(--pistacho)}
+.switch input:checked+span::after{transform:translateX(20px)}
+.switch input:focus-visible+span{outline:3px solid var(--mora);outline-offset:2px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th{text-align:left;font-weight:600;color:var(--ink-soft);font-size:.8rem;padding:.55rem .5rem;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:.65rem .5rem;border-bottom:1px solid var(--line);vertical-align:middle}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--surface-2)}
+
+/* ---------- Inicio ---------- */
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1rem}
+.qa{border:0;border-radius:18px;padding:1rem 1.1rem;text-align:left;cursor:pointer;display:flex;align-items:center;gap:.8rem;font-weight:700;font-size:.98rem}
+.qa .e{font-size:1.5rem}
+.qa small{display:block;font-weight:500;font-size:.8rem;opacity:.8}
+.qa.main-qa{background:var(--fresa);color:#fff}
+@media (max-width:1000px){.quick{grid-template-columns:1fr 1fr}}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;margin-bottom:1rem}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:.9rem 1rem}
+.kpi .k{font-size:.8rem;color:var(--ink-soft);font-weight:600;display:flex;gap:.35rem;align-items:center}
+.kpi .v{font-family:var(--display);font-weight:800;font-size:1.5rem;line-height:1.15;margin-top:.2rem}
+.kpi .d{font-size:.78rem;font-weight:700;margin-top:.1rem}
+.up{color:var(--pistacho)}.down{color:var(--fresa)}.flat{color:var(--ink-soft)}
+@media (max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:560px){.kpis{grid-template-columns:1fr 1fr}.kpi .v{font-size:1.25rem}}
+.ai-panel{background:var(--mora);color:#fff;border-color:transparent}
+.ai-panel h3{color:#fff}
+.ai-tip{background:rgba(255,255,255,.1);border-radius:14px;padding:.8rem .9rem;margin-bottom:.6rem}
+.ai-tip b{display:block;margin-bottom:.2rem}
+.ai-tip p{font-size:.88rem;color:rgba(255,255,255,.85)}
+.ai-tip .btn{margin-top:.6rem;background:#fff;color:#3A1F4F}
+.list{display:grid;gap:.15rem}
+.li{display:flex;align-items:center;gap:.7rem;padding:.55rem .4rem;border-radius:12px;cursor:pointer;border:0;background:transparent;text-align:left;width:100%}
+.li:hover{background:var(--surface-2)}
+.li .meta{flex:1;min-width:0}
+.li .meta b{display:block;font-size:.93rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .meta span{font-size:.8rem;color:var(--ink-soft)}
+.bar-row{display:grid;grid-template-columns:1fr auto;gap:.25rem .6rem;margin:.6rem 0;font-size:.88rem}
+.bar-row .track{grid-column:1/-1;height:9px;border-radius:9px;background:var(--surface-2);overflow:hidden}
+.bar-row .fill{height:100%;border-radius:9px}
+.legend{display:grid;gap:.4rem;font-size:.86rem}
+.legend span{display:flex;align-items:center;gap:.45rem}
+.legend i{width:11px;height:11px;border-radius:4px;display:inline-block}
+
+/* ---------- Caja ---------- */
+.pos{display:grid;grid-template-columns:1fr 380px;gap:1rem;align-items:start}
+@media (max-width:1100px){.pos{grid-template-columns:1fr}}
+.found{display:flex;gap:.9rem;align-items:center;padding:1rem;border-radius:16px;background:var(--surface-2);margin-top:.6rem}
+.found .av{width:52px;height:52px;font-size:1.05rem}
+.hint{margin-top:.6rem;padding:.65rem .85rem;border-radius:12px;background:var(--mango-soft);font-size:.9rem}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem}
+.prod{border:1.5px solid var(--line);background:var(--surface);border-radius:16px;padding:.8rem;text-align:left;cursor:pointer;display:grid;gap:.15rem;position:relative}
+.prod:hover{border-color:var(--fresa)}
+.prod .e{font-size:1.5rem}
+.prod b{font-size:.92rem;line-height:1.2}
+.prod span{font-size:.85rem;color:var(--ink-soft)}
+.prod.combo{background:var(--mango-soft);border-color:transparent}
+.prod .q{position:absolute;top:.5rem;right:.5rem;background:var(--fresa);color:#fff;border-radius:999px;min-width:24px;height:24px;display:grid;place-items:center;font-size:.8rem;font-weight:800}
+.ticket{position:sticky;top:calc(env(safe-area-inset-top,0px) + 1rem)}
+.t-line{display:flex;justify-content:space-between;gap:.5rem;padding:.45rem 0;border-bottom:1px dashed var(--line);font-size:.93rem;align-items:center}
+.qty{display:inline-flex;align-items:center;gap:.3rem}
+.qty button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-weight:800;line-height:1}
+.t-total{display:flex;justify-content:space-between;font-family:var(--display);font-weight:800;font-size:1.5rem;margin-top:.8rem}
+.earn{margin-top:.6rem;padding:.7rem .85rem;border-radius:12px;background:var(--pistacho-soft);font-size:.92rem}
+.earn b{color:var(--pistacho)}
+.opt{display:flex;align-items:center;gap:.6rem;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:12px;margin-top:.45rem;cursor:pointer;font-size:.9rem}
+.opt input{accent-color:var(--fresa);width:18px;height:18px}
+.opt.dis{opacity:.45;cursor:not-allowed}
+.sec-t{font-weight:700;font-size:.9rem;margin:1rem 0 .3rem}
+
+/* ---------- Profile drawer / modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(30,15,40,.45);z-index:50;display:none}
+.overlay.open{display:block}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--bg);z-index:51;overflow-y:auto;transform:translateX(105%);transition:transform .25s ease;padding:calc(1.2rem + env(safe-area-inset-top,0px)) 1.3rem calc(2rem + env(safe-area-inset-bottom,0px));box-shadow:var(--shadow)}
+.drawer.open{transform:none}
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-48%);width:min(560px,calc(100% - 1.5rem));max-height:calc(100dvh - 2rem - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;background:var(--bg);border-radius:24px;z-index:52;padding:1.4rem;display:none;box-shadow:var(--shadow)}
+.modal.open{display:block}
+.x{border:0;background:var(--surface-2);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;flex-shrink:0}
+.p-head{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
+.p-head .av{width:64px;height:64px;font-size:1.3rem}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.6rem .8rem}
+.fact span{display:block;font-size:.76rem;color:var(--ink-soft);font-weight:600}
+.fact b{font-size:.95rem}
+.benefit{display:flex;justify-content:space-between;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:12px;border:1.5px dashed var(--fresa);margin-top:.45rem;font-size:.9rem;background:var(--surface)}
+.progress{height:10px;border-radius:10px;background:var(--surface-2);overflow:hidden;margin-top:.4rem}
+.progress i{display:block;height:100%;background:var(--fresa);border-radius:10px}
+
+/* ---------- WhatsApp ---------- */
+.phone{max-width:340px;margin:0 auto;border-radius:28px;overflow:hidden;border:8px solid var(--ink);background:var(--wa-bg)}
+.phone-top{background:#075E54;color:#fff;padding:.7rem .9rem;display:flex;align-items:center;gap:.6rem;font-size:.92rem}
+.phone-top .av{width:32px;height:32px;background:#FDE3EA;font-size:1rem}
+.phone-top small{display:block;font-size:.72rem;opacity:.8}
+.chat{padding:1rem .8rem;min-height:260px;display:grid;align-content:start;gap:.5rem}
+.bub{max-width:90%;padding:.55rem .75rem;border-radius:12px;font-size:.88rem;line-height:1.45;background:var(--wa-bubble);justify-self:end;border-top-right-radius:3px;white-space:pre-wrap;color:var(--ink)}
+.bub .t{display:block;text-align:right;font-size:.7rem;color:var(--ink-soft);margin-top:.15rem}
+.vars{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.4rem}
+.vars button{border:1px dashed var(--mora);background:var(--mora-soft);color:var(--mora);border-radius:8px;padding:.2rem .5rem;font-size:.8rem;font-weight:700;cursor:pointer}
+
+/* ---------- Combos / rewards ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1rem}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:1.1rem 1.2rem;display:flex;flex-direction:column;gap:.45rem}
+.tile .top{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem}
+.tile .e{font-size:1.8rem}
+.tile h4{font-size:1.1rem}
+.tile .price{font-family:var(--display);font-weight:800;font-size:1.35rem}
+.tile .save{font-size:.82rem;font-weight:700;color:var(--pistacho)}
+.tile .foot{margin-top:auto;padding-top:.6rem;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center;font-size:.85rem;color:var(--ink-soft)}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+@media (max-width:800px){.levels{grid-template-columns:1fr}}
+.lvl{border-radius:18px;padding:1rem}
+.lvl.l1{background:var(--menta-soft)}.lvl.l2{background:var(--mango-soft)}.lvl.l3{background:var(--mora-soft)}
+.lvl h4{font-size:1.15rem;margin-bottom:.6rem}
+.lvl .field{margin-bottom:.5rem}
+.lvl .input{padding:.5rem .7rem}
+
+/* ---------- Wheel ---------- */
+.wheel-stage{position:relative;width:min(270px,75vw);aspect-ratio:1;margin:0 auto}
+.wheel-stage svg{width:100%;height:100%;transition:transform 3.4s cubic-bezier(.17,.67,.12,.99)}
+.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);border-left:13px solid transparent;border-right:13px solid transparent;border-top:22px solid var(--ink);z-index:2}
+.win{text-align:center;font-weight:700;color:var(--fresa);min-height:1.5em;margin-top:.8rem}
+
+/* ---------- Toast + FAB ---------- */
+.toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));transform:translate(-50%,150%);background:var(--ink);color:var(--bg);padding:.8rem 1.2rem;border-radius:14px;font-weight:600;z-index:60;transition:transform .3s ease;max-width:calc(100% - 2rem);box-shadow:var(--shadow)}
+.toast.show{transform:translate(-50%,0)}
+.fab{display:none}
+@media (max-width:900px){.fab{display:inline-flex;position:fixed;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:30;box-shadow:var(--shadow);padding:.9rem 1.3rem}}
+
+/* ===== Estilo profesional ===== */
+body{font-size:.97rem;letter-spacing:-.003em}
+h1,h2,h3,h4{letter-spacing:-.02em}
+.topbar h1{font-weight:700;font-size:clamp(1.4rem,2.6vw,1.75rem)}
+.card,.kpi,.tile{border-radius:14px;box-shadow:0 1px 2px rgba(36,33,42,.04)}
+.card h3{font-size:1rem;font-weight:700}
+.btn{border-radius:10px;font-weight:600}
+.btn-sm{border-radius:9px}
+.chip{border-radius:9px;font-weight:600}
+.input{border-radius:10px}
+.pill{border-radius:6px;font-weight:600}
+.small-btn{border-radius:9px}
+.ico{width:18px;height:18px;flex-shrink:0;display:block}
+.side{background:var(--surface)}
+.logo .cone{background:var(--fresa);color:#fff;border-radius:11px;width:38px;height:38px}
+.logo .cone .ico{width:20px;height:20px}
+.logo b{font-weight:700;font-size:1.02rem}
+.nav-group{font-size:.74rem;padding:1rem .75rem .35rem}
+.nav-btn{font-weight:500;font-size:.92rem;padding:.55rem .7rem;border-radius:9px}
+.nav-btn .i{display:grid;place-items:center;width:22px;color:var(--slate)}
+.nav-btn[aria-current="page"]{background:var(--surface-2);color:var(--ink);font-weight:600}
+.nav-btn[aria-current="page"] .i{color:var(--fresa)}
+.nav-btn .count{border-radius:6px;background:var(--fresa)}
+.menu-btn .ico{margin:auto}
+.qa{border-radius:14px;font-weight:600;font-size:.94rem}
+.qa.btn-soft{background:var(--surface)!important;border:1px solid var(--line)}
+.qa.btn-soft:hover{border-color:var(--slate)}
+.qa .e{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--fresa)}
+.qa.main-qa .e{background:rgba(255,255,255,.18);color:#fff}
+.qa .e .ico{width:20px;height:20px}
+.kpi .v{font-weight:700;font-size:1.4rem}
+.kpi .k{font-weight:500}
+.ai-panel{background:var(--surface);color:var(--ink);border:1px solid var(--line);border-top:3px solid var(--fresa)}
+.ai-panel h3{color:var(--ink)}
+.ai-tip{background:var(--surface-2);border-radius:10px}
+.ai-tip p{color:var(--ink-soft)}
+.ai-tip .btn{background:var(--fresa);color:#fff}
+.ai-panel .btn-line{color:var(--ink)!important;border-color:var(--line)!important}
+.ic-box{width:42px;height:42px;border-radius:11px;background:var(--fresa-soft);color:var(--fresa);display:grid;place-items:center;margin-bottom:.8rem}
+.ic-box .ico{width:22px;height:22px}
+.lv-Premium{background:var(--ink);color:var(--bg)}
+.lv-VIP{background:var(--fresa-soft);color:var(--fresa)}
+.lv-Frecuente{background:var(--menta-soft);color:var(--menta)}
+.lv-Ocasional{background:var(--surface-2);color:var(--ink-soft)}
+.lv-Inactivo{background:var(--mango-soft);color:var(--mango)}
+.av{color:var(--ink);font-weight:700}
+.found{background:var(--surface-2);border-radius:12px}
+.hint{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--fresa);border-radius:10px;color:var(--ink)}
+.prod{border-radius:12px;padding:.85rem .9rem;border-width:1px}
+.prod .e,.tile .e{display:none}
+.prod.combo{background:var(--fresa-soft);border:1px solid transparent}
+.prod.combo::before{content:"Combo";font-size:.72rem;font-weight:700;color:var(--fresa)}
+.prod .q{border-radius:6px}
+.opt{border-radius:10px;border-width:1px}
+.benefit{border-radius:10px;border:1px dashed var(--slate)}
+.lvl{background:var(--surface)!important;border:1px solid var(--line);border-top:3px solid var(--slate);border-radius:14px}
+.lvl.l2{border-top-color:var(--fresa)}.lvl.l3{border-top-color:var(--ink)}
+.tile .price{font-weight:700}
+.wheel-stage svg text{fill:#24212A}
+.toast{border-radius:10px}
+.fact{border-radius:10px}
+.phone{border-width:6px;border-radius:24px}
+.empty{font-size:.92rem}
+.app{grid-template-columns:264px 1fr}
+@media (max-width:900px){.app{grid-template-columns:1fr}}
+.g-21{align-items:start}
+.toast{visibility:hidden;transform:translate(-50%,calc(100% + 3rem))}
+.toast.show{visibility:visible;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side" aria-label="Menú principal">
+    <div class="logo"><span class="cone"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10a5 5 0 0 1 10 0"/><path d="M6 10h12l-6 11z"/></svg></span><div><b>La Dulce Esquina</b><small>Sonetix Scoop</small></div></div>
+    <nav id="nav"></nav>
+    <div class="side-foot">
+      <button class="small-btn" id="themeBtn"> Modo oscuro</button>
+      <button class="small-btn" id="resetBtn">↺ Restablecer datos de ejemplo</button>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <main class="main" id="main"></main>
+</div>
+<button class="btn btn-primary fab" id="fab"> Registrar compra</button>
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Perfil del cliente"></aside>
+<div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+/* =========================================================
+   Utilidades
+   ========================================================= */
+const ICON_P={
+inicio:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+home:'<path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>',
+caja:'<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 8v8M8 12h8"/>',
+clientes:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.8.7 3 2.4 3.5 5.2"/>',
+ia:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+whatsapp:'<path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/>',
+combos:'<path d="M12 3 2 8l10 5 10-5z"/><path d="m2 13 10 5 10-5"/>',
+puntos:'<circle cx="9" cy="9" r="6"/><path d="M15.5 9.2A6 6 0 1 1 9.2 15.5"/>',
+niveles:'<path d="M3 7l4.5 4L12 4l4.5 7L21 7l-2 12H5z"/>',
+referidos:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.5 3.4-5.5 6.5-5.5s5.7 2 6.5 5.5"/><path d="M19 8v6M16 11h6"/>',
+cumple:'<path d="M4 21V12h16v9"/><path d="M2 21h20"/><path d="M4 15.5c1.3 1 2.7 1 4 0s2.7-1 4 0 2.7 1 4 0 2.7-1 4 0"/><path d="M12 12V8"/>',
+premios:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13"/><path d="M12 8C10 4 7 4 7 6s3 2 5 2c2 0 5 0 5-2s-3-2-5 2z"/>',
+menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+trend:'<path d="M3 7l6 6 4-4 8 8"/><path d="M15 17h6v-6"/>',
+star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+heart:'<path d="M12 20s-8-4.7-8-10.5A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 8 2.5C20 15.3 12 20 12 20z"/>',
+logo:'<path d="M7 10a5 5 0 0 1 10 0"/><path d="M6 10h12l-6 11z"/>'
+};
+const ic=k=>`<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON_P[k]||''}</svg>`;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>'$'+Math.round(n).toLocaleString('es-CO');
+const num=n=>Math.round(n).toLocaleString('es-CO');
+const DAY=864e5;
+const today0=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const daysAgo=iso=>Math.floor((today0()-new Date(new Date(iso).setHours(0,0,0,0)))/DAY);
+const isoDaysAgo=(n,h=15)=>{const d=today0();d.setDate(d.getDate()-n);d.setHours(h,Math.floor(Math.random()*59));return d.toISOString()};
+const fdate=iso=>new Date(iso).toLocaleDateString('es-CO',{day:'numeric',month:'short'});
+const MESES=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+const fcumple=mmdd=>{const [m,d]=mmdd.split('-').map(Number);return `${d} de ${MESES[m-1]}`};
+const initials=n=>n.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase();
+const AVC=['#EEEBEF','#E9ECF0','#F1ECE8','#E8EEEA','#F3E9EC','#ECEAF2'];
+const avColor=id=>AVC[id.charCodeAt(id.length-1)%AVC.length];
+const uid=()=>Math.random().toString(36).slice(2,9);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const firstName=n=>n.split(' ')[0];
+
+/* =========================================================
+   Datos de ejemplo
+   ========================================================= */
+const SABORES=['Maracuyá','Fresa con crema','Chocolate','Arequipe','Lulo','Mora','Vainilla','Coco','Café','Ron con pasas'];
+function seed(){
+  const R=mulberry32(11);
+  const productos=[
+    {id:'p1',nombre:'Cono sencillo',precio:6000,e:''},
+    {id:'p2',nombre:'Cono doble',precio:9000,e:''},
+    {id:'p3',nombre:'Copa 3 bolas',precio:13000,e:''},
+    {id:'p4',nombre:'Malteada',precio:11000,e:''},
+    {id:'p5',nombre:'Paleta artesanal',precio:5000,e:''},
+    {id:'p6',nombre:'Waffle con helado',precio:14000,e:''},
+    {id:'p7',nombre:'Litro para llevar',precio:32000,e:''},
+    {id:'p8',nombre:'Topping',precio:2500,e:''},
+    {id:'p9',nombre:'Salsa extra',precio:1500,e:''}
+  ];
+  const combos=[
+    {id:'c1',nombre:'Combo Pareja',desc:'2 conos dobles + 1 topping para compartir',items:['p2','p2','p8'],precio:18500,activo:true,ventas:128,e:''},
+    {id:'c2',nombre:'Combo Familiar',desc:'1 litro + 4 conos sencillos + salsas',items:['p7','p1','p1','p1','p1','p9'],precio:52000,activo:true,ventas:43,e:''},
+    {id:'c3',nombre:'Helado + Topping',desc:'Cono doble con topping a mitad de precio',items:['p2','p8'],precio:10250,activo:true,ventas:96,e:''},
+    {id:'c4',nombre:'Tarde de malteada',desc:'Malteada + paleta artesanal',items:['p4','p5'],precio:14000,activo:false,ventas:12,e:''}
+  ];
+  const recompensas=[
+    {id:'r1',nombre:'Topping gratis',puntos:30,tipo:'producto',e:'',canjes:64},
+    {id:'r2',nombre:'Cono sencillo gratis',puntos:60,tipo:'producto',e:'',canjes:41},
+    {id:'r3',nombre:'10% de descuento',puntos:80,tipo:'descuento',valor:10,e:'',canjes:27},
+    {id:'r4',nombre:'Cono doble gratis',puntos:100,tipo:'producto',e:'',canjes:22},
+    {id:'r5',nombre:'Malteada gratis',puntos:130,tipo:'producto',e:'',canjes:9},
+    {id:'r6',nombre:'Litro para llevar',puntos:320,tipo:'producto',e:'',canjes:3}
+  ];
+  const ruleta=[
+    {nombre:'Topping gratis',color:'#F3D5DF'},{nombre:'20 puntos',color:'#ECEAEE'},
+    {nombre:'10% de descuento',color:'#E6C2CF'},{nombre:'Doble puntos',color:'#F7F5F6'},
+    {nombre:'Salsa extra',color:'#F3D5DF'},{nombre:'Cono sencillo gratis',color:'#DCD8DE'}
+  ];
+  // nombre, tel, cumpleaños (offset en días desde hoy o null), frecuencia, última visita (días), referidos
+  const defs=[
+    ['Laura Restrepo','3005551234',0,6,3,2],['Julián Gómez','3014442211',null,7,22,0],
+    ['Marta Posada','3127778899',null,4,1,1],['Sofía Cardona','3156663344',null,5,2,3],
+    ['Andrés Mejía','3009991122',null,10,18,0],['Valentina Ríos','3172225566',null,3,0,1],
+    ['Camilo Herrera','3043338877',null,14,5,0],['Daniela Zapata','3108884455',3,8,6,0],
+    ['Santiago López','3201112233',null,20,40,0],['Isabella Vélez','3116667788',null,6,4,1],
+    ['Mateo Arango','3025554433',null,0,2,0],['Paula Ochoa','3184449900',null,9,16,0],
+    ['Juan Pablo Toro','3132226677',6,5,3,0],['Mariana Giraldo','3193335511',null,12,25,0],
+    ['Felipe Castaño','3047771100',null,0,0,0],['Catalina Montoya','3168882299',12,4,2,2],
+    ['Tomás Rendón','3059994411',null,8,9,0],['Natalia Uribe','3141113355',null,7,30,0]
+  ];
+  const clientes=defs.map(([nombre,tel,cOff,freq,last,refs],i)=>{
+    let cumple;
+    if(cOff!==null){const d=today0();d.setDate(d.getDate()+cOff);cumple=String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+    else cumple=String(1+Math.floor(R()*12)).padStart(2,'0')+'-'+String(1+Math.floor(R()*28)).padStart(2,'0');
+    const favs=[SABORES[Math.floor(R()*SABORES.length)]];let f2=SABORES[Math.floor(R()*SABORES.length)];if(f2!==favs[0])favs.push(f2);
+    const compras=[];let d=last;
+    const maxBack=freq?110:last;
+    while(d<=maxBack){
+      const n=1+Math.floor(R()*2.4);const items=[];let valor=0;
+      for(let k=0;k<n;k++){const p=productos[Math.floor(R()*7)];items.push(p.nombre+(p.id<'p5'?' · '+(R()<.65?favs[0]:SABORES[Math.floor(R()*SABORES.length)]):''));valor+=p.precio}
+      if(R()<.35){items.push('Topping');valor+=2500}
+      compras.push({id:uid(),fecha:isoDaysAgo(d,12+Math.floor(R()*9)),items,valor,puntos:Math.floor(valor/1000)});
+      if(!freq)break;
+      d+=Math.max(1,Math.round(freq*(.6+R()*.8)));
+    }
+    const ganados=compras.reduce((s,c)=>s+c.puntos,0);
+    const codigo=firstName(nombre).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')+(10+i);
+    return {id:'cl'+i,nombre,tel,cumple,favoritos:favs,compras,puntos:Math.round(ganados*(.35+R()*.3)),referidos:refs,codigo,whatsapp:true,beneficios:[],cumpleCanjeado:null,alta:compras[compras.length-1]?.fecha||new Date().toISOString()};
+  });
+  clientes[0].beneficios.push({id:uid(),texto:'Topping gratis (ruleta)',vence:isoDaysAgo(-5)});
+  const canjes=[];for(let i=0;i<70;i++){const c=clientes[Math.floor(R()*clientes.length)];const r=recompensas[Math.floor(R()*4)];canjes.push({fecha:isoDaysAgo(Math.floor(R()*35)),cliente:c.id,recompensa:r.nombre})}
+  const campanas=[
+    {id:uid(),nombre:'Te extrañamos · 2×1 en conos',fecha:isoDaysAgo(12),enviados:14,regresaron:8,tipo:'Recuperar clientes'},
+    {id:uid(),nombre:'Martes de doble puntos',fecha:isoDaysAgo(8),enviados:22,regresaron:11,tipo:'Día flojo'},
+    {id:uid(),nombre:'Saludos de cumpleaños',fecha:isoDaysAgo(4),enviados:9,regresaron:7,tipo:'Cumpleaños'},
+    {id:uid(),nombre:'Nuevo sabor Lulo · solo VIP',fecha:isoDaysAgo(20),enviados:18,regresaron:10,tipo:'Clientes VIP'}
+  ];
+  return {
+    v:1,
+    cfg:{pesosPorPunto:1000,inactivoDias:15,refPuntos:50,refBienvenida:'Topping gratis de bienvenida',cumpleAuto:true,cumpleBeneficio:'Helado sencillo gratis',
+         cumpleMsg:'¡Feliz cumpleaños, {nombre}! 🎂 En La Dulce Esquina queremos celebrarlo: su helado de hoy va por nuestra cuenta. Lo puede reclamar hasta dentro de 3 días.',
+         ruletaActiva:true,
+         niveles:[{nombre:'Frecuente',min:2,mult:1},{nombre:'VIP',min:4,mult:1.5},{nombre:'Premium',min:8,mult:2}]},
+    productos,combos,recompensas,ruleta,clientes,canjes,campanas
+  };
+}
+
+/* =========================================================
+   Estado
+   ========================================================= */
+const KEY='sonetix-scoop-demo-v2';
+let S;
+try{const raw=localStorage.getItem(KEY);S=raw?JSON.parse(raw):null;if(!S||S.v!==1)S=null}catch(e){S=null}
+if(!S)S=seed();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+/* ---------- Reglas del negocio ---------- */
+const visits30=c=>c.compras.filter(p=>daysAgo(p.fecha)<=30).length;
+const lastDays=c=>c.compras.length?Math.min(...c.compras.map(p=>daysAgo(p.fecha))):999;
+const isInactive=c=>c.compras.length>=2&&lastDays(c)>S.cfg.inactivoDias;
+function nivel(c){
+  const v=visits30(c),L=S.cfg.niveles;
+  if(v>=L[2].min)return 'Premium';if(v>=L[1].min)return 'VIP';if(v>=L[0].min)return 'Frecuente';return 'Ocasional';
+}
+const segmento=c=>isInactive(c)?'Inactivo':nivel(c);
+const mult=c=>{const n=nivel(c);const l=S.cfg.niveles.find(x=>x.nombre===n);return l?l.mult:1};
+function nextLevel(c){
+  const v=visits30(c),L=S.cfg.niveles;
+  for(const l of L){if(v<l.min)return {nombre:l.nombre,faltan:l.min-v}}
+  return null;
+}
+function cumpleEn(c){
+  const [m,d]=c.cumple.split('-').map(Number);const t=today0();
+  let b=new Date(t.getFullYear(),m-1,d);if(b<t)b=new Date(t.getFullYear()+1,m-1,d);
+  return Math.round((b-t)/DAY);
+}
+function cumpleDisponible(c){
+  const [m,d]=c.cumple.split('-').map(Number);const t=today0();
+  const b=new Date(t.getFullYear(),m-1,d);const diff=Math.round((t-b)/DAY);
+  return diff>=0&&diff<=3&&c.cumpleCanjeado!==t.getFullYear();
+}
+const ticketProm=c=>c.compras.length?c.compras.reduce((s,p)=>s+p.valor,0)/c.compras.length:0;
+function lastPurchase(c){return c.compras.reduce((a,b)=>!a||new Date(b.fecha)>new Date(a.fecha)?b:a,null)}
+const getC=id=>S.clientes.find(c=>c.id===id);
+const prod=id=>S.productos.find(p=>p.id===id);
+
+/* =========================================================
+   IA (motor de sugerencias)
+   ========================================================= */
+function sugerenciasIA(){
+  const out=[];const C=S.clientes;
+  const inact=C.filter(isInactive).filter(c=>c.whatsapp);
+  if(inact.length){
+    const fav={};inact.forEach(c=>fav[c.favoritos[0]]=(fav[c.favoritos[0]]||0)+1);
+    const top=Object.entries(fav).sort((a,b)=>b[1]-a[1])[0][0];
+    out.push({id:'inact',e:'clock',titulo:`${inact.length} clientes llevan más de ${S.cfg.inactivoDias} días sin venir`,
+      detalle:`Antes venían seguido. Un mensaje cercano con un 2×1 suele traerlos de vuelta. Al grupo le gusta mucho el ${top}.`,
+      ids:inact.map(c=>c.id),nombre:'Te extrañamos · 2×1 en conos',
+      msg:'Hola {nombre}, ¡hace rato no lo vemos por La Dulce Esquina! 🍦 Le guardamos un 2×1 en conos de {favorito}, válido hasta el domingo. Solo diga su número en caja.'});
+  }
+  const cumple=C.filter(c=>{const d=cumpleEn(c);return d>0&&d<=7});
+  if(cumple.length) out.push({id:'cumple',e:'cumple',titulo:`${cumple.length} ${cumple.length===1?'cliente cumple':'clientes cumplen'} años esta semana`,
+      detalle:cumple.map(c=>`${firstName(c.nombre)} (${cumpleEn(c)===1?'mañana':'en '+cumpleEn(c)+' días'})`).join(', ')+'. El saludo sale solo ese día; puede adelantar una invitación.',
+      ids:cumple.map(c=>c.id),nombre:'Invitación de cumpleaños',
+      msg:'¡Hola {nombre}! 🎉 Se acerca su cumpleaños y en La Dulce Esquina le tenemos un helado de regalo. ¡Venga a celebrar con nosotros!'});
+  const casi=C.filter(c=>!isInactive(c)&&nextLevel(c)&&nextLevel(c).faltan===1&&nivel(c)!=='Ocasional');
+  if(casi.length) out.push({id:'casi',e:'star',titulo:`${casi.length} clientes están a 1 visita de subir de nivel`,
+      detalle:casi.map(c=>`${firstName(c.nombre)} → ${nextLevel(c).nombre}`).join(', ')+'. Avisarles es una excelente excusa para que vuelvan.',
+      ids:casi.map(c=>c.id),nombre:'¡Está a una visita de subir!',
+      msg:'¡{nombre}, está a solo una visita de ser cliente {siguiente} en La Dulce Esquina! 👑 Con su próxima compra desbloquea nuevos beneficios.'});
+  // día más flojo
+  const dias=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];const ventas=[0,0,0,0,0,0,0];
+  C.forEach(c=>c.compras.forEach(p=>{if(daysAgo(p.fecha)<=28)ventas[new Date(p.fecha).getDay()]+=p.valor}));
+  const prom=ventas.reduce((a,b)=>a+b,0)/7;const minI=ventas.indexOf(Math.min(...ventas));
+  const frec=C.filter(c=>!isInactive(c)&&['Frecuente','VIP','Premium'].includes(nivel(c)));
+  if(prom>0) out.push({id:'flojo',e:'trend',titulo:`Los ${dias[minI]} vende ${Math.round((1-ventas[minI]/prom)*100)}% menos que el promedio`,
+      detalle:`Sugerencia: “${dias[minI][0].toUpperCase()+dias[minI].slice(1)} de doble puntos” para sus ${frec.length} clientes frecuentes.`,
+      ids:frec.map(c=>c.id),nombre:`${dias[minI][0].toUpperCase()+dias[minI].slice(1)} de doble puntos`,
+      msg:`Hola {nombre} 🍦 Este ${dias[minI]} en La Dulce Esquina ganará puntos dobles en todas sus compras. ¡Le esperamos!`});
+  // upsell
+  let dobles=0,sinTop=0;C.forEach(c=>c.compras.forEach(p=>{if(daysAgo(p.fecha)<=30&&p.items.some(i=>i.startsWith('Cono doble'))){dobles++;if(!p.items.some(i=>i.startsWith('Topping')))sinTop++}}));
+  if(dobles) out.push({id:'upsell',e:'tag',titulo:`${Math.round(sinTop/dobles*100)}% de quienes piden cono doble no llevan topping`,
+      detalle:'Ofrezca el combo “Helado + Topping” en caja. Es una venta adicional sin esfuerzo, y el cliente siente que ahorra.',
+      ids:null,accion:'combos'});
+  const emb=[...C].sort((a,b)=>b.referidos-a.referidos).filter(c=>c.referidos>=2);
+  if(emb.length) out.push({id:'emb',e:'heart',titulo:`${firstName(emb[0].nombre)} es su mejor embajadora: trajo ${emb[0].referidos} clientes`,
+      detalle:'Agradecer a quienes recomiendan hace que lo sigan haciendo.',
+      ids:emb.map(c=>c.id),nombre:'Gracias por recomendarnos',
+      msg:'¡{nombre}, gracias por recomendarnos! 💛 Por cada amigo que nos trae le sumamos puntos. Hoy le regalamos un topping en su próxima visita.'});
+  return out;
+}
+
+/* =========================================================
+   Navegación
+   ========================================================= */
+const VIEWS=[
+  {g:'Día a día'},
+  {id:'inicio',t:'Inicio',i:''},
+  {id:'caja',t:'Registrar compra',i:''},
+  {id:'clientes',t:'Clientes',i:''},
+  {g:'Crecer el negocio'},
+  {id:'ia',t:'Sugerencias IA',i:'',badge:()=>sugerenciasIA().length},
+  {id:'whatsapp',t:'WhatsApp',i:''},
+  {id:'combos',t:'Combos y promociones',i:''},
+  {g:'Fidelización'},
+  {id:'puntos',t:'Puntos y recompensas',i:''},
+  {id:'niveles',t:'Niveles VIP',i:''},
+  {id:'referidos',t:'Referidos',i:''},
+  {id:'cumple',t:'Cumpleaños',i:'',badge:()=>S.clientes.filter(c=>cumpleEn(c)===0).length||0},
+  {id:'premios',t:'Premios digitales',i:''}
+];
+let view='inicio';
+function renderNav(){
+  $('#nav').innerHTML=VIEWS.map(v=>v.g?`<div class="nav-group">${v.g}</div>`:
+    `<button class="nav-btn" data-go="${v.id}" ${view===v.id?'aria-current="page"':''}><span class="i">${ic(v.id)}</span>${v.t}${v.badge&&v.badge()?`<span class="count">${v.badge()}</span>`:''}</button>`).join('');
+}
+function go(v,opts){view=v;closeSide();renderNav();render(opts);window.scrollTo({top:0});}
+function render(opts){
+  const fn={inicio:vInicio,caja:vCaja,clientes:vClientes,ia:vIA,whatsapp:vWhatsapp,combos:vCombos,puntos:vPuntos,niveles:vNiveles,referidos:vReferidos,cumple:vCumple,premios:vPremios}[view];
+  $('#main').innerHTML=fn(opts||{});
+  after[view]&&after[view]();
+  $('#fab').style.visibility=view==='caja'?'hidden':'visible';
+}
+const after={};
+function top(title,sub,right=''){
+  return `<div class="topbar"><button class="menu-btn" data-act="menu" aria-label="Abrir menú">${ic('menu')}</button><div><h1>${title}</h1>${sub?`<p class="sub">${sub}</p>`:''}</div><div class="right">${right}<span class="demo-badge">Prototipo · datos de ejemplo</span></div></div>`;
+}
+
+/* =========================================================
+   VISTA: Inicio (dashboard)
+   ========================================================= */
+let periodo=7;
+function stats(days,offset=0){
+  const from=offset,to=offset+days-1;let ventas=0,n=0,pts=0;const nuevos=new Set();
+  S.clientes.forEach(c=>{
+    const first=c.compras.length?Math.max(...c.compras.map(p=>daysAgo(p.fecha))):null;
+    if(first!==null&&first>=from&&first<=to)nuevos.add(c.id);
+    c.compras.forEach(p=>{const d=daysAgo(p.fecha);if(d>=from&&d<=to){ventas+=p.valor;n++;pts+=p.puntos}});
+  });
+  const canj=S.canjes.filter(x=>{const d=daysAgo(x.fecha);return d>=from&&d<=to}).length;
+  return {ventas,n,ticket:n?ventas/n:0,nuevos:nuevos.size,pts,canj};
+}
+function delta(a,b,inverse){if(!b)return {t:'—',c:'flat'};const p=Math.round((a-b)/b*100);const good=inverse?p<=0:p>=0;return {t:(p>0?'+':'')+p+'% vs. periodo anterior',c:p===0?'flat':good?'up':'down'}}
+function vInicio(){
+  const h=new Date().getHours();const saludo=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
+  const cur=stats(periodo),prev=stats(periodo,periodo);
+  const C=S.clientes;
+  const frec=C.filter(c=>!isInactive(c)&&nivel(c)!=='Ocasional').length;
+  const inact=C.filter(isInactive).length;
+  const vip=C.filter(c=>!isInactive(c)&&['VIP','Premium'].includes(nivel(c))).length;
+  // frecuencia promedio (días entre compras) de clientes con 2+ compras
+  const gaps=[];C.forEach(c=>{const ds=c.compras.map(p=>daysAgo(p.fecha)).sort((a,b)=>a-b);for(let i=1;i<ds.length&&i<6;i++)gaps.push(ds[i]-ds[i-1])});
+  const frecDias=gaps.length?Math.round(gaps.reduce((a,b)=>a+b,0)/gaps.length):0;
+  const dv=delta(cur.ventas,prev.ventas),dt=delta(cur.ticket,prev.ticket),dn=delta(cur.nuevos,prev.nuevos),dp=delta(cur.pts,prev.pts),dc=delta(cur.canj,prev.canj);
+  const K=[
+    ['','Ventas',money(cur.ventas),dv],['','Ticket promedio',money(cur.ticket),dt],['','Clientes nuevos',cur.nuevos,dn],
+    ['','Clientes frecuentes',frec,{t:'Vienen 2+ veces al mes',c:'flat'}],['','Clientes inactivos',inact,{t:`Más de ${S.cfg.inactivoDias} días sin venir`,c:inact?'down':'up'}],
+    ['','Clientes VIP y Premium',vip,{t:'Sus clientes más fieles',c:'flat'}],['','Puntos entregados',num(cur.pts),dp],['','Recompensas canjeadas',cur.canj,dc],
+    ['','Frecuencia de compra',`cada ${frecDias} días`,{t:'Promedio entre visitas',c:'flat'}],['','Clientes referidos',C.reduce((s,c)=>s+c.referidos,0),{t:'Llegaron recomendados',c:'flat'}]
+  ];
+  const tips=sugerenciasIA().slice(0,3);
+  const hoy=[];
+  C.filter(c=>cumpleEn(c)===0).forEach(c=>hoy.push({c,t:' Cumple años hoy',p:'lv-Inactivo'}));
+  C.filter(c=>c.beneficios.length).forEach(c=>hoy.push({c,t:' Tiene premio por cobrar',p:'lv-VIP'}));
+  C.filter(c=>!isInactive(c)&&nivel(c)!=='Ocasional'&&nextLevel(c)?.faltan===1).forEach(c=>hoy.push({c,t:` A 1 visita de ${nextLevel(c).nombre}`,p:'lv-Frecuente'}));
+  // promos rendimiento
+  const promos=[...S.campanas.map(x=>({n:x.nombre,v:Math.round(x.regresaron/x.enviados*100),u:'% volvió'})),].sort((a,b)=>b.v-a.v).slice(0,4);
+  const combosTop=[...S.combos].sort((a,b)=>b.ventas-a.ventas).slice(0,3);
+  const cMax=Math.max(...combosTop.map(c=>c.ventas),1);
+  const segs=['Premium','VIP','Frecuente','Ocasional','Inactivo'];const segCol={Premium:'var(--ink)',VIP:'var(--fresa)',Frecuente:'var(--slate)',Ocasional:'var(--surface-3)',Inactivo:'var(--mango)'};
+  const segN=segs.map(s=>C.filter(c=>segmento(c)===s).length);
+  return top(`${saludo}, Claudia `,`${new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'})} · así va su heladería`,
+    `<div class="chips" role="group" aria-label="Periodo"><button class="chip" data-per="7" aria-pressed="${periodo===7}">7 días</button><button class="chip" data-per="30" aria-pressed="${periodo===30}">30 días</button></div>`)+
+  `<div class="quick">
+    <button class="qa main-qa" data-go="caja"><span class="e">${ic('caja')}</span><span>Registrar compra<small>Sumar puntos a un cliente</small></span></button>
+    <button class="qa btn-soft" style="background:var(--mora-soft)" data-go="ia"><span class="e">${ic('ia')}</span><span>Ver sugerencias<small>${sugerenciasIA().length} ideas de la IA</small></span></button>
+    <button class="qa btn-soft" style="background:var(--pistacho-soft)" data-go="whatsapp"><span class="e">${ic('whatsapp')}</span><span>Enviar promoción<small>Por WhatsApp</small></span></button>
+    <button class="qa btn-soft" style="background:var(--mango-soft)" data-go="combos"><span class="e">${ic('combos')}</span><span>Crear combo<small>Para vender más</small></span></button>
+  </div>
+  <div class="kpis">${K.map(k=>`<div class="kpi"><div class="k">${k[1]}</div><div class="v">${k[2]}</div><div class="d ${k[3].c}">${k[3].t}</div></div>`).join('')}</div>
+  <div class="grid g-21" style="margin-bottom:1rem">
+    <div class="card"><h3>Ventas por día <small>Últimos ${periodo} días</small></h3><div class="tbl-wrap"><svg id="chart" role="img" aria-label="Gráfico de ventas por día"></svg></div></div>
+    <div class="card ai-panel"><h3> La IA le sugiere</h3>
+      ${tips.map(t=>`<div class="ai-tip"><b>${esc(t.titulo)}</b><p>${esc(t.detalle)}</p>${t.ids?`<button class="btn btn-sm" data-ia="${t.id}"> Preparar mensaje</button>`:`<button class="btn btn-sm" data-go="${t.accion}">Ver combos</button>`}</div>`).join('')}
+      <button class="btn btn-sm btn-line" style="color:#fff;border-color:rgba(255,255,255,.4)" data-go="ia">Ver todas las sugerencias</button>
+    </div>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h3>Sus clientes por nivel <small>${C.length} registrados</small></h3>
+      <div class="row" style="gap:1.2rem;flex-wrap:nowrap"><svg id="donut" width="130" height="130" viewBox="0 0 42 42" aria-hidden="true" style="flex-shrink:0"></svg>
+      <div class="legend">${segs.map((s,i)=>`<span><i style="background:${segCol[s]}"></i>${s}: <b>${segN[i]}</b></span>`).join('')}</div></div>
+    </div>
+    <div class="card"><h3>Promociones con mejor resultado</h3>
+      ${promos.map(p=>`<div class="bar-row"><span>${esc(p.n)}</span><b>${p.v}${p.u}</b><div class="track"><div class="fill" style="width:${p.v}%;background:var(--fresa)"></div></div></div>`).join('')}
+      <p class="muted" style="font-size:.82rem;margin-top:.4rem">Porcentaje de clientes que volvieron después del mensaje.</p>
+      <div class="sec-t">Combos más vendidos</div>
+      ${combosTop.map(c=>`<div class="bar-row"><span>${esc(c.nombre)}</span><b>${c.ventas}</b><div class="track"><div class="fill" style="width:${c.ventas/cMax*100}%;background:var(--slate)"></div></div></div>`).join('')}
+    </div>
+    <div class="card"><h3>Para atender hoy <small>${hoy.length}</small></h3>
+      ${hoy.length?`<div class="list">${hoy.slice(0,7).map(h=>`<button class="li" data-cli="${h.c.id}"><span class="av" style="background:${avColor(h.c.id)}">${initials(h.c.nombre)}</span><span class="meta"><b>${esc(h.c.nombre)}</b><span>${h.t}</span></span><span class="pill lv-${nivel(h.c)}">${nivel(h.c)}</span></button>`).join('')}</div>`:'<p class="empty">Nada pendiente por hoy.</p>'}
+    </div>
+  </div>`;
+}
+after.inicio=()=>{
+  // gráfico de barras
+  const svg=$('#chart');const n=periodo;const vals=[];const labels=[];
+  for(let d=n-1;d>=0;d--){let v=0;S.clientes.forEach(c=>c.compras.forEach(p=>{if(daysAgo(p.fecha)===d)v+=p.valor}));vals.push(v);const dt=today0();dt.setDate(dt.getDate()-d);labels.push(n===7?dt.toLocaleDateString('es-CO',{weekday:'short'}).replace('.',''):dt.getDate())}
+  const W=n===7?560:Math.max(560,n*22),H=220,pb=28,pt=26;const max=Math.max(...vals,1)*1.15;const gap=W/n;const bw=Math.min(46,gap*.62);
+  const cols=['var(--bar)'];
+  let s='';for(let i=1;i<=3;i++){const y=pt+(H-pb-pt)*i/3;s+=`<line x1="0" x2="${W}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-dasharray="4 6"/>`}
+  vals.forEach((v,i)=>{const h=Math.max(2,(H-pb-pt)*v/max),x=i*gap+(gap-bw)/2,y=H-pb-h;
+    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" rx="${Math.min(bw/2.4,10)}" fill="${i===n-1?'var(--fresa)':cols[i%cols.length]}" ><title>${money(v)}</title></rect>`;
+    if(n===7&&v)s+=`<text x="${x+bw/2}" y="${y-7}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)" font-family="Figtree,sans-serif">${v>=1e6?'$'+(v/1e6).toFixed(1).replace('.',',')+'M':'$'+Math.round(v/1000)+'k'}</text>`;
+    if(n===7||i%3===0||i===n-1)s+=`<text x="${x+bw/2}" y="${H-8}" text-anchor="middle" font-size="11.5" fill="var(--ink-soft)" font-family="Figtree,sans-serif">${labels[i]}</text>`;
+  });
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.style.width='100%';svg.style.minWidth=(n===7?380:W)+'px';svg.innerHTML=s;
+  // dona
+  const segs=['Premium','VIP','Frecuente','Ocasional','Inactivo'];const col=['var(--ink)','var(--fresa)','var(--slate)','var(--surface-3)','var(--mango)'];
+  const tot=S.clientes.length;let acc=0;let d='<circle cx="21" cy="21" r="15.9" fill="none" stroke="var(--surface-2)" stroke-width="6"/>';
+  segs.forEach((sg,i)=>{const v=S.clientes.filter(c=>segmento(c)===sg).length/tot*100;if(!v)return;d+=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="${col[i]}" stroke-width="6" stroke-dasharray="${v} ${100-v}" stroke-dashoffset="${25-acc}"/>`;acc+=v});
+  d+=`<text x="21" y="22.5" text-anchor="middle" font-size="7" font-weight="800" fill="var(--ink)" font-family="Bricolage Grotesque,sans-serif">${tot}</text><text x="21" y="28" text-anchor="middle" font-size="3.2" fill="var(--ink-soft)" font-family="Figtree,sans-serif">clientes</text>`;
+  $('#donut').innerHTML=d;
+};
+
+/* =========================================================
+   VISTA: Registrar compra (caja)
+   ========================================================= */
+let caja={tel:'',cli:null,nuevo:false,items:{},canje:null,cumple:false,beneficio:null};
+function resetCaja(){caja={tel:'',cli:null,nuevo:false,items:{},canje:null,cumple:false,beneficio:null}}
+function cajaTotales(){
+  let sub=0;const lines=[];
+  Object.entries(caja.items).forEach(([id,q])=>{const p=prod(id)||S.combos.find(c=>c.id===id);if(!p||!q)return;sub+=p.precio*q;lines.push({id,n:p.nombre,q,v:p.precio*q})});
+  let desc=0;const rw=caja.canje?S.recompensas.find(r=>r.id===caja.canje):null;
+  if(rw&&rw.tipo==='descuento')desc=Math.round(sub*rw.valor/100);
+  const total=Math.max(0,sub-desc);const c=caja.cli?getC(caja.cli):null;
+  const m=c?mult(c):1;const pts=Math.floor(Math.floor(total/S.cfg.pesosPorPunto)*m);
+  return {sub,desc,total,pts,m,lines,rw};
+}
+function vCaja(){
+  const c=caja.cli?getC(caja.cli):null;
+  const T=cajaTotales();
+  let clienteHTML='';
+  if(c){
+    const lv=nivel(c);const nl=nextLevel(c);
+    const tips=[];
+    if(cumpleEn(c)===0)tips.push(' ¡Hoy es su cumpleaños! Felicítelo.');
+    tips.push(`Sabores favoritos: <b>${esc(c.favoritos.join(' y '))}</b>.`);
+    if(isInactive(c))tips.push(` No venía hace ${lastDays(c)} días. ¡Qué bueno que volvió!`);
+    if(nl&&lv!=='Ocasional')tips.push(` Le ${nl.faltan===1?'falta 1 visita':'faltan '+nl.faltan+' visitas'} para ser ${nl.nombre}.`);
+    clienteHTML=`<div class="found"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><div style="flex:1;min-width:0"><b style="font-size:1.1rem">${esc(c.nombre)}</b><div class="row" style="gap:.4rem;margin-top:.2rem"><span class="pill lv-${segmento(c)}">${segmento(c)==='Inactivo'?'Inactivo':lv}</span><span class="muted" style="font-size:.88rem"> ${num(c.puntos)} puntos</span></div></div><button class="btn btn-sm btn-soft" data-cli="${c.id}">Ver perfil</button></div>
+      <div class="hint">${tips.join('<br>')}</div>`;
+  }else if(caja.nuevo){
+    clienteHTML=`<div class="card" style="margin-top:.7rem;background:var(--surface-2);border:0"><h3>Cliente nuevo  <small>Tarda 20 segundos</small></h3>
+      <div class="grid g2" style="gap:.6rem"><div class="field"><label for="nNombre">Nombre</label><input class="input" id="nNombre" placeholder="Ej: Carolina Pérez"></div>
+      <div class="field"><label for="nCumple">Cumpleaños</label><input class="input" id="nCumple" type="date"></div></div>
+      <div class="field"><label for="nRef">Código de quien lo recomendó (opcional)</label><input class="input" id="nRef" placeholder="Ej: LAURA10"></div>
+      <label class="row" style="font-size:.9rem;margin-bottom:.8rem"><input type="checkbox" id="nWa" checked style="width:18px;height:18px;accent-color:var(--fresa)"> Acepta recibir promociones por WhatsApp</label>
+      <button class="btn btn-primary" data-act="crearCli">Registrar cliente</button></div>`;
+  }
+  const rewards=S.recompensas.map(r=>{const ok=c&&c.puntos>=r.puntos;return `<label class="opt ${ok?'':'dis'}"><input type="radio" name="canje" value="${r.id}" ${caja.canje===r.id?'checked':''} ${ok?'':'disabled'}> ${r.e} ${esc(r.nombre)} <span class="muted" style="margin-left:auto">${r.puntos} pts</span></label>`}).join('');
+  return top('Registrar compra','Lo único que se hace en caja: número del cliente y lo que compró.')+
+  `<div class="pos"><div class="grid">
+    <div class="card"><h3>1. ¿Quién compra?</h3>
+      <div class="row" style="flex-wrap:nowrap"><input class="input" id="telIn" inputmode="numeric" placeholder="Celular del cliente" value="${esc(caja.tel)}" style="font-size:1.15rem;letter-spacing:.03em" autocomplete="off"><button class="btn btn-primary" data-act="buscar">Buscar</button></div>
+      <p class="muted" style="font-size:.85rem;margin-top:.45rem">Pruebe con 300 555 1234 (Laura) o 301 444 2211 (Julián), o con un número nuevo.</p>
+      ${clienteHTML}
+    </div>
+    <div class="card"><h3>2. ¿Qué lleva? <small>Toque para agregar</small></h3>
+      <div class="sec-t" style="margin-top:0">Combos</div>
+      <div class="prods" style="margin-bottom:.8rem">${S.combos.filter(x=>x.activo).map(x=>`<button class="prod combo" data-add="${x.id}">${caja.items[x.id]?`<span class="q">${caja.items[x.id]}</span>`:''}<span class="e">${x.e}</span><b>${esc(x.nombre)}</b><span>${money(x.precio)}</span></button>`).join('')}</div>
+      <div class="sec-t">Productos</div>
+      <div class="prods">${S.productos.map(p=>`<button class="prod" data-add="${p.id}">${caja.items[p.id]?`<span class="q">${caja.items[p.id]}</span>`:''}<span class="e">${p.e}</span><b>${esc(p.nombre)}</b><span>${money(p.precio)}</span></button>`).join('')}</div>
+    </div>
+  </div>
+  <div class="card ticket"><h3> Cuenta</h3>
+    ${T.lines.length?T.lines.map(l=>`<div class="t-line"><span>${esc(l.n)}</span><span class="row" style="gap:.6rem;flex-wrap:nowrap"><span class="qty"><button data-dec="${l.id}" aria-label="Quitar uno">−</button>${l.q}<button data-add="${l.id}" aria-label="Agregar uno">+</button></span><b>${money(l.v)}</b></span></div>`).join(''):'<p class="empty" style="padding:1.2rem 0">Toque los productos para armar la cuenta.</p>'}
+    ${T.desc?`<div class="t-line"><span>${esc(T.rw.nombre)}</span><b class="up">−${money(T.desc)}</b></div>`:''}
+    ${T.rw&&T.rw.tipo==='producto'?`<div class="t-line"><span> ${esc(T.rw.nombre)}</span><b class="up">Gratis</b></div>`:''}
+    ${caja.cumple&&c?`<div class="t-line"><span> ${esc(S.cfg.cumpleBeneficio)}</span><b class="up">Gratis</b></div>`:''}
+    ${caja.beneficio&&c?`<div class="t-line"><span> ${esc((c.beneficios.find(b=>b.id===caja.beneficio)||{}).texto)}</span><b class="up">Gratis</b></div>`:''}
+    <div class="t-total"><span>Total</span><span>${money(T.total)}</span></div>
+    ${c?`<div class="earn">Con esta compra <b>${esc(firstName(c.nombre))}</b> gana <b>${T.pts} puntos</b>${T.m>1?` (×${String(T.m).replace('.',',')} por ser ${nivel(c)})`:''}.</div>`:'<div class="earn">Busque al cliente para que sume puntos.</div>'}
+    ${c&&(cumpleDisponible(c)||c.beneficios.length)?`<div class="sec-t">Beneficios disponibles</div>
+      ${cumpleDisponible(c)?`<label class="opt"><input type="checkbox" data-act="cumpleTog" ${caja.cumple?'checked':''}>  ${esc(S.cfg.cumpleBeneficio)}</label>`:''}
+      ${c.beneficios.map(b=>`<label class="opt"><input type="radio" name="benef" value="${b.id}" ${caja.beneficio===b.id?'checked':''}>  ${esc(b.texto)}</label>`).join('')}`:''}
+    ${c?`<div class="sec-t">Canjear puntos <span class="muted" style="font-weight:500">(tiene ${num(c.puntos)})</span></div>${rewards}${caja.canje?`<button class="small-btn" style="margin-top:.4rem" data-act="sinCanje">Quitar canje</button>`:''}`:''}
+    <button class="btn btn-primary" style="width:100%;margin-top:1rem;padding:.95rem" data-act="cobrar" ${T.lines.length||caja.cumple||caja.beneficio?'':'disabled'}>Confirmar compra${c?' y sumar puntos':''}</button>
+    <button class="small-btn" style="width:100%;margin-top:.5rem;text-align:center" data-act="limpiar">Empezar de nuevo</button>
+  </div></div>`;
+}
+after.caja=()=>{const t=$('#telIn');t.addEventListener('keydown',e=>{if(e.key==='Enter')buscarCli()});if(!caja.cli&&!caja.nuevo)t.focus({preventScroll:true})};
+function buscarCli(){
+  const v=$('#telIn').value.replace(/\D/g,'');caja.tel=$('#telIn').value;
+  if(v.length<7){toast('Escriba el celular completo del cliente.');return}
+  const c=S.clientes.find(x=>x.tel===v);
+  caja.cli=c?c.id:null;caja.nuevo=!c;caja.canje=null;caja.cumple=false;caja.beneficio=null;render();
+  if(!c)setTimeout(()=>$('#nNombre')?.focus(),30);
+}
+function crearCli(){
+  const nombre=$('#nNombre').value.trim();const cum=$('#nCumple').value;const ref=$('#nRef').value.trim().toUpperCase();
+  if(!nombre){toast('Escriba el nombre del cliente.');return}
+  const c={id:'cl'+uid(),nombre,tel:caja.tel.replace(/\D/g,''),cumple:cum?cum.slice(5):'01-01',favoritos:['Vainilla'],compras:[],puntos:0,referidos:0,
+    codigo:firstName(nombre).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')+Math.floor(10+Math.random()*89),whatsapp:$('#nWa').checked,beneficios:[],cumpleCanjeado:null,alta:new Date().toISOString()};
+  let msg=`Listo: ${firstName(nombre)} ya es cliente.`;
+  if(ref){const r=S.clientes.find(x=>x.codigo===ref);if(r){r.puntos+=S.cfg.refPuntos;r.referidos++;c.referidoPor=r.id;c.beneficios.push({id:uid(),texto:S.cfg.refBienvenida,vence:isoDaysAgo(-30)});msg+=` ${firstName(r.nombre)} ganó ${S.cfg.refPuntos} puntos por la recomendación.`}else msg+=' El código de referido no existe.'}
+  S.clientes.unshift(c);caja.cli=c.id;caja.nuevo=false;save();render();toast(msg);
+}
+function cobrar(){
+  const c=caja.cli?getC(caja.cli):null;const T=cajaTotales();
+  const items=T.lines.flatMap(l=>Array(l.q).fill(l.n));
+  if(caja.cumple)items.push(' '+S.cfg.cumpleBeneficio);
+  if(T.rw)items.push(' '+T.rw.nombre);
+  S.combos.forEach(x=>{if(caja.items[x.id])x.ventas+=caja.items[x.id]});
+  if(c){
+    c.compras.unshift({id:uid(),fecha:new Date().toISOString(),items,valor:T.total,puntos:T.pts});
+    c.puntos+=T.pts;
+    if(T.rw){c.puntos-=T.rw.puntos;T.rw.canjes++;S.canjes.push({fecha:new Date().toISOString(),cliente:c.id,recompensa:T.rw.nombre})}
+    if(caja.cumple)c.cumpleCanjeado=today0().getFullYear();
+    if(caja.beneficio){c.beneficios=c.beneficios.filter(b=>b.id!==caja.beneficio);S.canjes.push({fecha:new Date().toISOString(),cliente:c.id,recompensa:'Premio de ruleta'})}
+  }
+  save();
+  const name=c?firstName(c.nombre):'';
+  if(c&&S.cfg.ruletaActiva){openWheel(c,T)}else{toast(c?`Compra registrada. ${name} sumó ${T.pts} puntos.`:'Compra registrada.')}
+  resetCaja();render();renderNav();
+}
+
+/* ---------- Ruleta después de la compra ---------- */
+function wheelSVG(prizes){
+  const seg=360/prizes.length;let w='';
+  prizes.forEach((p,i)=>{const a0=(i*seg-90)*Math.PI/180,a1=((i+1)*seg-90)*Math.PI/180,r=96;
+    w+=`<path d="M0 0 L${r*Math.cos(a0)} ${r*Math.sin(a0)} A${r} ${r} 0 ${seg>180?1:0} 1 ${r*Math.cos(a1)} ${r*Math.sin(a1)} Z" fill="${p.color}" stroke="#fff" stroke-width="2"/>`;
+    const words=p.nombre.split(' ');const l1=words.slice(0,2).join(' '),l2=words.slice(2).join(' ');
+    w+=`<g transform="rotate(${(i+.5)*seg})"><text x="0" y="${l2?-60:-55}" text-anchor="middle" font-size="9" font-weight="700" fill="#24212A" font-family="Figtree,sans-serif">${esc(l1)}</text>${l2?`<text x="0" y="-49" text-anchor="middle" font-size="9" font-weight="700" fill="#24212A" font-family="Figtree,sans-serif">${esc(l2)}</text>`:''}</g>`});
+  return w+`<circle r="16" fill="#fff" stroke="#24212A" stroke-width="2"/><text y="6" text-anchor="middle" font-size="16"></text>`;
+}
+let wheelRot=0;
+function spin(svg,prizes,cb){
+  const seg=360/prizes.length;const idx=Math.floor(Math.random()*prizes.length);
+  wheelRot=wheelRot-(wheelRot%360)+360*5+(360-(idx+.5)*seg);svg.style.transform=`rotate(${wheelRot}deg)`;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;setTimeout(()=>cb(prizes[idx]),reduce?60:3500);
+}
+function openWheel(c,T){
+  wheelRot=0;
+  openModal(`<div class="row" style="justify-content:space-between;flex-wrap:nowrap;margin-bottom:.6rem"><h2 style="font-size:1.4rem"> Compra registrada</h2><button class="x" data-act="closeModal" aria-label="Cerrar">✕</button></div>
+    <p>${esc(firstName(c.nombre))} sumó <b>${T.pts} puntos</b> y ahora tiene <b>${num(c.puntos)}</b>.</p>
+    <div class="card" style="margin-top:1rem;text-align:center"><h3 style="justify-content:center"> Premio digital para la próxima visita</h3>
+      <p class="muted" style="font-size:.9rem;margin-bottom:1rem">El cliente la gira desde su celular. Aquí puede ver cómo funciona.</p>
+      <div class="wheel-stage"><div class="pointer"></div><svg id="mWheel" viewBox="-100 -100 200 200">${wheelSVG(S.ruleta)}</svg></div>
+      <p class="win" id="mWin" aria-live="polite"></p>
+      <div class="row" style="justify-content:center;margin-top:.6rem"><button class="btn btn-primary" id="mSpin" data-act="mSpin" data-cli="${c.id}">Girar la ruleta</button><button class="btn btn-soft" data-act="closeModal">Enviar por WhatsApp después</button></div>
+    </div>`);
+}
+
+/* =========================================================
+   VISTA: Clientes
+   ========================================================= */
+let filtro='Todos',busca='';
+function vClientes(){
+  const F=['Todos','Premium','VIP','Frecuente','Ocasional','Inactivo','Cumpleaños'];
+  const cnt=f=>f==='Todos'?S.clientes.length:f==='Cumpleaños'?S.clientes.filter(c=>cumpleEn(c)<=30).length:S.clientes.filter(c=>segmento(c)===f).length;
+  return top('Clientes',`${S.clientes.length} clientes registrados · toque uno para ver su perfil`,`<button class="btn btn-primary btn-sm" data-go="caja"> Registrar compra</button>`)+
+  `<div class="card"><div class="row" style="margin-bottom:1rem"><input class="input" id="busca" placeholder="Buscar por nombre o celular" value="${esc(busca)}" style="max-width:320px">
+    <div class="chips">${F.map(f=>`<button class="chip" data-fil="${f}" aria-pressed="${filtro===f}">${f==='Inactivo'?'Inactivos':f} · ${cnt(f)}</button>`).join('')}</div></div>
+    <div class="tbl-wrap" id="cliTable">${tablaClientes()}</div></div>`;
+}
+function tablaClientes(){
+  let L=S.clientes.filter(c=>filtro==='Todos'||(filtro==='Cumpleaños'?cumpleEn(c)<=30:segmento(c)===filtro));
+  const q=busca.toLowerCase().trim();if(q)L=L.filter(c=>c.nombre.toLowerCase().includes(q)||c.tel.includes(q.replace(/\D/g,'')||'§'));
+  if(filtro==='Cumpleaños')L.sort((a,b)=>cumpleEn(a)-cumpleEn(b));else L.sort((a,b)=>visits30(b)-visits30(a));
+  if(!L.length)return `<p class="empty">No hay clientes con ese filtro. Pruebe con “Todos”.</p>`;
+  return `<table><thead><tr><th>Cliente</th><th>Nivel</th><th>Puntos</th><th>Última compra</th><th>Visitas (30 días)</th><th>Favorito</th><th>Cumpleaños</th></tr></thead><tbody>
+  ${L.map(c=>{const ld=lastDays(c);return `<tr class="click" data-cli="${c.id}" tabindex="0"><td><div class="row" style="flex-wrap:nowrap"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><div><b>${esc(c.nombre)}</b><div class="muted" style="font-size:.8rem">${c.tel.replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3')}</div></div></div></td>
+  <td><span class="pill lv-${segmento(c)}">${segmento(c)}</span></td><td><b>${num(c.puntos)}</b></td><td>${ld===999?'—':ld===0?'Hoy':ld===1?'Ayer':'Hace '+ld+' días'}</td><td>${visits30(c)}</td><td>${esc(c.favoritos[0])}</td><td>${cumpleEn(c)===0?' ¡Hoy!':fcumple(c.cumple)}</td></tr>`}).join('')}</tbody></table>`;
+}
+after.clientes=()=>{$('#busca').addEventListener('input',e=>{busca=e.target.value;$('#cliTable').innerHTML=tablaClientes()})};
+
+function openProfile(id){
+  const c=getC(id);if(!c)return;
+  const lv=nivel(c),nl=nextLevel(c),lp=lastPurchase(c);
+  const totalG=c.compras.reduce((s,p)=>s+p.valor,0);
+  const nextR=[...S.recompensas].sort((a,b)=>a.puntos-b.puntos).find(r=>r.puntos>c.puntos);
+  const prevMin=nl?(S.cfg.niveles.find(l=>l.nombre===nl.nombre).min):1;const pct=nl?Math.round(visits30(c)/prevMin*100):100;
+  const benef=[];if(cumpleDisponible(c))benef.push(['',S.cfg.cumpleBeneficio,'Cumpleaños']);
+  c.beneficios.forEach(b=>benef.push(['',b.texto,'Hasta '+fdate(b.vence)]));
+  const lvl=S.cfg.niveles.find(l=>l.nombre===lv);if(lvl&&lvl.mult>1)benef.push(['',`Puntos ×${String(lvl.mult).replace('.',',')} en cada compra`,lv]);
+  S.recompensas.filter(r=>r.puntos<=c.puntos).slice(-2).forEach(r=>benef.push([r.e,r.nombre,`Canjeable · ${r.puntos} pts`]));
+  const ref=c.referidoPor?getC(c.referidoPor):null;
+  $('#drawer').innerHTML=`<div class="row" style="justify-content:space-between;flex-wrap:nowrap;margin-bottom:1rem"><span class="muted" style="font-weight:600">Perfil del cliente</span><button class="x" data-act="closeDrawer" aria-label="Cerrar">✕</button></div>
+  <div class="p-head"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><div><h2 style="font-size:1.5rem">${esc(c.nombre)}</h2><div class="row" style="gap:.4rem;margin-top:.3rem"><span class="pill lv-${lv}">${lv==='Premium'||lv==='VIP'?' ':''}${lv}</span>${isInactive(c)?'<span class="pill lv-Inactivo">Inactivo</span>':''}${cumpleEn(c)===0?'<span class="pill lv-Inactivo"> Cumple hoy</span>':''}</div></div></div>
+  <div class="row" style="margin-bottom:1rem"><button class="btn btn-primary btn-sm" data-act="cobrarA" data-cli="${c.id}"> Registrar compra</button>${c.whatsapp?`<button class="btn btn-wa btn-sm" data-act="waA" data-cli="${c.id}"> Escribirle</button>`:'<span class="muted" style="font-size:.85rem">No acepta mensajes</span>'}</div>
+  <div class="card" style="margin-bottom:.8rem"><div class="row" style="justify-content:space-between"><div><span class="muted" style="font-size:.85rem;font-weight:600">Puntos disponibles</span><div style="font-family:var(--display);font-weight:800;font-size:2rem;line-height:1.1"> ${num(c.puntos)}</div></div>
+    ${nextR?`<div style="text-align:right;font-size:.88rem"><span class="muted">Le faltan</span><br><b>${nextR.puntos-c.puntos} pts</b> para ${esc(nextR.nombre.toLowerCase())}</div>`:''}</div>
+    ${nl?`<div style="margin-top:.8rem;font-size:.88rem">${visits30(c)} de ${prevMin} visitas este mes para ser <b>${nl.nombre}</b><div class="progress"><i style="width:${Math.min(100,pct)}%"></i></div></div>`:'<p style="margin-top:.6rem;font-size:.88rem">Está en el nivel más alto. </p>'}
+  </div>
+  <div class="facts" style="margin-bottom:.8rem">
+    <div class="fact"><span>Teléfono</span><b>${c.tel.replace(/(\d{3})(\d{3})(\d{4})/,'$1 $2 $3')}</b></div>
+    <div class="fact"><span>Cumpleaños</span><b>${fcumple(c.cumple)}</b></div>
+    <div class="fact"><span>Última compra</span><b>${lp?fdate(lp.fecha)+' · '+money(lp.valor):'—'}</b></div>
+    <div class="fact"><span>Visitas totales</span><b>${c.compras.length}</b></div>
+    <div class="fact"><span>Gasto promedio</span><b>${money(ticketProm(c))}</b></div>
+    <div class="fact"><span>Total comprado</span><b>${money(totalG)}</b></div>
+    <div class="fact"><span>Código de referido</span><b>${esc(c.codigo)}</b></div>
+    <div class="fact"><span>Recomendó a</span><b>${c.referidos} ${c.referidos===1?'persona':'personas'}</b></div>
+  </div>
+  ${ref?`<p class="muted" style="font-size:.88rem;margin-bottom:.8rem">Llegó recomendado por ${esc(ref.nombre)}.</p>`:''}
+  <div class="card" style="margin-bottom:.8rem"><h3>Sabores favoritos</h3><div class="chips">${c.favoritos.map((f,i)=>`<span class="pill" style="font-size:.88rem;padding:.35rem .8rem;background:${['var(--mango-soft)','var(--fresa-soft)'][i%2]}">${esc(f)}</span>`).join('')}</div></div>
+  <div class="card" style="margin-bottom:.8rem"><h3>Beneficios disponibles <small>${benef.length}</small></h3>${benef.length?benef.map(b=>`<div class="benefit"><span>${b[0]} ${esc(b[1])}</span><span class="pill lv-Frecuente">${esc(b[2])}</span></div>`).join(''):'<p class="muted">Aún no tiene beneficios. Con su próxima compra empieza a sumar.</p>'}</div>
+  <div class="card"><h3>Historial de compras <small>${c.compras.length}</small></h3>${c.compras.length?`<div class="tbl-wrap"><table><thead><tr><th>Fecha</th><th>Compra</th><th>Valor</th><th>Puntos</th></tr></thead><tbody>${c.compras.slice(0,10).map(p=>`<tr><td style="white-space:nowrap">${fdate(p.fecha)}</td><td style="font-size:.86rem">${esc(p.items.join(', '))}</td><td>${money(p.valor)}</td><td class="up">+${p.puntos}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">Sin compras todavía.</p>'}</div>`;
+  $('#drawer').classList.add('open');$('#overlay').classList.add('open');$('#drawer').scrollTop=0;
+  setTimeout(()=>$('#drawer .x').focus(),50);
+}
+function closeDrawer(){$('#drawer').classList.remove('open');if(!$('#modal').classList.contains('open'))$('#overlay').classList.remove('open')}
+
+/* =========================================================
+   VISTA: Sugerencias IA
+   ========================================================= */
+function vIA(){
+  const L=sugerenciasIA();
+  return top('Sugerencias de la IA','La plataforma revisa todas las compras y le dice qué conviene hacer. Usted decide.')+
+  `<div class="grid g2">${L.map(t=>`<div class="card"><div class="ic-box">${ic(t.e)}</div><h3 style="display:block;font-size:1.2rem">${esc(t.titulo)}</h3><p class="muted" style="margin-bottom:.9rem">${esc(t.detalle)}</p>
+    ${t.ids?`<div class="row"><button class="btn btn-primary btn-sm" data-ia="${t.id}"> Preparar mensaje para ${t.ids.length}</button><button class="btn btn-soft btn-sm" data-ver="${t.id}">Ver clientes</button></div>`:`<button class="btn btn-primary btn-sm" data-go="${t.accion}">Ir a combos</button>`}
+    <div id="ver-${t.id}"></div></div>`).join('')}</div>
+  <div class="card" style="margin-top:1rem"><h3>Resultados de mensajes enviados</h3><div class="tbl-wrap"><table><thead><tr><th>Campaña</th><th>Tipo</th><th>Fecha</th><th>Enviados</th><th>Volvieron</th><th>Resultado</th></tr></thead><tbody>
+  ${[...S.campanas].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha)).map(x=>{const p=x.enviados?Math.round(x.regresaron/x.enviados*100):0;return `<tr><td><b>${esc(x.nombre)}</b></td><td>${esc(x.tipo)}</td><td>${fdate(x.fecha)}</td><td>${x.enviados}</td><td>${x.regresaron}</td><td><span class="pill ${p>=50?'lv-Frecuente':p?'lv-VIP':'lv-Ocasional'}">${daysAgo(x.fecha)<1&&!x.regresaron?'Recién enviada':p+'% volvió'}</span></td></tr>`}).join('')}
+  </tbody></table></div></div>`;
+}
+
+/* =========================================================
+   VISTA: WhatsApp
+   ========================================================= */
+let wa={seg:'inactivos',msg:'',nombre:'',ids:null};
+const SEGS={
+  inactivos:{t:'Clientes inactivos',f:c=>isInactive(c)},
+  frecuentes:{t:'Frecuentes',f:c=>!isInactive(c)&&nivel(c)==='Frecuente'},
+  vip:{t:'VIP y Premium',f:c=>!isInactive(c)&&['VIP','Premium'].includes(nivel(c))},
+  cumple:{t:'Cumplen este mes',f:c=>cumpleEn(c)<=30},
+  todos:{t:'Todos',f:()=>true}
+};
+const PLANT={
+  inactivos:{n:'Te extrañamos',m:'Hola {nombre}, ¡hace rato no lo vemos por La Dulce Esquina! 🍦 Le guardamos un 2×1 en conos de {favorito}, válido hasta el domingo. Solo diga su número en caja.'},
+  frecuentes:{n:'Doble puntos',m:'Hola {nombre} 🍦 Esta semana todas sus compras suman puntos dobles. Ya tiene {puntos} puntos, ¡está cerca de su próximo premio!'},
+  vip:{n:'Exclusivo VIP',m:'{nombre}, como cliente {nivel} 👑 usted prueba primero nuestro sabor nuevo. Esta semana le regalamos la probadita y el topping que quiera.'},
+  cumple:{n:'Cumpleaños',m:'¡Hola {nombre}! 🎉 Se acerca su cumpleaños y le tenemos un helado de regalo. ¡Venga a celebrar con nosotros!'},
+  todos:{n:'Combo de la semana',m:'Hola {nombre} 🍨 Esta semana tenemos el Combo Pareja: 2 conos dobles + topping por $18.500. ¡Le esperamos!'}
+};
+function waRecipients(){const L=wa.ids?wa.ids.map(getC).filter(Boolean):S.clientes.filter(SEGS[wa.seg].f);return L.filter(c=>c.whatsapp)}
+function personalize(m,c){if(!c)return m;const nl=nextLevel(c);return m.replace(/\{nombre\}/g,firstName(c.nombre)).replace(/\{favorito\}/g,c.favoritos[0].toLowerCase()).replace(/\{puntos\}/g,num(c.puntos)).replace(/\{nivel\}/g,nivel(c)).replace(/\{siguiente\}/g,nl?nl.nombre:'Premium')}
+function vWhatsapp(){
+  if(!wa.msg){wa.msg=PLANT[wa.seg].m;wa.nombre=PLANT[wa.seg].n}
+  const R=waRecipients();const first=R[0];
+  return top('WhatsApp','Prepare mensajes personalizados. Cada uno sale con el nombre de su cliente.')+
+  `<div class="grid g-12"><div class="card">
+    ${wa.ids?`<div class="hint" style="margin:0 0 1rem;background:var(--mora-soft)"> Preparado por la IA para <b>${R.length} clientes</b>. <button class="small-btn" data-act="waLimpiar" style="margin-left:.4rem">Elegir otro grupo</button></div>`:
+    `<div class="sec-t" style="margin-top:0">1. ¿A quién le escribe?</div><div class="chips" style="margin-bottom:1rem">${Object.entries(SEGS).map(([k,v])=>`<button class="chip" data-seg="${k}" aria-pressed="${wa.seg===k}">${v.t} · ${S.clientes.filter(v.f).filter(c=>c.whatsapp).length}</button>`).join('')}</div>`}
+    <div class="sec-t">${wa.ids?'1':'2'}. Nombre de la campaña</div><input class="input" id="waNombre" value="${esc(wa.nombre)}" style="margin-bottom:1rem">
+    <div class="sec-t">${wa.ids?'2':'3'}. Mensaje</div>
+    <textarea class="input" id="waMsg">${esc(wa.msg)}</textarea>
+    <div class="vars"><span class="muted" style="font-size:.82rem">Insertar:</span>${['nombre','favorito','puntos','nivel'].map(v=>`<button data-var="${v}">{${v}}</button>`).join('')}</div>
+    <div class="sec-t">Destinatarios (${R.length})</div>
+    <div class="chips" style="max-height:120px;overflow:auto">${R.map(c=>`<span class="pill lv-${segmento(c)}">${esc(c.nombre)}</span>`).join('')||'<span class="muted">Nadie en este grupo.</span>'}</div>
+    <div class="row" style="margin-top:1.2rem"><button class="btn btn-wa" data-act="waEnviar" ${R.length?'':'disabled'}> Preparar ${R.length} mensajes</button></div>
+    <p class="muted" style="font-size:.82rem;margin-top:.6rem">Solo reciben mensajes quienes aceptaron al registrarse.</p>
+  </div>
+  <div><div class="phone"><div class="phone-top"><span class="av" style="font-size:.75rem">DE</span><div><b>${first?esc(first.nombre):'Vista previa'}</b><small>Así lo verá su cliente</small></div></div><div class="chat"><div class="bub" id="waPrev">${esc(personalize(wa.msg,first))}<span class="t">${new Date().toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit'})} ✓✓</span></div></div></div></div></div>`;
+}
+after.whatsapp=()=>{
+  const m=$('#waMsg');const upd=()=>{wa.msg=m.value;const R=waRecipients();$('#waPrev').firstChild.textContent=personalize(wa.msg,R[0])};
+  m.addEventListener('input',upd);$('#waNombre').addEventListener('input',e=>wa.nombre=e.target.value);
+};
+function openWaFor(ids,msg,nombre){wa={seg:'todos',msg,nombre,ids};go('whatsapp')}
+
+/* =========================================================
+   VISTA: Combos
+   ========================================================= */
+function vCombos(){
+  return top('Combos y promociones','Combos pensados para que cada visita deje un poco más.',`<button class="btn btn-primary btn-sm" data-act="nuevoCombo"> Crear combo</button>`)+
+  `<div class="tiles">${S.combos.map(x=>{const normal=x.items.reduce((s,i)=>s+(prod(i)?.precio||0),0);const ah=normal-x.precio;return `<div class="tile" style="${x.activo?'':'opacity:.6'}"><div class="top"><span class="e">${x.e}</span><label class="switch" title="Activo en caja"><input type="checkbox" data-tog="${x.id}" ${x.activo?'checked':''} aria-label="Activar ${esc(x.nombre)}"><span></span></label></div>
+  <h4>${esc(x.nombre)}</h4><p class="muted" style="font-size:.9rem">${esc(x.desc)}</p><div class="row" style="gap:.5rem;align-items:baseline"><span class="price">${money(x.precio)}</span>${ah>0?`<span class="save">El cliente ahorra ${money(ah)}</span>`:''}</div>
+  <div class="foot"><span>${x.activo?'Visible en caja':'Pausado'}</span><span><b style="color:var(--ink)">${x.ventas}</b> vendidos</span></div></div>`}).join('')}</div>
+  <div class="card" style="margin-top:1rem;background:var(--mango-soft);border:0"><h3> Ideas para su próximo combo</h3><p class="muted">“Combo Familiar de domingo” para las tardes con más movimiento, “Hora dulce” de 3:00 a 5:00 p. m. para las horas flojas, o “Combo estudiante” cerca del colegio.</p></div>`;
+}
+function nuevoCombo(){
+  openModal(`<div class="row" style="justify-content:space-between;flex-wrap:nowrap;margin-bottom:1rem"><h2 style="font-size:1.4rem">Crear combo</h2><button class="x" data-act="closeModal" aria-label="Cerrar">✕</button></div>
+  <div class="field"><label for="cbN">Nombre del combo</label><input class="input" id="cbN" placeholder="Ej: Combo Amigos"></div>
+  <div class="field"><label for="cbD">Descripción corta</label><input class="input" id="cbD" placeholder="Ej: 3 conos sencillos + salsa"></div>
+  <div class="sec-t">¿Qué incluye?</div><div class="grid g2" style="gap:.4rem">${S.productos.map(p=>`<div class="opt" style="margin:0;justify-content:space-between"><span>${p.e} ${esc(p.nombre)}</span><span class="qty"><button data-cb="-" data-p="${p.id}" aria-label="Quitar">−</button><span id="cbq-${p.id}">0</span><button data-cb="+" data-p="${p.id}" aria-label="Agregar">+</button></span></div>`).join('')}</div>
+  <p style="margin-top:.8rem" id="cbNormal" class="muted">Precio normal: $0</p>
+  <div class="field" style="margin-top:.6rem"><label for="cbP">Precio del combo</label><input class="input" id="cbP" inputmode="numeric" placeholder="Ej: 15000"></div>
+  <button class="btn btn-primary" style="width:100%" data-act="guardarCombo">Guardar combo</button>`);
+  window._cb={};
+}
+
+/* =========================================================
+   VISTA: Puntos y recompensas
+   ========================================================= */
+function vPuntos(){
+  const tot=S.clientes.reduce((s,c)=>s+c.puntos,0);
+  return top('Puntos y recompensas','Usted decide cuánto vale cada punto y qué se puede canjear.')+
+  `<div class="grid g-12"><div class="grid" style="align-content:start">
+    <div class="card"><h3>¿Cuántos puntos gana el cliente?</h3>
+      <div class="row" style="flex-wrap:nowrap;font-size:1.05rem">1 punto por cada <input class="input" id="ppp" inputmode="numeric" value="${S.cfg.pesosPorPunto}" style="max-width:130px;text-align:center;font-weight:700"> pesos</div>
+      <p class="muted" style="font-size:.88rem;margin-top:.6rem">Ejemplo: una compra de ${money(18000)} suma <b id="pppEj">${Math.floor(18000/S.cfg.pesosPorPunto)}</b> puntos. Los clientes VIP y Premium suman más (vea Niveles VIP).</p>
+    </div>
+    <div class="card"><h3>Resumen</h3><div class="facts">
+      <div class="fact"><span>Puntos en manos de clientes</span><b>${num(tot)}</b></div>
+      <div class="fact"><span>Canjes este mes</span><b>${S.canjes.filter(x=>daysAgo(x.fecha)<=30).length}</b></div>
+      <div class="fact"><span>Premio más pedido</span><b>${esc([...S.recompensas].sort((a,b)=>b.canjes-a.canjes)[0].nombre)}</b></div>
+      <div class="fact"><span>Recompensas activas</span><b>${S.recompensas.length}</b></div></div></div>
+    <div class="card"><h3>Agregar recompensa</h3>
+      <div class="field"><label for="rwN">¿Qué se gana?</label><input class="input" id="rwN" placeholder="Ej: Waffle gratis"></div>
+      <div class="field"><label for="rwP">¿Cuántos puntos cuesta?</label><input class="input" id="rwP" inputmode="numeric" placeholder="Ej: 150"></div>
+      <button class="btn btn-primary" data-act="addRw">Agregar</button></div>
+  </div>
+  <div class="card"><h3>Catálogo de recompensas <small>Ordenado por puntos</small></h3>
+    <div class="list">${[...S.recompensas].sort((a,b)=>a.puntos-b.puntos).map(r=>`<div class="li" style="cursor:default"><span class="av" style="background:var(--surface-2);color:var(--fresa)">${ic('premios')}</span><span class="meta"><b>${esc(r.nombre)}</b><span>${r.canjes} canjes en total</span></span><span class="pill lv-VIP" style="font-size:.85rem"> ${r.puntos}</span><button class="x" style="width:32px;height:32px;font-size:.85rem" data-delrw="${r.id}" aria-label="Eliminar ${esc(r.nombre)}">${ic('trash')}</button></div>`).join('')}</div>
+  </div></div>`;
+}
+after.puntos=()=>{$('#ppp').addEventListener('change',e=>{const v=parseInt(e.target.value.replace(/\D/g,''),10);if(v>0){S.cfg.pesosPorPunto=v;save();$('#pppEj').textContent=Math.floor(18000/v);toast('Regla de puntos actualizada.')}})};
+
+/* =========================================================
+   VISTA: Niveles
+   ========================================================= */
+function vNiveles(){
+  const ben={Frecuente:['Helado gratis de cumpleaños','Promociones exclusivas por WhatsApp'],VIP:['Topping gratis una vez por semana','Prueba los sabores nuevos antes que nadie'],Premium:['Un helado sencillo gratis al mes','Regalo sorpresa en su aniversario como cliente']};
+  return top('Niveles VIP','Los clientes suben y bajan de nivel solos, según cuántas veces vienen en el mes.')+
+  `<div class="levels">${S.cfg.niveles.map((l,i)=>{const n=S.clientes.filter(c=>segmento(c)===l.nombre).length;return `<div class="lvl l${i+1}"><h4>${['','',''][i]} ${l.nombre}</h4><p style="font-size:.9rem;margin-bottom:.8rem"><b>${n}</b> clientes hoy</p>
+    <div class="field"><label>Visitas al mes para entrar</label><input class="input" type="number" min="1" data-lvl="${i}" data-k="min" value="${l.min}"></div>
+    <div class="field"><label>Multiplicador de puntos</label><input class="input" type="number" min="1" step="0.5" data-lvl="${i}" data-k="mult" value="${l.mult}"></div>
+    <div class="sec-t">Beneficios</div><ul style="margin:0;padding-left:1.1rem;font-size:.9rem">${ben[l.nombre].map(b=>`<li>${b}</li>`).join('')}${l.mult>1?`<li>Puntos ×${String(l.mult).replace('.',',')}</li>`:''}</ul></div>`}).join('')}</div>
+  <div class="card" style="margin-top:1rem"><h3>Clientes VIP y Premium</h3><div class="list">${S.clientes.filter(c=>['VIP','Premium'].includes(segmento(c))).sort((a,b)=>visits30(b)-visits30(a)).map(c=>`<button class="li" data-cli="${c.id}"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><span class="meta"><b>${esc(c.nombre)}</b><span>${visits30(c)} visitas este mes · ${money(ticketProm(c))} por visita</span></span><span class="pill lv-${nivel(c)}">${nivel(c)}</span></button>`).join('')}</div></div>`;
+}
+after.niveles=()=>{document.querySelectorAll('[data-lvl]').forEach(inp=>inp.addEventListener('change',e=>{const i=+e.target.dataset.lvl,k=e.target.dataset.k;const v=parseFloat(e.target.value);if(v>0){S.cfg.niveles[i][k]=v;save();render();toast('Niveles actualizados.')}}))};
+
+/* =========================================================
+   VISTA: Referidos
+   ========================================================= */
+function vReferidos(){
+  const L=[...S.clientes].filter(c=>c.referidos>0).sort((a,b)=>b.referidos-a.referidos);
+  const nuevosRef=S.clientes.filter(c=>c.referidoPor).length;
+  return top('Programa de referidos','Cada cliente tiene un código para recomendar la heladería.')+
+  `<div class="grid g-12"><div class="grid" style="align-content:start">
+    <div class="card"><h3>Cómo se premia</h3>
+      <div class="field"><label for="refP">Puntos para quien recomienda</label><input class="input" id="refP" type="number" min="0" value="${S.cfg.refPuntos}"></div>
+      <div class="field"><label for="refB">Regalo para el cliente nuevo</label><input class="input" id="refB" value="${esc(S.cfg.refBienvenida)}"></div>
+      <button class="btn btn-primary btn-sm" data-act="saveRef">Guardar</button></div>
+    <div class="card" style="background:var(--mora-soft);border:0"><h3>¿Cómo funciona en caja?</h3><p style="font-size:.93rem">Cuando registre a un cliente nuevo, escriba el código de quien lo recomendó. Los puntos y el regalo se entregan solos.</p></div>
+  </div>
+  <div class="card"><h3>Sus mejores embajadores <small>${L.reduce((s,c)=>s+c.referidos,0)} recomendaciones</small></h3>
+    ${L.length?`<div class="tbl-wrap"><table><thead><tr><th>Cliente</th><th>Código</th><th>Recomendó</th><th>Puntos ganados</th></tr></thead><tbody>${L.map((c,i)=>`<tr class="click" data-cli="${c.id}"><td><div class="row" style="flex-wrap:nowrap">${i<3?['','',''][i]:''}<b>${esc(c.nombre)}</b></div></td><td><span class="pill lv-Ocasional" style="font-size:.85rem">${esc(c.codigo)}</span></td><td>${c.referidos}</td><td>${c.referidos*S.cfg.refPuntos}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty">Aún no hay recomendaciones.</p>'}
+    ${nuevosRef?`<p class="muted" style="font-size:.86rem;margin-top:.8rem">${nuevosRef} clientes nuevos registrados con código desde que usa la plataforma.</p>`:''}
+  </div></div>`;
+}
+
+/* =========================================================
+   VISTA: Cumpleaños
+   ========================================================= */
+function vCumple(){
+  const L=S.clientes.filter(c=>cumpleEn(c)<=30).sort((a,b)=>cumpleEn(a)-cumpleEn(b));
+  const hoy=S.clientes.find(c=>cumpleEn(c)===0)||L[0];
+  return top('Cumpleaños','El saludo y el regalo salen solos el día del cumpleaños.')+
+  `<div class="grid g-12"><div class="card" style="align-self:start"><h3>Saludo automático</h3>
+    <label class="row" style="justify-content:space-between;flex-wrap:nowrap;margin-bottom:1rem"><span><b>Enviar saludo automáticamente</b><br><span class="muted" style="font-size:.86rem">A las 9:00 a. m. del día del cumpleaños</span></span><span class="switch"><input type="checkbox" id="cAuto" ${S.cfg.cumpleAuto?'checked':''}><span></span></span></label>
+    <div class="field"><label for="cBen">Regalo de cumpleaños</label><input class="input" id="cBen" value="${esc(S.cfg.cumpleBeneficio)}"></div>
+    <div class="field"><label for="cMsg">Mensaje</label><textarea class="input" id="cMsg">${esc(S.cfg.cumpleMsg)}</textarea></div>
+    <button class="btn btn-primary btn-sm" data-act="saveCumple">Guardar</button>
+    <div class="phone" style="margin-top:1.2rem;max-width:300px"><div class="phone-top"><span class="av" style="font-size:.75rem">DE</span><div><b>${hoy?esc(hoy.nombre):'Cliente'}</b><small>Vista previa</small></div></div><div class="chat" style="min-height:150px"><div class="bub" id="cPrev">${esc(personalize(S.cfg.cumpleMsg,hoy))}<span class="t">9:00 a. m. ✓✓</span></div></div></div>
+  </div>
+  <div class="card"><h3>Próximos 30 días <small>${L.length} clientes</small></h3>
+    <div class="list">${L.map(c=>{const d=cumpleEn(c);return `<div class="li" style="cursor:default"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><span class="meta"><b>${esc(c.nombre)}</b><span>${fcumple(c.cumple)} · ${segmento(c)}</span></span><span class="pill ${d===0?'lv-Inactivo':d<=7?'lv-VIP':'lv-Ocasional'}">${d===0?' Hoy':d===1?'Mañana':'En '+d+' días'}</span><button class="btn btn-sm btn-soft" data-cli="${c.id}">Ver</button></div>`}).join('')||'<p class="empty">No hay cumpleaños en los próximos 30 días.</p>'}</div>
+  </div></div>`;
+}
+after.cumple=()=>{$('#cMsg').addEventListener('input',e=>{const hoy=S.clientes.find(c=>cumpleEn(c)===0);$('#cPrev').firstChild.textContent=personalize(e.target.value,hoy)})};
+
+/* =========================================================
+   VISTA: Premios digitales
+   ========================================================= */
+function vPremios(){
+  wheelRot=0;
+  return top('Premios digitales','Después de cada compra el cliente gira la ruleta. El premio se cobra en la próxima visita.')+
+  `<div class="grid g2"><div class="card" style="text-align:center"><h3 style="justify-content:center">Vista del cliente</h3>
+    <div class="wheel-stage" style="margin-top:.6rem"><div class="pointer"></div><svg id="pWheel" viewBox="-100 -100 200 200">${wheelSVG(S.ruleta)}</svg></div>
+    <p class="win" id="pWin" aria-live="polite"></p><button class="btn btn-primary" data-act="pSpin">Probar la ruleta</button></div>
+  <div class="card"><h3>Configurar premios</h3>
+    <label class="row" style="justify-content:space-between;flex-wrap:nowrap;margin-bottom:1rem"><span><b>Ruleta después de cada compra</b><br><span class="muted" style="font-size:.86rem">El premio vence a los 7 días para invitar a volver pronto</span></span><span class="switch"><input type="checkbox" id="rAct" ${S.cfg.ruletaActiva?'checked':''}><span></span></span></label>
+    <div class="list">${S.ruleta.map((p,i)=>`<div class="li" style="cursor:default"><span style="width:22px;height:22px;border-radius:6px;background:${p.color};flex-shrink:0"></span><input class="input" data-rz="${i}" value="${esc(p.nombre)}" style="padding:.45rem .7rem"><button class="x" style="width:32px;height:32px;font-size:.85rem" data-delrz="${i}" aria-label="Quitar premio">${ic('trash')}</button></div>`).join('')}</div>
+    <button class="btn btn-soft btn-sm" style="margin-top:.7rem" data-act="addRz" ${S.ruleta.length>=8?'disabled':''}> Agregar premio</button>
+    <p class="muted" style="font-size:.84rem;margin-top:.8rem">Consejo: incluya premios pequeños (salsa, 20 puntos) y uno o dos más atractivos para generar emoción.</p>
+  </div></div>`;
+}
+after.premios=()=>{
+  $('#rAct').addEventListener('change',e=>{S.cfg.ruletaActiva=e.target.checked;save();toast(e.target.checked?'Ruleta activada.':'Ruleta desactivada.')});
+  document.querySelectorAll('[data-rz]').forEach(inp=>inp.addEventListener('change',e=>{S.ruleta[+e.target.dataset.rz].nombre=e.target.value.trim()||'Premio';save();$('#pWheel').innerHTML=wheelSVG(S.ruleta)}));
+};
+
+/* =========================================================
+   Modal, toast, menú
+   ========================================================= */
+function openModal(html){$('#modal').innerHTML=html;$('#modal').classList.add('open');$('#overlay').classList.add('open');setTimeout(()=>$('#modal button, #modal input')?.focus(),40)}
+function closeModal(){$('#modal').classList.remove('open');if(!$('#drawer').classList.contains('open'))$('#overlay').classList.remove('open')}
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),3400)}
+function openSide(){$('#side').classList.add('open');$('#scrim').classList.add('open')}
+function closeSide(){$('#side').classList.remove('open');$('#scrim').classList.remove('open')}
+
+/* =========================================================
+   Eventos (delegación)
+   ========================================================= */
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button,[data-cli],[data-go]');if(!t)return;
+  const d=t.dataset;
+  if(d.go){closeDrawer();closeModal();go(d.go);return}
+  if(d.per){periodo=+d.per;render();return}
+  if(d.add){caja.items[d.add]=(caja.items[d.add]||0)+1;render();return}
+  if(d.dec){caja.items[d.dec]=Math.max(0,(caja.items[d.dec]||0)-1);if(!caja.items[d.dec])delete caja.items[d.dec];render();return}
+  if(d.fil){filtro=d.fil;render();return}
+  if(d.seg){wa.seg=d.seg;wa.ids=null;wa.msg=PLANT[d.seg].m;wa.nombre=PLANT[d.seg].n;render();return}
+  if(d.var){const m=$('#waMsg');const ins='{'+d.var+'}';const s=m.selectionStart??m.value.length;m.value=m.value.slice(0,s)+ins+m.value.slice(m.selectionEnd??s);m.dispatchEvent(new Event('input'));m.focus();return}
+  if(d.ia){const s=sugerenciasIA().find(x=>x.id===d.ia);if(s)openWaFor(s.ids,s.msg,s.nombre);return}
+  if(d.ver){const s=sugerenciasIA().find(x=>x.id===d.ver);const box=$('#ver-'+d.ver);box.innerHTML=box.innerHTML?'':`<div class="list" style="margin-top:.8rem">${s.ids.map(getC).map(c=>`<button class="li" data-cli="${c.id}"><span class="av" style="background:${avColor(c.id)}">${initials(c.nombre)}</span><span class="meta"><b>${esc(c.nombre)}</b><span>Última compra hace ${lastDays(c)} días · le gusta ${esc(c.favoritos[0])}</span></span></button>`).join('')}</div>`;return}
+  if(d.tog){const x=S.combos.find(c=>c.id===d.tog);x.activo=t.checked??!x.activo;save();render();return}
+  if(d.delrw){S.recompensas=S.recompensas.filter(r=>r.id!==d.delrw);save();render();toast('Recompensa eliminada.');return}
+  if(d.delrz){if(S.ruleta.length<=3){toast('La ruleta necesita al menos 3 premios.');return}S.ruleta.splice(+d.delrz,1);save();render();return}
+  if(d.cb){const q=window._cb;q[d.p]=Math.max(0,(q[d.p]||0)+(d.cb==='+'?1:-1));$('#cbq-'+d.p).textContent=q[d.p];const n=Object.entries(q).reduce((s,[id,k])=>s+prod(id).precio*k,0);$('#cbNormal').textContent='Precio normal: '+money(n);return}
+  const a=d.act;
+  if(d.cli&&!a&&!t.matches('input')){openProfile(d.cli);return}
+  switch(a){
+    case 'menu':openSide();break;
+    case 'buscar':buscarCli();break;
+    case 'crearCli':crearCli();break;
+    case 'cobrar':cobrar();break;
+    case 'limpiar':resetCaja();render();break;
+    case 'sinCanje':caja.canje=null;render();break;
+    case 'closeModal':closeModal();break;
+    case 'closeDrawer':closeDrawer();break;
+    case 'cobrarA':{const c=getC(d.cli);resetCaja();caja.cli=c.id;caja.tel=c.tel;closeDrawer();go('caja');break}
+    case 'waA':{const c=getC(d.cli);closeDrawer();openWaFor([c.id],'Hola {nombre} 🍦 ','Mensaje personal');break}
+    case 'waLimpiar':wa={seg:'inactivos',msg:'',nombre:'',ids:null};render();break;
+    case 'waEnviar':{const R=waRecipients();S.campanas.push({id:uid(),nombre:$('#waNombre').value||'Campaña',fecha:new Date().toISOString(),enviados:R.length,regresaron:0,tipo:wa.ids?'Sugerida por IA':SEGS[wa.seg].t});save();
+      openModal(`<div style="text-align:center"><div style="font-size:3rem"></div><h2 style="font-size:1.4rem;margin:.4rem 0">${R.length} mensajes listos</h2><p class="muted">Cada mensaje sale personalizado con el nombre de su cliente desde el WhatsApp de la heladería. Medirá cuántos regresan en “Sugerencias IA”.</p><div class="row" style="justify-content:center;margin-top:1.2rem"><button class="btn btn-primary" data-go="ia">Ver resultados</button><button class="btn btn-soft" data-act="closeModal">Listo</button></div></div>`);
+      wa={seg:'inactivos',msg:'',nombre:'',ids:null};break}
+    case 'nuevoCombo':nuevoCombo();break;
+    case 'guardarCombo':{const n=$('#cbN').value.trim(),p=parseInt($('#cbP').value.replace(/\D/g,''),10);const items=Object.entries(window._cb).flatMap(([id,k])=>Array(k).fill(id));
+      if(!n||!p||!items.length){toast('Escriba el nombre, elija productos y ponga un precio.');break}
+      S.combos.unshift({id:'c'+uid(),nombre:n,desc:$('#cbD').value.trim()||items.map(i=>prod(i).nombre).join(' + '),items,precio:p,activo:true,ventas:0,e:''});save();closeModal();render();toast(`“${n}” ya aparece en caja.`);break}
+    case 'addRw':{const n=$('#rwN').value.trim(),p=parseInt($('#rwP').value,10);if(!n||!(p>0)){toast('Escriba qué se gana y cuántos puntos cuesta.');break}S.recompensas.push({id:'r'+uid(),nombre:n,puntos:p,tipo:'producto',e:'',canjes:0});save();render();toast('Recompensa agregada.');break}
+    case 'saveRef':S.cfg.refPuntos=parseInt($('#refP').value,10)||0;S.cfg.refBienvenida=$('#refB').value.trim()||S.cfg.refBienvenida;save();render();toast('Programa de referidos actualizado.');break;
+    case 'saveCumple':S.cfg.cumpleAuto=$('#cAuto').checked;S.cfg.cumpleBeneficio=$('#cBen').value.trim()||S.cfg.cumpleBeneficio;S.cfg.cumpleMsg=$('#cMsg').value;save();toast('Saludo de cumpleaños guardado.');break;
+    case 'pSpin':{const b=t;b.disabled=true;$('#pWin').textContent='';spin($('#pWheel'),S.ruleta,p=>{$('#pWin').textContent=`¡Ganó: ${p.nombre}! Válido en su próxima visita.`;b.disabled=false});break}
+    case 'mSpin':{const b=t;b.disabled=true;const c=getC(d.cli);spin($('#mWheel'),S.ruleta,p=>{
+      if(p.nombre.includes('puntos')&&/\d+/.test(p.nombre)){c.puntos+=parseInt(p.nombre.match(/\d+/)[0],10)}
+      else c.beneficios.push({id:uid(),texto:p.nombre+' (ruleta)',vence:isoDaysAgo(-7)});
+      save();$('#mWin').textContent=`¡${firstName(c.nombre)} ganó: ${p.nombre}! Quedó guardado en su perfil.`;b.textContent='Listo';b.disabled=false;b.dataset.act='closeModal';render()});break}
+    case 'addRz':{const cols=['#F3D5DF','#ECEAEE','#E6C2CF','#F7F5F6'];S.ruleta.push({nombre:'Nuevo premio',color:cols[S.ruleta.length%cols.length]});save();render();break}
+  }
+});
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.name==='canje'){caja.canje=t.value;render()}
+  if(t.name==='benef'){caja.beneficio=t.value;render()}
+  if(t.dataset.act==='cumpleTog'){caja.cumple=t.checked;render()}
+  if(t.dataset.tog){const x=S.combos.find(c=>c.id===t.dataset.tog);x.activo=t.checked;save();render()}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeModal();closeDrawer();closeSide()}
+  if(e.key==='Enter'&&e.target.matches('tr[data-cli]'))openProfile(e.target.dataset.cli);
+});
+$('#overlay').addEventListener('click',()=>{closeModal();closeDrawer()});
+$('#scrim').addEventListener('click',closeSide);
+$('#fab').addEventListener('click',()=>go('caja'));
+$('#resetBtn').addEventListener('click',()=>{if(confirm('¿Volver a los datos de ejemplo? Se perderán los cambios de esta prueba.')){S=seed();save();resetCaja();wa={seg:'inactivos',msg:'',nombre:'',ids:null};go('inicio');toast('Datos de ejemplo restablecidos.')}});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b&&b.matches('.nav-btn'))return});
+$('#nav').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b){e.stopPropagation();go(b.dataset.go)}});
+
+/* Tema */
+const root=document.documentElement,tb=$('#themeBtn');
+const isDark=()=>{const t=root.getAttribute('data-theme');return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches};
+const syncTheme=()=>tb.textContent=isDark()?' Modo claro':' Modo oscuro';
+try{const th=localStorage.getItem('scoop-theme');if(th)root.setAttribute('data-theme',th)}catch(e){}
+syncTheme();
+tb.addEventListener('click',()=>{const n=isDark()?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('scoop-theme',n)}catch(e){}syncTheme();render()});
+
+renderNav();render();
+})();
+</script>
+</body>
+</html>
