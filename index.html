@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0fb5a3">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>Gro’smania · Heladería</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,7 +35,7 @@ input,select,textarea{font:inherit;color:inherit;font-size:16px} /* 16px evita e
 /* ---------- Encabezado ---------- */
 .top{position:sticky;top:0;z-index:50;height:var(--hh);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 max(4vw,14px);background:rgba(242,251,250,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;font-size:1.45rem;font-weight:700;color:var(--pink)}
-.logo-img{width:42px;height:42px;border-radius:50%;object-fit:cover;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+.logo-img{width:42px;height:42px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(15,181,163,.25)}
 .links{display:flex;gap:24px;font-weight:600}
 .links a{color:var(--muted);text-decoration:none}.links a:hover{color:var(--pink)}
 .acts{display:flex;gap:8px;align-items:center}
@@ -130,6 +135,47 @@ section[id]{scroll-margin-top:calc(var(--hh) + 6px)}
 .toast{background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:pop .3s;text-align:center}
 @keyframes pop{from{transform:translateY(20px);opacity:0}}
 
+.quiz-cta{display:flex;align-items:center;gap:14px;width:100%;max-width:860px;margin:0 auto 14px;padding:14px 18px;border-radius:22px;background:linear-gradient(135deg,#fff3f9,#fffbe6 55%,#e6fbf8);border:2px dashed var(--rose);text-align:left;box-shadow:var(--shadow);transition:transform .15s}
+.quiz-cta:active{transform:scale(.98)}
+.quiz-cta .q-e{font-size:2.2rem;animation:float 3s ease-in-out infinite}
+.quiz-cta .q-t{flex:1;display:grid}
+.quiz-cta b{font-family:Fredoka;font-size:1.2rem}
+.quiz-cta small{color:var(--muted);font-size:.86rem}
+.quiz-cta .q-go{background:var(--rose);color:#fff;font-weight:700;border-radius:999px;padding:8px 14px;font-size:.88rem;white-space:nowrap}
+.quiz{position:fixed;inset:0;z-index:150;background:linear-gradient(160deg,#e6fbf8,#fff3f9 55%,#fffbe6);overflow:auto;display:flex;flex-direction:column;align-items:center;padding:12px 14px calc(24px + env(safe-area-inset-bottom))}
+.quiz::before{content:"";position:fixed;inset:0;background:url(logo-gm.png) center/min(80vw,420px) no-repeat;opacity:.06;pointer-events:none}
+.q-top{width:100%;max-width:560px;display:flex;justify-content:flex-end;position:relative}
+.q-card{position:relative;width:100%;max-width:560px;margin:auto;background:#fff;border-radius:28px;padding:26px 22px;box-shadow:var(--shadow);text-align:center}
+.q-in{animation:qin .35s ease}
+@keyframes qin{from{opacity:0;transform:translateY(18px) scale(.97)}}
+.q-big{font-size:3.4rem;line-height:1;margin-bottom:8px}
+.q-card h2{font-size:clamp(1.4rem,5vw,1.8rem);line-height:1.2;margin-bottom:8px}
+.q-sub{color:var(--muted);margin-bottom:16px}
+.q-prog{height:10px;background:#e6f6f4;border-radius:99px;overflow:hidden;margin-bottom:8px}
+.q-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--rose));border-radius:99px;transition:width .4s}
+.q-count{display:block;color:var(--muted);font-weight:600;margin-bottom:10px}
+.q-opts{display:grid;gap:10px;margin-top:14px}
+.q-opt{padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:1.02rem;min-height:54px;text-align:center;transition:.15s;display:grid;gap:2px;justify-items:center}
+.q-opt small{color:var(--muted);font-weight:500;font-size:.8rem}
+.q-opt:active,.q-opt:hover{border-color:var(--pink);background:#e6fbf8;transform:scale(1.02)}
+.q-res h4{margin:16px 0 8px;font-family:Fredoka;font-size:1.1rem}
+.q-bars{display:grid;gap:7px;margin-bottom:16px;text-align:left}
+.q-bars div{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:10px;font-size:.85rem;font-weight:600}
+.q-bars i{height:10px;background:#e6f6f4;border-radius:99px;overflow:hidden;display:block}
+.q-bars b{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--violet));border-radius:99px;animation:grow .8s ease}
+@keyframes grow{from{width:0!important}}
+.q-win{background:linear-gradient(135deg,#e6fbf8,#fff3f9);border:2px solid var(--pink);border-radius:22px;padding:18px 16px}
+.q-win h3{font-size:1.6rem;margin:4px 0}
+.q-pct{display:inline-block;background:var(--rose);color:#fff;font-weight:700;border-radius:999px;padding:3px 12px;font-size:.82rem;margin-bottom:8px}
+.q-win p{color:var(--muted);font-size:.92rem;margin-bottom:8px}
+.q-why{color:var(--ink)!important;font-weight:600}
+.q-price{font-family:Fredoka;font-size:1.8rem;font-weight:700;color:var(--pink);margin:6px 0 10px}
+.q-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:10px 12px;border:1.5px solid var(--line);border-radius:16px;margin-bottom:8px}
+.q-end{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.conf{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:28px}
+.conf span{position:absolute;top:-30px;animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
+@media(max-width:820px){.q-bars div{grid-template-columns:110px 1fr}}
 .wa{background:linear-gradient(135deg,#e7fbef,#f2fbfa);max-width:1100px;margin:auto;border-radius:30px;display:grid;grid-template-columns:1fr 1.1fr;gap:26px;align-items:center}
 .wa h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:8px}
 .wa .lead{color:var(--muted);margin-bottom:12px}
@@ -156,15 +202,6 @@ section[id]{scroll-margin-top:calc(var(--hh) + 6px)}
 .club-info ul,.guide ul{list-style:none;display:grid;gap:7px}
 .gift{background:#fff7d6;border:1.5px dashed #e8c44a;border-radius:14px;padding:10px 12px;margin-top:10px;font-weight:600;font-size:.92rem}
 
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:1100px;margin:auto}
-.feat{background:#fff;border-radius:var(--r);padding:22px;text-align:center;box-shadow:var(--shadow)}
-.feat i{font-style:normal;font-size:2.4rem;display:block;margin-bottom:8px}
-.feat p{color:var(--muted);font-size:.9rem;margin-top:4px}
-.reserve{background:linear-gradient(135deg,#e6fbf8,#e8f6ff 60%,#f2fbe0);display:grid;grid-template-columns:1fr 1.1fr;gap:30px;align-items:center;max-width:1100px;margin:auto;border-radius:30px}
-.reserve h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:8px}
-.reserve .lead{color:var(--muted);margin-bottom:14px}
-.reserve ul{list-style:none;display:grid;gap:8px;font-weight:500}
-.reserve .form{background:#fff;border-radius:26px;padding:22px;box-shadow:var(--shadow)}
 footer.foot{padding:28px max(4vw,14px) 40px;text-align:center;color:var(--muted);font-size:.9rem}
 footer.foot a{color:var(--pink);font-weight:600;cursor:pointer}
 
@@ -176,7 +213,7 @@ footer.foot a{color:var(--pink);font-weight:600;cursor:pointer}
   .hero{grid-template-columns:1fr;padding-top:22px;text-align:left}
   .stage{min-height:230px;order:-1}
   .stage .disc{width:min(210px,56vw)}
-  .club-grid,.reserve,.wa{grid-template-columns:1fr}
+  .club-grid,.wa{grid-template-columns:1fr}
   .tiers{grid-template-columns:1fr}
   .menu{padding:6px 14px 20px;border-radius:22px}
   body{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
@@ -357,7 +394,7 @@ function seed(){
       orders.push({id:id++,customer:mm[0],phone:mm[1],items,total,base:total,status:'Entregado',date,method:'Local',src:'demo'});
     }
   }
-  const db={products,orders,reservations:[],members:[],club:{cost:0.35}};
+  const db={products,orders,members:[],club:{cost:0.35}};
   seedClub(db);
   return db;
 }
@@ -366,13 +403,10 @@ function seed(){
    ESTADO
    ========================================================= */
 const FLAVORS=FLAVORS_DEFAULT;
-const SLOTS=['12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'], TABLES=6;
-function ymd(off){const x=new Date(Date.now()+off*864e5);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
 function load(){
   let d=null; try{d=JSON.parse(localStorage.getItem(KEY))}catch(e){}
   if(!d||!d.members||!d.orders)d=seed();
   d.products=seed().products;          // la carta siempre sale del código, no del navegador
-  if(!d.reservations)d.reservations=[];
   if(!d.club)d.club={cost:0.35};
   return d;
 }
@@ -496,8 +530,8 @@ function storeView(){
   const cnt=cartCount();
   return `
   <header class="top">
-    <div class="brand"><img class="logo-img" src="logo.png" alt="">Gro’smania</div>
-    <nav class="links"><a href="#carta">Carta</a><a href="#whatsapp">WhatsApp</a><a href="#club">Club</a><a href="#reservar">Reservas</a></nav>
+    <div class="brand"><img class="logo-img" src="icon-192.png" alt="">Gro’smania</div>
+    <nav class="links"><a href="#carta">Carta</a><a href="#whatsapp">WhatsApp</a><a href="#club">Club</a></nav>
     <div class="acts">
       <button class="icon-btn" aria-label="Mi pedido" onclick="openCart()">🛒<span class="badge" data-cartcount>${cnt||''}</span></button>
       <button class="icon-btn" aria-label="Administración del Club" onclick="go(isAdmin?'admin':'login')">🔐</button>
@@ -509,13 +543,14 @@ function storeView(){
       <span class="pill">🟢 Abrimos todos los días · desde la 1:30 pm</span>
       <h1>La felicidad en forma de <em>helado</em></h1>
       <p>Mira la carta, arma tu pedido y únete al Club: cada compra suma puntos que se vuelven helado.</p>
-      <div class="cta"><a class="btn btn-primary" href="#carta">Ver la carta 🍧</a><a class="btn btn-ghost" href="#club">Únete al Club 💚</a><a class="btn btn-wa" href="#whatsapp">Pedir por WhatsApp 💬</a></div>
+      <div class="cta"><a class="btn btn-primary" href="#carta">Ver la carta 🍧</a><a class="btn btn-ghost" href="#club">Únete al Club 💚</a><a class="btn btn-wa" href="#whatsapp">Pedir por WhatsApp 💬</a><button class="btn btn-ghost" onclick="openQuiz()">🤔 ¿No sabes qué pedir?</button></div>
     </div>
     <div class="stage"><div class="disc"><img src="logo-gm.png" alt="Gro’smania"></div><span class="spr a">🍓</span><span class="spr b">🍫</span><span class="spr c">🥭</span><span class="spr d">🍪</span></div>
   </div>
 
   <section id="carta" class="carta">
     <div class="sec-head"><h2>Nuestra carta</h2><p>Toca un producto para armarlo y agregarlo a tu pedido.</p></div>
+    <button class="quiz-cta" onclick="openQuiz()"><span class="q-e">🤔</span><span class="q-t"><b>¿No sabes qué pedir?</b><small>Te ayudamos a escoger tu helado ideal con un juego rápido</small></span><span class="q-go">Jugar →</span></button>
     <div class="tools"><div class="search"><input id="q" type="search" placeholder="Buscar en la carta…" oninput="filterMenu()" autocomplete="off"></div>
       <button class="btn btn-ghost" id="favbtn" onclick="toggleFavOnly()" aria-label="Solo favoritos">❤️</button>
       <button class="btn btn-ghost" onclick="surprise()" aria-label="Sorpréndeme">🎲</button></div>
@@ -540,28 +575,6 @@ function storeView(){
   </div></section>
 
   ${clubSection()}
-
-  <section class="features-wrap"><div class="features">
-    <div class="feat"><i>🌿</i><h3>100% natural</h3><p>Sin colorantes ni saborizantes artificiales.</p></div>
-    <div class="feat"><i>🛵</i><h3>Domicilio rápido</h3><p>En tu puerta en menos de 30 minutos.</p></div>
-    <div class="feat"><i>👩‍🍳</i><h3>Hecho a diario</h3><p>Producción artesanal cada mañana.</p></div>
-    <div class="feat"><i>🎁</i><h3>Combos y eventos</h3><p>Cumpleaños, empresas y celebraciones.</p></div>
-  </div></section>
-
-  <section id="reservar" class="reserve">
-    <div><span class="pill">📅 Reservas</span><h2>Reserva tu mesa y celebra con nosotros</h2>
-      <p class="lead">Cumpleaños, citas o reuniones de amigos. Aparta tu mesa en segundos.</p>
-      <ul><li>🎂 Decoración y torta de helado para cumpleaños</li><li>👨‍👩‍👧 Zona infantil y mesas familiares</li><li>🏢 Eventos empresariales hasta 30 personas</li></ul></div>
-    <form class="form" onsubmit="bookTable(event)">
-      <div class="two"><div class="field"><label>Nombre</label><input id="rs_n" required placeholder="Tu nombre"></div>
-      <div class="field"><label>Teléfono</label><input id="rs_t" required inputmode="tel" placeholder="300 000 0000"></div></div>
-      <div class="two keep"><div class="field"><label>Fecha</label><input id="rs_d" type="date" required min="${ymd(0)}" value="${ymd(1)}"></div>
-      <div class="field"><label>Hora</label><select id="rs_h">${SLOTS.map(s=>`<option>${s}</option>`).join('')}</select></div></div>
-      <div class="two keep"><div class="field"><label>Personas</label><input id="rs_p" type="number" inputmode="numeric" min="1" max="30" value="2" required></div>
-      <div class="field"><label>Ocasión</label><select id="rs_o"><option>Amigos</option><option>Familiar</option><option>Cumpleaños</option><option>Cita</option><option>Evento empresarial</option></select></div></div>
-      <button class="btn btn-primary block">Reservar mesa 🍨</button>
-    </form>
-  </section>
 
   <footer class="foot">© ${new Date().getFullYear()} Gro’smania · Página de demostración: los datos se guardan solo en este dispositivo.<br><a onclick="go(isAdmin?'admin':'login')">Administración del Club</a></footer>
 
@@ -844,16 +857,289 @@ function clubSection(){
   </div></section>`;
 }
 
-/* ---------- Reservas ---------- */
-function slotTaken(date,time){return DB.reservations.filter(r=>r.date===date&&r.time===time).length}
-function bookTable(e){
-  e.preventDefault();
-  const d={name:$('#rs_n').value.trim(),phone:$('#rs_t').value.trim(),date:$('#rs_d').value,time:$('#rs_h').value,people:Math.max(1,+$('#rs_p').value||1),occasion:$('#rs_o').value};
-  if(!d.name||!d.phone)return;
-  if(d.date<ymd(0)){toast('La fecha no puede ser pasada');return}
-  if(slotTaken(d.date,d.time)>=TABLES){toast('Esa hora está llena. Elige otra 🙏');return}
-  DB.reservations.push({id:Date.now(),...d,status:'Pendiente'});
-  save();e.target.reset();toast('¡Reserva enviada, '+d.name.split(' ')[0]+'! Te confirmamos pronto 📅');
+/* =========================================================
+   ¿NO SABES QUÉ PEDIR? Juego para encontrar tu helado ideal
+   - Banco de 110 preguntas (cada partida usa unas pocas, al azar)
+   - Cada respuesta suma puntos a «rasgos» de gusto (chocolate, fruta, cremoso…)
+   - Cada producto de la carta tiene su propio perfil de rasgos, calculado a
+     partir de su categoría, su precio y las palabras de su descripción
+   - El helado ideal es el producto cuyo perfil más se parece al del cliente
+   ========================================================= */
+const TRL={ch:'chocolate',fr:'fruta',cm:'lo cremoso',cj:'lo crocante',fs:'lo fresco',in:'los antojos grandes',cp:'compartir',av:'probar cosas nuevas',cl:'los clásicos',bb:'algo para sorber',cn:'lo calientito',kd:'divertirte como niño/a'};
+const TRP={ch:'Chocoholic 🍫',fr:'Alma frutal 🍓',cm:'Cremoso/a de corazón ☁️',cj:'Adicto/a a lo crujiente 🥨',fs:'Espíritu fresco 🌴',in:'Antojo sin freno 🔥',cp:'Alma de compartir 🤝',av:'Aventurero/a 🚀',cl:'Clásico/a de oro 🏆',bb:'Sorbo feliz 🥤',cn:'Corazón calientito ☕',kd:'Peque eterno/a 🧸'};
+function fxp(s){const o={tr:{},sp:[]};(s||'').split(/\s+/).filter(Boolean).forEach(t=>{const m=t.match(/^([a-z]{2})(-?\d)$/);if(m)o.tr[m[1]]=(o.tr[m[1]]||0)+ +m[2];else o.sp.push(t)});return o}
+const Q=(e,t,...o)=>({e,t,o:o.map(x=>{const i=x.lastIndexOf('|');return {a:x.slice(0,i),f:fxp(x.slice(i+1))}})});
+const QBANK=[
+Q('🦷','¿Qué te gusta más al morder?','Algo crocante|cj3','Algo suavecito|cm3','Algo jugoso|fr2 fs1','De todo un poquito|in2 cp1'),
+Q('🍫','¿Chocolate o fruta?','Chocolate, siempre|ch3','Fruta fresca|fr3 fs1','Las dos, ¡no me hagas elegir!|ch1 fr1 in1','Sorpréndeme|av2'),
+Q('☁️','Tu textura favorita','Cremosa|cm3','Crujiente|cj3','Fresca y jugosa|fs2 fr2','Espesa y bien cargada|in3'),
+Q('🍦','¿Chantillí en tu postre?','Montañas de chantillí|cm3 in1','Un poquito|cm1 cl1','Sin chantillí|fs2'),
+Q('🍬','¿Qué tan dulce lo quieres?','Dulcísimo|in3 ch1','Dulce normal|cl2','Suave y fresquito|fs3'),
+Q('🥫','Tu salsa preferida','Arequipe|cm1 in1 cl1','Chocolate|ch3','Mora o maracuyá|fr2 av1','Leche condensada|cm2 in1'),
+Q('🍪','¿Qué galleta te representa?','Oreo|ch2 cj1','Chokis|cj1 av1 ch1','Milo|ch1 kd1 cj1','Prefiero fruta|fr2'),
+Q('🥜','Un topping que no negocias','Masmelos|kd1 av1','Maní|cj2','Queso rallado|cm2 cl2','Chips de chocolate|ch2 cj1'),
+Q('🧀','Queso rallado en el postre…','¡Obvio!|cm2 cl2','Jamás|fr1 ch1','Solo si es poquito|cl1'),
+Q('🍓','¿Cuánta fruta quieres en tu helado?','Muchísima|fr3 fs1','Una o dos|fr1 cl1','Ninguna|ch1 in1'),
+Q('🍑','Tu fruta del alma','Fresa|fr2 cl1','Mango o maracuyá|fr2 av1 fs1','Durazno|fr1 cm1 cl1','Banano|fr1 in1'),
+Q('🍌','¿Banano en el postre?','Sí, bien cargado|in2 fr1 cp1','Si hay helado y salsas|cm1 in1','No, gracias|cl1'),
+Q('🧇','¿Waffle, dona u oblea?','Waffle calientico|cn2 cj2','Minidonas para picar|cp2 cj1 av1','Oblea tradicional|cl3 cj1','Mejor en copa|cm1 cl1'),
+Q('🍩','¿Te gustan las minidonas?','Muchísimo|cp2 av1','Me da igual|cl1','Prefiero otra cosa|fs1'),
+Q('🥤','¿Malteada?','Espesa y con galleta|bb2 in2 ch1','Fresca de frutas|bb2 fr2 fs1','No, mejor con cuchara|DS'),
+Q('☕','¿Algo calientito en el postre?','Sí, con chocolate|cn3 ch2','Mejor helado y bien frío|fs2','Mezcla de caliente y frío|cn1 av2 in1'),
+Q('🥭','Jugo natural: ¿en agua o en leche?','En agua, bien fresco|fs2 fr1','En leche, más cremoso|cm2','No soy de jugos|ch1'),
+Q('🍒','¿Cereza encima?','Es obligatoria|cl2 fr1','Me da igual|','Mejor sin|fs1'),
+Q('🧊','¿Qué tan frío lo quieres?','Congelado|fs2 cl1','Cremoso y casi derretido|cm2','Tibio con helado encima|cn2 in1'),
+Q('🍫','¿Brownie?','Con helado y todo|ch2 in2 cn1','Solo si está tibio|cn2 ch1','No es lo mío|fr1'),
+Q('🦸','Si tuvieras un superpoder…','Volar|av2','Leer mentes|cl1','Congelar el tiempo|fs2','Teletransportarme a comer|in2 cp1'),
+Q('🎬','Plan de película','Maratón con manta|cn2 cm1 ch1','Cine con crispetas|cj2','Documental con tarro de helado|in2 cp1','Cualquiera, con mi gente|cp2'),
+Q('🌤️','Un sábado ideal','Playa y sol|fs3 fr1','Sofá y series|cn1 cm2','Fiesta con amigos|cp2 av1','Paseo en familia|kd1 cp1 cl1'),
+Q('🎶','Tu música del momento','Salsa|av1 in1','Baladas|cm2 cn1','Reguetón|av2 cj1','Rock|ch1 in1 cj1'),
+Q('🐾','Tu animal interior','León|in2','Delfín|fs2 av1','Oso perezoso|cm2 cn1','Mono juguetón|kd2 av1'),
+Q('🎨','Tu color favorito','Rojo|fr2','Café|ch3','Amarillo|fr1 fs1','Rosado|kd1 cm1 fr1'),
+Q('🧭','Viajarías a…','Un bosque|fs1 cl1','Una isla tropical|fr2 fs2','Una ciudad con nieve|cn2 ch1','La luna|av3'),
+Q('🧠','¿Planeas o improvisas?','Todo planeado|cl2','Improviso siempre|av2','Depende del antojo|in1 av1'),
+Q('🎲','¿Te arriesgas a probar cosas nuevas?','Siempre|av3','A veces|av1 cl1','Prefiero lo seguro|cl3'),
+Q('👑','Si fueras un postre serías…','Un clásico|cl3','Uno exótico|av3','Uno explosivo|in2 av1','Uno liviano y sano|fs2 fr1'),
+Q('🏃','¿Haces deporte?','Todos los días|fs2 fr1','A veces|cl1','Mi deporte es comer|in2 cp1'),
+Q('🛌','Tu hora favorita del día','Mañana|fs1 fr1','Tarde|cl1','Noche|cn1 ch1 in1','Madrugada 🦉|av1 in1'),
+Q('💬','En un grupo eres…','El que organiza|cp2','El que más se ríe|kd1 av1','El que escucha|cm1 cl1','El que pide por todos|cp3 in1'),
+Q('🧸','¿Cuánto niño/a llevas dentro?','Muchísimo|kd3 av1','Un poquito|kd1','Soy muy serio/a|cl2 fr1'),
+Q('🌈','Un día ideal sería…','Lleno de colores|kd1 av1 fr1','Lleno de calma|cm2 cl1','Lleno de aventuras|av3','Lleno de comida|in2 cp2'),
+Q('📱','Tu app más usada','Redes sociales|av1','Mensajes|cp1 cl1','Música|cm1','Domicilios de comida|in2'),
+Q('🎮','¿Qué juegas?','Videojuegos|cj1 av1','Juegos de mesa|cp2','Cartas|cl1','No juego|fr1'),
+Q('🔮','Tu horóscopo de hoy dice…','Llegará un antojo|in2','Será un día tranquilo|cm1','Viene un cambio inesperado|av2','No creo en eso|cl2'),
+Q('🎁','El mejor regalo es…','Una sorpresa|av2','Algo hecho a mano|cl1 cm1','Un abrazo|cm2','Comida rica|in2'),
+Q('🚗','Viaje largo: ¿qué llevas?','Snacks salados|cj1','Dulces|in2 ch1','Fruta|fr2 fs1','Nada, pido parada|av1 in1'),
+Q('😢','Día difícil… ¿qué te ayuda?','Chocolate|ch3 cn1','Helado bien frío|cm1 fs1','Algo bien cargado|in3','Algo fresquito|fs2 fr1'),
+Q('🎉','Celebración: ¿qué pides?','Algo grande para todos|cp3','Algo especial solo para mí|in2 av1','Algo clásico|cl2','Algo nuevo|av2'),
+Q('💑','Una cita perfecta es…','Fondue romántico|cp2 ch2 cn1','Una copa con dos cucharas|cp2 cm1','Waffle para picar|cp1 cj1 cn1','Fresas con chocolate|fr2 ch2 cn1'),
+Q('👨‍👩‍👧','¿Con quién vienes hoy?','Con mi pareja|cp2','Con mi familia|cp2 kd1','Con mis amigos|cp2 av1','Conmigo mismo/a|in1'),
+Q('😋','Tu hambre hoy es nivel…','Poquita|fs2 cl1','Normal|cl1','Brava|in3','Hambre de dos|cp2 in2'),
+Q('☀️','Hace muchísimo calor','Algo bien helado|fs3','Una malteada|bb2 cm1','Un jugo natural|bb2 fr1 fs2','Ensalada de frutas|fr2 fs2'),
+Q('🌧️','Está lloviendo','Algo calientito|cn3','Chocolate y waffle|cn2 ch2 cj1','Helado igual, ¡soy valiente!|fs1 av1','Fondue en pareja|cn2 cp1 ch1'),
+Q('🕐','Es de tarde: ¿merienda?','Algo ligero|fs2 fr1','Un dulce clásico|cl2','Un banquete|in3 cp1','Algo para picar|cj2 cp1'),
+Q('🎒','Después del trabajo o el colegio…','Merezco algo grande|in3','Algo rápido|cl2','Algo refrescante|fs2','Algo para compartir con amigos|cp2'),
+Q('📸','¿Foto antes de comer?','Siempre, debe verse lindo|av2 in1','A veces|cl1','Me lo como ya|in1'),
+Q('🥄','¿Cuchara pequeña o grande?','Grande, hay hambre|in2 cp1','Pequeña, para disfrutar|cl1 fs1','Dos cucharas: hay que compartir|cp3'),
+Q('🏆','La última cucharada…','La guardo con cariño|cl1 cm1','Me la como de una|in1','La comparto|cp2','Lamo el vaso|kd2 in1'),
+Q('🧁','¿Eres de repetir?','Sí, siempre lo mismo|cl3','Pido distinto cada vez|av3','Depende del humor|av1'),
+Q('🍽️','¿Postre antes que la comida?','Por supuesto|in2 av1','Primero lo salado|cl2','Hoy solo postre|in3'),
+Q('🕺','Plan para esta noche','Fiesta|av1 cp2','Casa|cn2 cm1','Cine|cj1 cp1','Antojarme y ya|in2'),
+Q('🧑‍🍳','¿Cocinas?','Sí, mucho|av1 cl1','Lo básico|cl2','Nada, yo pido|in1'),
+Q('🧃','Tu bebida de todos los días','Agua|fs2','Café|cn2 ch1','Jugo|fr2 fs1 bb1','Gaseosa|in1'),
+Q('🧀','¿Pan con queso o con chocolate?','Con chocolate|ch2 cn1','Con queso, ¡qué rico!|cm2 cl1','Con arequipe|cm2 in1','Solo|cl2'),
+Q('🥜','¿Maní o almendras?','Maní|cj2 cl1','Almendras|cj1 av1','Ninguno|fs1'),
+Q('🍯','¿Miel, arequipe o leche condensada?','Miel|fs1 fr1','Arequipe|cm2 in1 cl1','Leche condensada|cm2 in1'),
+Q('🌋','Un helado debe ser…','Una explosión de sabores|av2 in2','Elegante y simple|cl3','Refrescante|fs3','Abundante|in3 cp1'),
+Q('🏔️','¿Montaña o plano?','Una montaña bien alta|in3 cm1','Tamaño normal|cl2','Pequeño y fino|fs1 cl1'),
+Q('🥤','¿Pajilla o cuchara?','Pajilla|bb2','Cuchara|DS','Las dos|in1 bb1'),
+Q('🍬','¿Gomitas encima?','Sí, mucho color|kd2 av1','Poquitas|kd1','No|cl1 fr1'),
+Q('🌟','Lo mejor de un postre es…','La presentación|av2','El sabor|cl1','El tamaño|in2 cp1','La frescura|fs2'),
+Q('🧊','Tu mayor miedo es…','Que se derrita|fs2','Que se acabe|in2','Que me quede corto|in3','Que no me guste|cl2'),
+Q('🔥','Tu sabor favorito','Chocolate|ch3','Fresa|fr2 cl1','Maracuyá|fr2 av1 fs1','Vainilla|cl2 cm1'),
+Q('🥭','El mango va con…','Chamoy y limón|av2','Sal y limón|av1 fs1','Solo, natural|fr1 fs1','Con helado|fr1 cm1'),
+Q('🍓','Las fresas van con…','Crema|cm2 fr1','Chocolate|ch2 fr1 cn1','Azúcar|cl1','Solas|fs1'),
+Q('🍑','¿Durazno en almíbar?','Sí, es mi infancia|cl2 fr1','Meh|av1','No|ch1'),
+Q('🧀','¿Queso sobre un postre dulce?','Sí, delicioso|cm1 cl2','¿Eso se puede?|av2','No|ch1 fr1'),
+Q('🍫','¿Chocolate blanco, con leche o negro?','Blanco|cm2','Con leche|ch2 cl1','Negro|ch3 av1','Todos|ch2 in2'),
+Q('🌰','Barquillo u hojaldre en tu postre…','Sí, me gusta crujir|cj3','Poquito|cj1','Prefiero suave|cm2'),
+Q('🎂','Cumpleaños: ¿pastel o helado?','Helado, siempre|cm1 fs1','Torta de helado|cp2 in1','Pastel con helado|in2 cp1','Brownie con velitas|ch2 cn1'),
+Q('🍫','¿Trozos de brownie?','Sí, bien cargado|ch2 in2','Uno o dos|ch1','No|fr1'),
+Q('🎥','Si tu helado fuera una película…','Acción|in2 av1','Comedia|kd1 cp1','Romance|cm2 ch1','Terror: ¡se derrite!|av1 fs1'),
+Q('📆','¿Es un antojo o un plan?','Antojo ya mismo|in2','Plan con tiempo|cl1 cp1','Las dos cosas|av1'),
+Q('🧩','¿Qué armas mejor?','Mi propio waffle|av2 cj1','Mi bandeja de minidonas|cp2 av1','Mi copa|cl1 cm1','No armo nada, me lo traen|cl1'),
+Q('🪄','¿Te gusta elegir salsas y toppings?','Me encanta|av3','Dame opciones|av1','Ya viene armado|cl2'),
+Q('🍨','¿Cuántos sabores de helado?','Uno solo, soy fiel|cl3','Dos|cl1 av1','Tres, ¡todos!|in2 av1','Los que quepan|in3 cp1'),
+Q('🍧','¿Helado de agua o de crema?','De crema|cm3','De agua|fs3','Ni uno ni otro: malteada|bb2 cm1'),
+Q('🍯','Tu merienda de infancia','Galletas|cj2 kd1','Chocolate caliente|cn2 ch1','Fruta|fr2','Helado de palito|kd2 fs1'),
+Q('🧃','Un jugo de…','Mango|fr2 fs1','Mora|fr2','Maracuyá|fr1 av1 fs1','Guanábana|fr1 cm1 cl1'),
+Q('🍋','¿Te gusta lo ácido?','Sí, mucho|fr2 av1 fs1','Un poquito|fr1','Prefiero dulce|in1 cm1'),
+Q('🌴','Vacaciones soñadas','Playa|fs3','Montaña fría|cn2 ch1','Ciudad|av1 cp1','Casa de campo|cl2 cm1'),
+Q('🛒','En el mercado, ¿qué buscas primero?','Fruta|fr2','Dulces|in2','Lácteos|cm2','Galletas|cj2'),
+Q('📚','Tu libro favorito es de…','Aventura|av2','Romance|cm2','Humor|kd1','Misterio|ch1 av1'),
+Q('🕹️','Hoy manda…','Mi antojo|in3','Mi bolsillo|cl1','Mi dieta|fs2 fr1','Mi corazón|cm2 ch1'),
+Q('🌙','Último helado de la noche: ¿cómo?','En copa con todo|in2 cm1','En cono para caminar|cl2 kd1','Con waffle caliente|cn2 cj1','Mejor una malteada|bb2'),
+Q('🍰','Un postre de la casa de la abuela','Flan|cm2 cl1','Brownie|ch2','Ensalada de frutas|fr2 fs1','Galletas|cj1 cl1'),
+Q('😎','El emoji que más usas','😋|in1','😎|fs1 av1','🥰|cm2','🤪|kd2 av1'),
+Q('🧪','Mezclas inesperadas: ¿te atreves?','Sí: dulce con queso|av2 cm1','Sí: fruta con chocolate|av1 fr1 ch1','No, cada cosa en su sitio|cl3'),
+Q('🚀','Si pudieras pedir lo imposible…','Un helado que no se derrite|fs2','Uno que nunca se acaba|in3 cp1','Uno con todos los sabores|av2 in1','Uno gigante para todo el barrio|cp3'),
+Q('🐻','Tu peluche favorito','Oso|cm2 kd1','Perro|kd1 cl1','Unicornio|kd2 av2','No tengo|cl1'),
+Q('🎠','En un parque de diversiones…','Montaña rusa|av3','Carrusel|cl2 kd1','Mejor los puestos de comida|in2 cp1','Paso de largo|fs1'),
+Q('🕊️','Tu ritmo para comer','Despacito, a saborear|cl2 cm1','Rapidísimo|in2','A mitad lo comparto|cp2','Entre charla y charla|cp1 fs1'),
+Q('🧸','Un sabor de tu niñez','Chocolate con leche|ch2 kd1','Arequipe|cm2 kd1','Fresa|fr2 kd1','Maracuyá|fr1 fs1'),
+Q('🧂','¿Dulce o salado?','Dulce, sin duda|in2','Salado|cj2 cl1','Dulce con toque salado|cm1 av2','Ambos|in1 cj1'),
+Q('🍇','¿Mora, uvas o frutos rojos?','Mora|fr2 av1','Uvas|fr1 fs1','Frutos rojos mixtos|fr2 av1','Ninguna|ch1'),
+Q('🎈','Para ti un helado es…','Un abrazo|cm2','Una fiesta|av2 cp1','Un refresco|fs3','Un premio|in3'),
+Q('🥁','Elige una palabra','Crujiente|cj3','Cremoso|cm3','Fresco|fs3','Intenso|in3'),
+Q('☁️','¿Nubes, estrellas o arcoíris?','Nubes: suavecito|cm2','Estrellas: crocante|cj2','Arcoíris: frutas|fr2 av1','Lluvia de chocolate|ch3'),
+Q('🧗','¿Aventura gastronómica o clásico?','Aventura|av3','Clásico|cl3','Mitad y mitad|av1 cl1'),
+Q('🧿','Hoy tu espíritu es…','Chispeante|av2 kd1','Tranquilo|cm2 cl1','Enérgico|fs2 fr1','Goloso|in3 ch1'),
+Q('🍾','Un brindis con…','Jugo de fruta|bb2 fr2','Malteada|bb2 cm2','Chocolate caliente|cn2 ch2','Agua fresca|fs2'),
+Q('🐝','Más dulce que…','La miel|in2','Un abrazo|cm2','Un caramelo|kd1 in1','No me gusta tan dulce|fs2 cl1'),
+Q('🌶️','¿Algo picante en el postre?','Jamás|cl2','Un toque|av2','Sí, ¡sorpresa!|av3','Prefiero fresquito|fs2'),
+Q('🥇','¿Qué cuenta más para ti?','La cantidad|in2 cp1','La calidad|cl2','La novedad|av2','El precio|cl1'),
+Q('🔔','Pregunta final: ¿cómo te sientes ahora?','Con antojo|in2','Con hambre|in2 cp1','Con curiosidad|av2','Con calor|fs2')
+];
+const QANCHOR=[
+Q('🍨','¿Para quién es el helado?','Para mí solo/a|','Para compartir|cp2','Para un peque 🧸|kd6','Para mi peludo 🐶|PET'),
+Q('💸','¿Cuánto quieres gastar?','Hasta $8.000|B8','Hasta $14.000|B14','Hasta $18.500|B185','Hoy sin límite 🤑|B99'),
+Q('🥄','¿Cuchara o pajilla?','Cuchara: un postre|DS','Pajilla: algo para tomar|DR','Lo que más me enamore|')
+];
+const QPET=[
+Q('🐕','¿De qué tamaño es tu peludo?','Pequeñito|SZ0','Mediano o grande|SZ1'),
+Q('🍖','¿Cuál es su comida favorita?','Carne o pollo|p:cabano','Fruta|p:mango','Galletas|p:galleta','Come de todo|p:fresa'),
+Q('🐾','¿Cómo es su personalidad?','Glotón|p:cabano','Dulcero|p:galleta','Le encanta el verano|p:mango','Delicado|p:fresa'),
+Q('👀','Cuando ve un helado…','Salta de felicidad|p:fresa','Mueve la cola|p:mango','Se queda mirando fijo|p:galleta','Intenta robarlo|p:cabano'),
+Q('🎁','¿Un detalle extra para él o ella?','Sí, un turrón de pollo|TURRON','No, solo el helado|')
+];
+
+/* ---------- Perfil de cada producto ---------- */
+const KW={ch:['chocolate','brownie','chocoramo','milo','oreo','chokis','chips','chocmelos','fondue'],
+ fr:['fresa','mango','maracuy','pina','durazno','mora','cereza','breva','fruta','banano','manzana','papaya','mandarina','guanabana','naranja'],
+ cm:['chantilli','crema','queso','condensada','arequipe','lechera','malteada'],
+ cj:['barquillo','galleta','oreo','chokis','crispy','nuggets','waffle','oblea','mani','hojaldre','dona'],
+ fs:['jugo','ensalada','salpicon','fresca','natural','agua']};
+const CATV={'Copas':{cm:1,cl:1},'Nuevas creaciones':{av:1,in:1},'Ensaladas':{fs:2,fr:2,cl:1},'Malteadas':{bb:3,cm:2},'Waffles':{cj:2,av:1,cn:1},'Minidonas':{cj:1,cp:2,av:1,cn:1},'Obleas':{cj:2,cl:1,cm:1},'Chocolate':{ch:3,cn:2,in:1},'Conos y vasos':{cl:2,kd:1},'Infantiles':{kd:3,av:1},'Bebidas':{bb:3,fs:1}};
+const _pv=new Map();
+function prodVec(p){
+  if(_pv.has(p.id))return _pv.get(p.id);
+  const txt=norm(p.name+' '+p.desc), v={ch:0,fr:0,cm:0,cj:0,fs:0,in:0,cp:0,av:0,cl:0,bb:0,cn:0,kd:0};
+  Object.keys(KW).forEach(k=>{v[k]=Math.min(2,KW[k].filter(w=>txt.includes(w)).length)*0.5});
+  Object.entries(CATV[p.cat]||{}).forEach(([k,x])=>v[k]+=x);
+  if(p.price>=16500)v.in+=1;
+  if(p.price>=24000){v.cp+=2;v.in+=1}
+  if(p.price<=6500)v.cl+=1;
+  if(/fondue|litro|banana|bandeja de 16/.test(txt))v.cp+=2;
+  if(/especial|nuevas/.test(txt))v.av+=1;
+  if(/fondue|brownie caliente|chocolate caliente|waffle|donas/.test(txt))v.cn+=1;
+  if(/oblea sencilla|cucurucho|concha|sundae/.test(txt))v.cl+=1;
+  _pv.set(p.id,v);return v;
+}
+function quizScore(st){
+  const u=st.tr, un=Math.sqrt(Object.values(u).reduce((a,x)=>a+x*x,0))||1;
+  return DB.products.filter(p=>p.cat!=='Mascotas').map(p=>{
+    const v=prodVec(p), vn=Math.sqrt(Object.values(v).reduce((a,x)=>a+x*x,0))||1;
+    let s=Object.keys(u).reduce((a,k)=>a+u[k]*(v[k]||0),0)/(un*vn);
+    if(st.bud&&p.price>st.bud)s-=0.35+(p.price-st.bud)/25000;
+    if(st.sp.includes('DR'))s+=v.bb>=3?0.35:-0.25;
+    if(st.sp.includes('DS'))s+=v.bb>=3?-0.3:0.05;
+    return {p,s};
+  }).sort((a,b)=>b.s-a.s);
+}
+
+/* ---------- Pantallas del juego ---------- */
+let QZ=null;
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function openQuiz(){
+  closeAll();closeQuiz();
+  const el=document.createElement('div');el.className='quiz';el.id='quiz';document.body.appendChild(el);
+  document.body.style.overflow='hidden';QZ={step:'start',ans:[],qs:[]};quizDraw();
+}
+function closeQuiz(){const e=$('#quiz');if(e)e.remove();document.body.style.overflow='';QZ=null}
+function quizDraw(){
+  const el=$('#quiz');if(!el||!QZ)return;
+  const top=`<div class="q-top"><button class="icon-btn" aria-label="Cerrar" onclick="closeQuiz()">✕</button></div>`;
+  if(QZ.step==='start'){
+    el.innerHTML=top+`<div class="q-card q-in"><div class="q-big">🤔</div><h2>¿No sabes qué pedir?</h2>
+    <p class="q-sub">Responde unas preguntas divertidas y descubre <b>qué helado es para ti</b>. Tenemos más de <b>100 preguntas</b>: cada vez te tocan otras.</p>
+    <div class="q-opts">
+      <button class="q-opt" onclick="quizStart(6)"><b>⚡ Rápido</b><small>6 preguntas · 1 minuto</small></button>
+      <button class="q-opt" onclick="quizStart(10)"><b>🍨 Normal</b><small>10 preguntas · el favorito</small></button>
+      <button class="q-opt" onclick="quizStart(18)"><b>🕵️ Detective</b><small>18 preguntas · máxima precisión</small></button>
+    </div></div>`;
+  }else if(QZ.step==='q')quizQuestion(el,top);
+  else quizResult(el,top);
+}
+function quizStart(n){
+  QZ={step:'q',n,ans:[],qs:[QANCHOR[0]],i:0};quizDraw();
+}
+function quizState(){
+  const st={tr:{},sp:[],bud:0,pet:{cabano:0,mango:0,fresa:0,galleta:0}};
+  QZ.ans.forEach((oi,qi)=>{
+    const f=QZ.qs[qi].o[oi].f;
+    Object.entries(f.tr).forEach(([k,x])=>st.tr[k]=(st.tr[k]||0)+x);
+    f.sp.forEach(t=>{
+      if(/^B\d+$/.test(t))st.bud=+t.slice(1)*1000;
+      else if(t.startsWith('p:'))st.pet[t.slice(2)]++;
+      else st.sp.push(t);
+    });
+  });
+  return st;
+}
+const QMSG=['¡Vamos bien! 🍦','Esto se pone interesante… 🔍','¡Ya casi te conozco! 😏','Hmm, tengo una sospecha 🤭','Última recta, campeón/a 🏁'];
+function quizQuestion(el,top){
+  const q=QZ.qs[QZ.i], total=QZ.qs.length>1&&QZ.pet?QZ.qs.length:QZ.n;
+  const pct=Math.round(QZ.i/total*100);
+  el.innerHTML=top+`<div class="q-card q-in" key="${QZ.i}">
+    <div class="q-prog"><i style="width:${pct}%"></i></div>
+    <small class="q-count">Pregunta ${QZ.i+1} de ${total}${QZ.i>0&&QZ.i%3===0?' · '+QMSG[(QZ.i/3-1)%QMSG.length]:''}</small>
+    <div class="q-big">${q.e}</div><h2>${esc(q.t)}</h2>
+    <div class="q-opts">${q.o.map((o,oi)=>`<button class="q-opt" onclick="quizAnswer(${oi})">${esc(o.a)}</button>`).join('')}</div>
+    ${QZ.i>0?'<button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="quizBack()">← Atrás</button>':''}</div>`;
+}
+function quizAnswer(oi){
+  QZ.ans.push(oi);
+  const f=QZ.qs[QZ.i].o[oi].f;
+  if(QZ.i===0){      // la primera respuesta decide el camino
+    if(f.sp.includes('PET')){QZ.pet=true;QZ.qs=[QZ.qs[0],...QPET]}
+    else{const rest=shuffle(QBANK).slice(0,Math.max(0,QZ.n-3));QZ.qs=[QZ.qs[0],QANCHOR[1],QANCHOR[2],...rest]}
+  }
+  QZ.i++;
+  if(QZ.i>=QZ.qs.length)QZ.step='result';
+  quizDraw();
+}
+function quizBack(){
+  if(QZ.i<=0)return;
+  QZ.ans.pop();QZ.i--;
+  if(QZ.i===0){QZ.qs=[QANCHOR[0]];QZ.pet=false}
+  quizDraw();
+}
+function confetti(){
+  const E=['🍓','🍫','✨','🍦','🎉','🥭','🍪'];
+  return `<div class="conf">${[...Array(16)].map((_,i)=>`<span style="left:${Math.random()*96}%;animation-delay:${(Math.random()*1.4).toFixed(2)}s;font-size:${(1.1+Math.random()*1.1).toFixed(1)}rem">${E[i%E.length]}</span>`).join('')}</div>`;
+}
+function quizResult(el,top){
+  const st=quizState();
+  if(QZ.pet)return quizPetResult(el,top,st);
+  const rank=quizScore(st), best=rank[0], answered=QZ.ans.length;
+  const topPct=Math.round(Math.min(97,76+answered*1.7));
+  const pct=r=>Math.round(topPct*Math.max(0.55,Math.min(1,best.s>0?r.s/best.s:0.6)));
+  const traits=Object.entries(st.tr).filter(([k,x])=>x>0).sort((a,b)=>b[1]-a[1]);
+  const persona=traits.length?TRP[traits[0][0]]:'Todoterreno 🌎';
+  const maxT=traits.length?traits[0][1]:1;
+  const why=traits.slice(0,2).map(([k])=>TRL[k]);
+  const alts=rank.slice(1,3);
+  el.innerHTML=top+`<div class="q-card q-in q-res">${confetti()}
+    <small class="q-count">Tu perfil heladero</small><h2 style="margin-bottom:12px">${persona}</h2>
+    <div class="q-bars">${traits.slice(0,4).map(([k,x])=>`<div><span>${TRL[k]}</span><i><b style="width:${Math.round(x/maxT*100)}%"></b></i></div>`).join('')}</div>
+    <div class="q-win"><small>Tu helado ideal es…</small>
+      <h3>${best.p.emoji} ${esc(best.p.name)}</h3><span class="q-pct">${pct(best)}% de compatibilidad</span>
+      <p>${esc(best.p.desc)}</p>
+      ${why.length?`<p class="q-why">💡 Te lo recomendamos porque te gusta ${why.join(' y ')}.</p>`:''}
+      <div class="q-price">${money(best.p.price)}</div>
+      <button class="btn btn-primary block" onclick="quizAdd(${best.p.id})">Armarlo y agregarlo 🛒</button></div>
+    <h4>También te podrían encantar</h4>
+    ${alts.map(a=>`<div class="q-alt"><div><b>${a.p.emoji} ${esc(a.p.name)}</b><br><small>${pct(a)}% · ${money(a.p.price)}</small></div><button class="btn btn-ghost btn-sm" onclick="quizAdd(${a.p.id})">Agregar</button></div>`).join('')}
+    <div class="q-end"><button class="btn btn-ghost" onclick="openQuiz()">🔄 Jugar otra vez</button><button class="btn btn-ghost" onclick="quizSee(${best.p.id})">Verlo en la carta</button></div></div>`;
+}
+function quizPetResult(el,top,st){
+  const big=st.sp.includes('SZ1'), p=DB.products.find(x=>x.name===(big?'Helado para Mascotas Grande':'Helado para Mascotas Pequeño'));
+  const best=Object.entries(st.pet).sort((a,b)=>b[1]-a[1])[0][0];
+  const NM={cabano:'Cabano',mango:'Mango',fresa:'Fresa',galleta:'Galleta'};
+  const turron=DB.products.find(x=>x.name==='Turrón de Pollo');
+  el.innerHTML=top+`<div class="q-card q-in q-res">${confetti()}
+    <small class="q-count">Para tu peludo 🐶</small><h2 style="margin-bottom:12px">Su helado ideal</h2>
+    <div class="q-win"><small>Le va a encantar…</small><h3>🐶 ${esc(p.name)}</h3><span class="q-pct">Sabor sugerido: ${NM[best]}</span>
+      <p>${esc(p.desc)}</p><div class="q-price">${money(p.price)}</div>
+      <button class="btn btn-primary block" onclick="quizAdd(${p.id})">Agregarlo 🛒</button></div>
+    ${st.sp.includes('TURRON')?`<h4>Y de regalo extra…</h4><div class="q-alt"><div><b>🍗 ${esc(turron.name)}</b><br><small>${money(turron.price)}</small></div><button class="btn btn-ghost btn-sm" onclick="quizAdd(${turron.id})">Agregar</button></div>`:''}
+    <div class="q-end"><button class="btn btn-ghost" onclick="openQuiz()">🔄 Jugar otra vez</button><button class="btn btn-ghost" onclick="closeQuiz()">Cerrar</button></div></div>`;
+}
+function quizAdd(id){closeQuiz();tapItem(id)}
+function quizSee(id){
+  closeQuiz();
+  const el=document.querySelector(`.it[data-id="${id}"]`); if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl');
 }
 
 /* =========================================================
@@ -861,7 +1147,7 @@ function bookTable(e){
    ========================================================= */
 function loginView(){return `
 <div class="login"><form class="card" onsubmit="doLogin(event)">
-  <div class="brand"><img class="logo-img" src="logo.png" alt="">Gro’smania</div>
+  <div class="brand"><img class="logo-img" src="icon-192.png" alt="">Gro’smania</div>
   <p>Administración del Club</p>
   <div class="field"><label>Usuario</label><input id="lg_u" value="admin" autocomplete="username"></div>
   <div class="field"><label>Contraseña</label><input id="lg_p" type="password" value="admin123" autocomplete="current-password"></div>
@@ -888,7 +1174,7 @@ function adminView(){
   const T={resumen:['Resumen del Club','Miembros, puntos y qué tanto cuesta fidelizar'],registrar:['Registrar compra','Afilia a una persona y registra lo que compró en el local'],pedidos:['Pedidos en línea','Marca como entregado para que el cliente reciba sus puntos'],guia:['Cómo funcionan los beneficios','Todo lo que necesitas saber para atender a los afiliados']}[adminTab];
   return `<div class="adm">
   <div class="adm-top">
-    <div class="adm-bar"><div class="brand"><img class="logo-img" style="width:34px;height:34px" src="logo.png" alt="">Club · Admin</div>
+    <div class="adm-bar"><div class="brand"><img class="logo-img" style="width:34px;height:34px" src="icon-192.png" alt="">Club · Admin</div>
       <div class="acts"><button class="btn btn-ghost btn-sm" onclick="go('store')">🏪 Ver carta</button><button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button></div></div>
     <div class="tabs">${ATABS.map(t=>`<button class="tab ${adminTab===t[0]?'active':''}" onclick="setTab('${t[0]}')">${t[1]} ${t[2]}${t[0]==='pedidos'&&pend?` (${pend})`:''}</button>`).join('')}</div>
   </div>
@@ -1066,7 +1352,7 @@ function guiaTab(){
 
 /* ---------- Arranque ---------- */
 $('#overlay').addEventListener('click',closeAll);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAll();closeQuiz()}});
 render();
 </script>
 </body>
