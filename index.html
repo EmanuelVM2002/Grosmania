@@ -701,9 +701,22 @@ function waMessage(name,extra){
   if(clubPhone)L.push('','Mi celular del Club: '+clubPhone);
   return L.join('\n');
 }
+const waUrl=text=>'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(text);
+function waOrderMessage(o,t){
+  const L=['Hola Gro’smania 👋, quiero hacer este pedido:','','*Pedido #'+o.id+'*','Nombre: '+o.customer,'Modalidad: '+o.method];
+  if(o.address)L.push('Dirección: '+o.address);
+  L.push('');
+  cart.forEach(l=>{const d=lineDetail(l);L.push('• '+l.qty+'× '+prod(l.id).name+(d?' ('+d+')':'')+' — '+money(l.unit*l.qty))});
+  t.combos.forEach(c=>L.push('🎁 '+c.label+': −'+money(c.disc)));
+  if(o.rew)L.push('💚 Premio del Club: −'+money(o.rew.value));
+  if(t.ship)L.push('Domicilio: '+money(t.ship));
+  L.push('*Total a pagar: '+money(t.total)+'*');
+  if(o.phone)L.push('','Mi celular: '+o.phone);
+  return L.join('\n');
+}
 function openWA(){
   const name=($('#wa_n')||{value:''}).value.trim(), extra=($('#wa_x')||{value:''}).value.trim();
-  const url='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(waMessage(name,extra));
+  const url=waUrl(waMessage(name,extra));
   window.open(url,'_blank','noopener')||(location.href=url);
 }
 function openCart(){
@@ -719,8 +732,8 @@ function openCart(){
     ${t.combos.map(c=>`<div class="sum-row" style="color:#2f9a5d"><span>🎁 ${c.label}</span><span>−${money(c.disc)}</span></div>`).join('')}
     <div class="sum-row"><span>Domicilio</span><span>${money(t.ship)}</span></div>
     <div class="sum-row total"><span>Total</span><span>${money(t.total)}</span></div>
-    <button class="btn btn-primary block" style="margin-top:10px" ${cart.length?'':'disabled'} onclick="openCheckout()">Finalizar pedido</button>
-    ${cart.length?'<button class="btn btn-wa block" style="margin-top:8px" onclick="openWA()">Pedir por WhatsApp 💬</button>':''}
+    <button class="btn btn-primary block" style="margin-top:10px" ${cart.length?'':'disabled'} onclick="openCheckout()">Finalizar y enviar por WhatsApp 💬</button>
+
   </footer>`;
   if(ex){ex.innerHTML=html;return}
   const d=document.createElement('aside');d.className='drawer';d.innerHTML=html;
@@ -730,11 +743,13 @@ function openCheckout(){
   redeem=null;
   openModal(`<h3>Casi listo 🎉</h3>
     <div class="field"><label>Tu nombre</label><input id="co_name" placeholder="Ej. Laura Gómez" autocomplete="name"></div>
-    <div class="two keep"><div class="field"><label>Modalidad</label><select id="co_m"><option>Domicilio</option><option>Local</option></select></div>
+    <div class="two keep"><div class="field"><label>Modalidad</label><select id="co_m" onchange="coMode()"><option>Domicilio</option><option>Local</option></select></div>
     <div class="field"><label>Celular</label><input id="co_t" inputmode="numeric" placeholder="300 000 0000" oninput="coLookup()" value="${esc(clubPhone)}" autocomplete="tel"></div></div>
+    <div class="field" id="co_addr_f"><label>Dirección de entrega</label><input id="co_addr" placeholder="Barrio, calle y número" autocomplete="street-address"></div>
     <div id="co_club"></div>
     <p style="margin-bottom:12px;color:var(--muted)">Total a pagar: <b id="co_total" style="color:var(--pink)">${money(totals().total)}</b></p>
-    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="placeOrder()">Confirmar pedido</button></div>`);
+    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-wa" onclick="placeOrder()">Enviar pedido por WhatsApp 💬</button></div>
+    <p class="hint" style="color:var(--muted);margin-top:10px;text-align:right">Se abrirá WhatsApp con tu pedido ya escrito; solo toca «Enviar».</p>`);
   showOverlay(true);coLookup();
 }
 function coLookup(){
@@ -751,21 +766,27 @@ function coLookup(){
   }else box.innerHTML='';
   coTotal();
 }
-function coTotal(){const e=$('#co_total');if(e)e.textContent=money(totals().total)}
+function coMode(){const d=$('#co_m').value==='Domicilio';$('#co_addr_f').hidden=!d;const e=$('#co_total');if(e)e.textContent=money(totals().total-(d?0:DELIVERY))}
+function coTotal(){const e=$('#co_total');if(e)e.textContent=money(totals().total-($('#co_m').value==='Local'?DELIVERY:0))}
 function placeOrder(){
   const name=$('#co_name').value.trim(); if(!name){toast('Escribe tu nombre');return}
+  const mode=$('#co_m').value, address=$('#co_addr').value.trim();
+  if(mode==='Domicilio'&&!address){toast('Escribe la dirección de entrega');return}
   const phone=digits($('#co_t').value);
   let m=phone?findMember(DB,phone):null;
   if(!m&&phone.length>=10&&$('#co_join')&&$('#co_join').checked)m=newMember(DB,name,phone,'','');
   if(redeem){const r=rewardById(redeem);if(!(m&&r&&(r.pts===0?bdayEligible(m):m.points>=r.pts)&&totals(null).base>=r.value))redeem=null}
   const t=totals(), r=redeem?rewardById(redeem):null;
+  if(mode==='Local'){t.ship=0;t.total=t.base}
   const id=Math.max(...DB.orders.map(o=>o.id),999)+1;
-  const o={id,customer:name,phone:m?m.phone:phone,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,base:t.base,ship:t.ship,combo:t.comboD,rew:r?{id:r.id,pts:r.pts,value:t.rew}:null,status:'Pendiente',date:new Date().toISOString(),method:$('#co_m').value,src:'online'};
+  const o={id,customer:name,phone:m?m.phone:phone,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,base:t.base,ship:t.ship,combo:t.comboD,rew:r?{id:r.id,pts:r.pts,value:t.rew}:null,status:'Pendiente',date:new Date().toISOString(),method:mode,address:mode==='Domicilio'?address:'',src:'online'};
   DB.orders.push(o);
   if(r&&m)spendReward(m,r,id);
   if(m)setClubPhone(m.phone);
+  const url=waUrl(waOrderMessage(o,t));
   cart=[];redeem=null;save();closeAll();render(true);
-  toast('¡Pedido #'+id+' enviado! 🍨'+(m?' Sumas puntos cuando te lo entreguemos.':''));
+  window.open(url,'_blank','noopener')||(location.href=url);
+  toast('Pedido #'+id+' listo 🍨 Toca «Enviar» en WhatsApp para confirmarlo.'+(m?' Sumas puntos cuando te lo entreguemos.':''));
 }
 
 /* ---------- Club en la tienda ---------- */
@@ -976,7 +997,7 @@ function pedidosTab(){
   const list=pendingOnline().sort((a,b)=>new Date(a.date)-new Date(b.date));
   const done=DB.orders.filter(o=>o.src==='online'&&!['Pendiente','Preparando','Listo'].includes(o.status)).length;
   return `<div class="panel"><h3>${list.length} por entregar</h3>
-  ${list.map(o=>`<div class="mini"><div class="grow"><b>#${o.id} · ${esc(o.customer)}</b> <span class="status">${o.status}</span><br><small>${fmtDate(o.date)} · ${o.method==='Local'?'🏪':'🛵'} ${o.method}${o.phone?' · 📞 '+o.phone:''}</small>
+  ${list.map(o=>`<div class="mini"><div class="grow"><b>#${o.id} · ${esc(o.customer)}</b> <span class="status">${o.status}</span><br><small>${fmtDate(o.date)} · ${o.method==='Local'?'🏪':'🛵'} ${o.method}${o.phone?' · 📞 '+o.phone:''}${o.address?'<br>📍 '+esc(o.address):''}</small>
     <div style="margin-top:6px;font-size:.88rem">${o.items.map(i=>{const p=prod(i.id);return p?`${i.qty}× ${esc(p.name)}${lineDetail(i)?'<br><small>'+esc(lineDetail(i))+'</small>':''}`:''}).join('<br>')}</div>
     ${o.rew?`<small>🎁 Premio: ${money(o.rew.value)}${o.rew.pts?' ('+o.rew.pts+' pts)':''}</small>`:''}</div>
     <div style="text-align:right"><b>${money(o.total)}</b><br><small style="color:var(--muted)">${findMember(DB,o.phone)?'Socio/a del Club':'Sin Club'}</small></div>
