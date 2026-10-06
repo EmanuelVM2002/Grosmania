@@ -120,6 +120,28 @@ footer{padding:40px 5vw;text-align:center;color:var(--muted);border-top:1px soli
 .opt-g{margin-bottom:14px}.opt-g>b{display:block;font-size:.9rem;margin-bottom:6px}.opt-g select{width:100%;margin-bottom:6px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:#fff}
 .addons{display:grid;gap:6px;max-height:210px;overflow:auto}.addons label{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:.88rem}.addons label:has(input:checked){border-color:var(--pink);background:#e6fbf8}
 .cart-item small.det{display:block;color:var(--muted);margin-top:2px;line-height:1.3}
+.club{background:linear-gradient(135deg,#e6fbf8,#fff3f9 60%,#fffbe6)}
+.club-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:28px;align-items:start;max-width:1100px;margin:auto}
+.mcard{background:#fff;border-radius:28px;padding:28px;box-shadow:var(--shadow)}
+.mcard h3{font-size:1.3rem;margin-bottom:10px}
+.mcard form{display:grid;gap:10px;margin-bottom:14px}
+.mcard input{padding:11px 14px;border-radius:14px;border:1.5px solid var(--line);width:100%}
+.mcard .sep{color:var(--muted);text-align:center;font-size:.85rem;margin:6px 0}
+.pts{font-family:Fredoka;font-size:3.4rem;font-weight:700;line-height:1;color:var(--pink)}
+.tierpill{display:inline-block;background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;font-weight:700;border-radius:999px;padding:4px 14px;font-size:.85rem}
+.bar{height:12px;border-radius:99px;background:#e6f6f4;overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--mint));border-radius:99px}
+.hist{margin-top:12px;font-size:.88rem;color:var(--muted);display:grid;gap:4px}.hist div{display:flex;justify-content:space-between;gap:10px}
+.club-info{display:grid;gap:18px}.club-info h3{font-size:1.2rem;margin-bottom:6px}
+.rw{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.rw>div,.tiers>div{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px 14px}
+.rw b{font-family:Fredoka;font-size:1.5rem;color:var(--pink);display:block}
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tiers b{display:block}
+.club-info ul{list-style:none;display:grid;gap:6px}
+.gift{background:#fff7d6;border:1.5px dashed #e8c44a;border-radius:14px;padding:8px 12px;margin-top:10px;font-weight:600}
+.hint{font-size:.85rem}
+.cbox{background:#f2fbfa;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px;font-size:.9rem;display:grid;gap:8px}
+.cbox select{padding:9px 12px;border-radius:12px;border:1.5px solid var(--line);background:#fff;width:100%}
+@media(max-width:900px){.club-grid{grid-template-columns:1fr}.tiers{grid-template-columns:1fr}}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 .toast-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center}
 .toast{background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:pop .3s}
@@ -259,6 +281,11 @@ const ADICIONES = [['Una bola de helado',2000],['Queso',4000],['Brownie',2500],[
 /* Sabores de helado: la carta no los lista; se editan en Ajustes */
 const FLAVORS_DEFAULT = ['Vainilla','Chocolate','Brownie','Fresa','Frutos rojos','Mango','Maracuyá','Piña'];
 
+const TIERS=[{n:'Bolita',e:'🍧',min:0,mult:1},{n:'Cono',e:'🍦',min:4,mult:1.25},{n:'Copa',e:'🍨',min:8,mult:1.5}];
+const REWARDS=[{id:'r25',pts:25,value:2500,label:'Una adición gratis'},{id:'r60',pts:60,value:6000,label:'Cucurucho de 2 bolas'},{id:'r120',pts:120,value:15500,label:'Una copa de la casa'}];
+const BDAY={id:'bday',pts:0,value:2500,label:'Regalo de cumpleaños 🎂'};
+const COMBO_COPAS=2000, COMBO_WAFFLE=1500, REF_BONUS=20;
+const MEMBERS_DEMO=[['Laura Gómez','3001110001','06-12'],['Andrés Ruiz','3001110002',''],['Camila Torres','3001110003','10-03'],['Santiago Díaz','3001110004',''],['Valentina Mora','3001110005','']];
 function seed(){
   const products=[]; let nid=1;
   const SAB=n=>({k:'sabor',label:n>1?`Sabores de helado (${n})`:'Sabor de helado',n,list:'flavors'});
@@ -346,10 +373,10 @@ function seed(){
       const total=items.reduce((a,i)=>a+i.price*i.qty,0);
       const date=new Date(now-d*864e5-Math.floor(rnd()*8)*36e5).toISOString();
       let st = d>0 ? (rnd()<.9?'Entregado':'Cancelado') : STATUS[Math.floor(rnd()*4)];
-      orders.push({id:id++,customer:names[Math.floor(rnd()*names.length)],items,total,status:st,date,method:rnd()<.5?'Local':'Domicilio'});
+      const nm=names[Math.floor(rnd()*names.length)];orders.push({id:id++,customer:nm,phone:(MEMBERS_DEMO.find(m=>m[0]===nm)||[])[1]||'',items,total,status:st,date,method:rnd()<.5?'Local':'Domicilio'});
     }
   }
-  return {products,orders,coupons:[
+  const db={products,orders,coupons:[
     {code:'HELADO10',pct:10,active:true,uses:34},
     {code:'VERANO20',pct:20,active:true,uses:12},
     {code:'AMIGOS15',pct:15,active:false,uses:5}
@@ -360,7 +387,9 @@ function seed(){
     {id:4,name:'Empresa Nova SAS',phone:'6015550123',date:ymd(2),time:'15:00',people:12,occasion:'Evento empresarial',notes:'Factura electrónica',status:'Pendiente'},
     {id:5,name:'Santiago Díaz',phone:'3151112233',date:ymd(-1),time:'19:00',people:3,occasion:'Amigos',notes:'',status:'Completada'},
     {id:6,name:'Valentina Mora',phone:'3012223344',date:ymd(-2),time:'14:00',people:5,occasion:'Cumpleaños',notes:'',status:'Cancelada'}
-  ],settings:{name:'Gro’smania',open:true,delivery:3000,tables:6,flavors:[...FLAVORS_DEFAULT]}};
+  ],settings:{name:'Gro’smania',open:true,delivery:3000,tables:6,flavors:[...FLAVORS_DEFAULT]},members:[],club:{cost:0.35}};
+  seedClub(db);
+  return db;
 }
 function ymd(off){const x=new Date(Date.now()+off*864e5);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
 let DB = (()=>{try{return JSON.parse(localStorage.getItem(KEY))||seed()}catch(e){return seed()}})();
@@ -368,16 +397,147 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
 if(!DB.reservations)DB.reservations=seed().reservations;   // datos guardados antes de existir las reservas
 if(DB.settings.tables==null)DB.settings.tables=6;
 if(!DB.settings.flavors)DB.settings.flavors=[...FLAVORS_DEFAULT];
+if(!DB.members)DB.members=[];
+if(!DB.club)DB.club={cost:0.35};
 const RES_STATUS=['Pendiente','Confirmada','Completada','Cancelada'];
 const SLOTS=['12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 let resFilter='Próximas', repPeriod='7';
 
+/* =========================================================
+   CLUB GRO’SMANIA (fidelización)
+   ========================================================= */
+function digits(v){return String(v||'').replace(/\D/g,'')}
+function findMember(db,ph){return db.members.find(m=>m.phone===digits(ph))}
+function tierOf(db,m){
+  const visits=db.orders.filter(o=>o.phone===m.phone&&o.status==='Entregado'&&Date.now()-new Date(o.date)<90*864e5).length;
+  let t=TIERS[0];TIERS.forEach(x=>{if(visits>=x.min)t=x});
+  const next=TIERS[TIERS.indexOf(t)+1];
+  return {t,visits,next};
+}
+function newMember(db,name,phone,birthday,ref){
+  const m={phone:digits(phone),name,birthday:birthday||'',points:0,lifetime:0,joined:new Date().toISOString(),ref:ref&&ref!==digits(phone)&&findMember(db,ref)?digits(ref):'',refPaid:false,bdayYear:0,ledger:[]};
+  db.members.push(m);return m;
+}
+function addLedger(m,pts,desc){m.ledger.unshift({d:new Date().toISOString(),pts,desc});if(m.ledger.length>30)m.ledger.length=30}
+function awardPoints(db,o){
+  const m=findMember(db,o.phone); if(!m||o.pointsAwarded)return;
+  const base=o.base??o.total, mult=tierOf(db,m).t.mult;
+  const pts=Math.floor(base/1000*mult); if(pts<=0)return;
+  m.points+=pts;m.lifetime+=pts;o.pointsAwarded=pts;addLedger(m,pts,'Pedido #'+o.id+(mult>1?' (x'+mult+')':''));
+  if(m.ref&&!m.refPaid&&base>=10000){
+    const r=findMember(db,m.ref);
+    if(r){r.points+=REF_BONUS;r.lifetime+=REF_BONUS;addLedger(r,REF_BONUS,'Tu amigo '+m.name.split(' ')[0]+' hizo su primera compra');
+      m.points+=REF_BONUS;m.lifetime+=REF_BONUS;addLedger(m,REF_BONUS,'Bono por venir de parte de un amigo')}
+    m.refPaid=true;
+  }
+}
+function revokePoints(db,o){
+  const m=findMember(db,o.phone); if(!m||!o.pointsAwarded)return;
+  m.points-=o.pointsAwarded;m.lifetime-=o.pointsAwarded;addLedger(m,-o.pointsAwarded,'Pedido #'+o.id+' ya no cuenta');o.pointsAwarded=0;
+}
+function clubOnStatus(o,s){
+  const m=findMember(DB,o.phone), was=o.status;
+  if(was==='Entregado'&&s!=='Entregado')revokePoints(DB,o);
+  if(m&&o.rew&&o.rew.pts>0){
+    if(s==='Cancelado'&&was!=='Cancelado'){m.points+=o.rew.pts;addLedger(m,o.rew.pts,'Puntos devueltos, pedido #'+o.id+' cancelado');o.rewRefunded=true}
+    else if(was==='Cancelado'&&s!=='Cancelado'&&o.rewRefunded){m.points-=o.rew.pts;addLedger(m,-o.rew.pts,'Canje del pedido #'+o.id+' reactivado');o.rewRefunded=false}
+  }
+  if(s==='Entregado'&&was!=='Entregado')awardPoints(DB,o);
+}
+function bdayEligible(m){
+  if(!m.birthday)return false;
+  const y=new Date().getFullYear(); if(m.bdayYear===y)return false;
+  const [mm,dd]=m.birthday.split('-').map(Number), d=new Date(y,mm-1,dd);
+  return Math.abs(Date.now()-d)<=3.5*864e5;
+}
+function rewardsFor(m,base){
+  const list=REWARDS.filter(r=>m.points>=r.pts&&base>=r.value);
+  if(bdayEligible(m)&&base>=BDAY.value)list.unshift(BDAY);
+  return list;
+}
+const rewardById=id=>id==='bday'?BDAY:REWARDS.find(r=>r.id===id);
+function seedClub(db){
+  MEMBERS_DEMO.forEach(([n,p,b])=>newMember(db,n,p,b));
+  db.orders.filter(o=>o.phone&&o.status==='Entregado').sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(o=>awardPoints(db,o));
+}
+
+/* ---------- Club en la tienda ---------- */
+let clubPhone=''; try{clubPhone=localStorage.getItem('gm.member')||''}catch(e){}
+function setClubPhone(p){clubPhone=p;try{p?localStorage.setItem('gm.member',p):localStorage.removeItem('gm.member')}catch(e){}}
+function clubLookup(e){
+  e.preventDefault();const p=digits($('#cl_p').value),m=findMember(DB,p);
+  if(!m){toast('No encontramos ese número. ¡Únete abajo, es gratis! 💚');return}
+  setClubPhone(p);render();document.getElementById('club')?.scrollIntoView();toast('¡Hola, '+m.name.split(' ')[0]+'! 👋');
+}
+function clubJoin(e){
+  e.preventDefault();
+  const name=$('#cj_n').value.trim(),p=digits($('#cj_p').value);
+  if(!name||p.length<10){toast('Escribe tu nombre y un celular de 10 dígitos');return}
+  if(findMember(DB,p)){toast('Ese número ya está en el Club');return}
+  const b=$('#cj_b').value; // yyyy-mm-dd
+  const ref=digits($('#cj_r').value);
+  if(ref&&!findMember(DB,ref)){toast('El número de quien te invitó no está en el Club');return}
+  newMember(DB,name,p,b?b.slice(5):'',ref);save();setClubPhone(p);render();document.getElementById('club')?.scrollIntoView();toast('¡Bienvenido al Club, '+name.split(' ')[0]+'! 💚');
+}
+function clubExit(){setClubPhone('');render();document.getElementById('club')?.scrollIntoView()}
+function memberCard(){
+  const m=clubPhone?findMember(DB,clubPhone):null;
+  if(m){
+    const {t,visits,next}=tierOf(DB,m);
+    const nr=REWARDS.find(r=>r.pts>m.points), top=nr?nr.pts:REWARDS[REWARDS.length-1].pts;
+    return `<h3>Tu tarjeta 💚</h3>
+    <p style="margin-bottom:6px"><b>${esc(m.name)}</b> · <span class="tierpill">${t.e} ${t.n}${t.mult>1?' · puntos x'+t.mult:''}</span></p>
+    <div class="pts">${m.points}<small style="font-size:1rem;color:var(--muted);font-family:Nunito"> puntos</small></div>
+    <div class="bar"><i style="width:${Math.min(100,m.points/top*100)}%"></i></div>
+    <small>${nr?`Te faltan <b>${nr.pts-m.points}</b> puntos para: ${nr.label}`:'¡Ya puedes canjear el premio mayor! 🎉'}</small>
+    <p class="hint" style="color:var(--muted);margin-top:10px">${next?`Llevas ${visits} compra${visits===1?'':'s'} en 90 días. Con ${next.min} subes a ${next.e} ${next.n} y ganas más puntos.`:`Llevas ${visits} compras en 90 días: estás en el nivel más alto 🏆`}</p>
+    ${bdayEligible(m)?'<div class="gift">🎂 ¡Esta semana es tu cumpleaños! Tienes una adición gratis. Úsala al finalizar tu pedido.</div>':''}
+    <div class="gift" style="background:#e6fbf8;border-color:#7fd8cc">🤝 Invita a un amigo: que se una con tu número <b>${m.phone}</b> y ambos ganan ${REF_BONUS} puntos en su primera compra.</div>
+    <div class="hist">${m.ledger.slice(0,5).map(l=>`<div><span>${fmtDate(l.d)} · ${esc(l.desc)}</span><b style="color:${l.pts>=0?'var(--mint)':'var(--pink)'}">${l.pts>0?'+':''}${l.pts}</b></div>`).join('')||'<div>Aún no tienes movimientos. ¡Haz tu primer pedido!</div>'}</div>
+    <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="clubExit()">Salir</button>`;
+  }
+  return `<h3>Ya soy del Club</h3>
+  <form onsubmit="clubLookup(event)"><input id="cl_p" inputmode="numeric" placeholder="Tu celular" required><button class="btn btn-primary" style="justify-content:center">Ver mis puntos</button></form>
+  <div class="sep">— o únete gratis —</div>
+  <h3>Quiero unirme 🍨</h3>
+  <form onsubmit="clubJoin(event)"><input id="cj_n" placeholder="Tu nombre" required><input id="cj_p" inputmode="numeric" placeholder="Celular (10 dígitos)" required>
+  <label class="hint" style="color:var(--muted)">Cumpleaños (opcional, para tu regalo)<input id="cj_b" type="date"></label>
+  <input id="cj_r" inputmode="numeric" placeholder="Celular de quien te invitó (opcional)">
+  <button class="btn btn-primary" style="justify-content:center">Unirme al Club</button></form>`;
+}
+function clubSection(){
+  return `<section id="club" class="club">
+  <div class="sec-head"><h2>Club Gro’smania 💚</h2><p>Cada compra suma. Canjea puntos por helado y ahorra con los combos.</p></div>
+  <div class="club-grid">
+    <div class="mcard">${memberCard()}</div>
+    <div class="club-info">
+      <div><h3>Así funciona</h3><ul><li>🍨 Ganas <b>1 punto por cada $1.000</b> de tu pedido, cuando te lo entregamos.</li><li>📱 Solo con tu celular, sin tarjetas ni contraseñas.</li><li>🎂 En la semana de tu cumpleaños, una adición gratis.</li></ul></div>
+      <div><h3>Premios</h3><div class="rw">${REWARDS.map(r=>`<div><b>${r.pts} pts</b>${r.label}</div>`).join('')}</div></div>
+      <div><h3>Niveles (según tus compras en 90 días)</h3><div class="tiers">${TIERS.map(t=>`<div><b>${t.e} ${t.n}</b><small>${t.min?t.min+'+ compras':'Desde el inicio'} · puntos x${t.mult}</small></div>`).join('')}</div></div>
+      <div><h3>Combos que ahorran</h3><ul><li>🍨🍨 <b>Dúo de copas:</b> llévate 2 y ahorra ${money(COMBO_COPAS)}.</li><li>🧇🧃 <b>Waffle medio + jugo natural en agua:</b> ahorra ${money(COMBO_WAFFLE)}.</li></ul></div>
+    </div>
+  </div></section>`;
+}
+
+/* ---------- Precios con oferta de última hora ---------- */
+const flashOn=p=>!!(p.flash&&p.flash.until>Date.now());
+const priceOf=p=>flashOn(p)?Math.round(p.price*(100-p.flash.pct)/10000)*100:p.price;
+function setFlash(id){
+  const p=prod(id), cur=flashOn(p)?p.flash.pct:20;
+  const pct=parseFloat(prompt('Oferta de última hora para «'+p.name+'»\nDescuento en % (0 para quitarla):',cur));
+  if(isNaN(pct))return;
+  if(pct<=0){delete p.flash;save();render();toast('Oferta retirada');return}
+  const h=parseFloat(prompt('¿Cuántas horas dura la oferta?',4))||4;
+  p.flash={pct:Math.min(60,Math.round(pct)),until:Date.now()+h*36e5};save();render();toast('⚡ Oferta activa: −'+p.flash.pct+'% por '+h+' h');
+}
+
 /* ---------- estado de UI ---------- */
 let route = 'store';           // store | login | admin
 let adminTab = 'dashboard';
-let filterCat = 'Todos';
+let filterCat = 'Copas';
 let cart = [];                 // {id, qty}
 let coupon = null;
+let redeem = null;             // id del premio del Club elegido en el pago
 let ordFilter = 'Todos', ordSearch = '';
 let isAdmin = false;
 try{ isAdmin = sessionStorage.getItem('gm.admin')==='1' }catch(e){}
@@ -418,7 +578,7 @@ function storeView(){
   return `
   <nav class="nav">
     <div class="brand"><img class="logo-img" src="logo.png" alt="">${esc(DB.settings.name)}</div>
-    <div class="nav-links"><a href="#menu">Menú</a><a href="#reservar">Reservas</a><a href="#why">Por qué nosotros</a><a href="#promo">Promos</a></div>
+    <div class="nav-links"><a href="#menu">Menú</a><a href="#reservar">Reservas</a><a href="#club">Club</a><a href="#why">Por qué nosotros</a><a href="#promo">Promos</a></div>
     <div class="nav-actions">
       <button class="btn btn-ghost btn-sm" onclick="go(isAdmin?'admin':'login')">🔐 Administrador</button>
       <button class="icon-btn" onclick="openCart()" aria-label="Carrito">🛒${cnt?`<span class="badge">${cnt}</span>`:''}</button>
@@ -433,6 +593,7 @@ function storeView(){
       <div class="hero-cta">
         <a class="btn btn-primary" href="#menu">Ver el menú 🍧</a>
         <button class="btn btn-ghost" onclick="openCart()">Mi pedido</button>
+        <a class="btn btn-ghost" href="#club">Únete al Club 💚</a>
       </div>
       <div class="hero-stats">
         <div><b>${DB.products.filter(p=>p.active).length}</b><small>Productos</small></div>
@@ -452,10 +613,10 @@ function storeView(){
     <div class="chips">${['Todos',...CATS].map(c=>`<button class="chip ${c===filterCat?'active':''}" onclick="setCat('${c}')">${c}</button>`).join('')}</div>
     <div class="grid">${list.map(p=>`
       <article class="product ${p.stock<=0?'soldout':''}">
-        ${p.tag?`<span class="tag">${esc(p.tag)}</span>`:''}
+        ${(p.tag||flashOn(p))?`<span class="tag">${flashOn(p)?'⚡ −'+p.flash.pct+'% hoy':esc(p.tag)}</span>`:''}
         <div class="pic" style="background:${COLORS[p.cat]||'#cfeff5'}">${p.img?`<img src="${p.img}" alt="${esc(p.name)}">`:p.emoji}</div>
         <h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
-        <div class="row"><span class="price">${money(p.price)}</span>
+        <div class="row"><span class="price">${flashOn(p)?`<s style="font-size:.85rem;color:var(--muted);font-weight:500">${money(p.price)}</s> `:''}${money(priceOf(p))}</span>
           <button class="btn btn-primary btn-sm" ${p.stock<=0||!DB.settings.open?'disabled style="opacity:.5"':''} onclick="addCart(${p.id})">${p.stock<=0?'Agotado':needsCustom(p)?'Armar / agregar':'＋ Agregar'}</button></div>
       </article>`).join('')||'<p class="empty">No hay productos en esta categoría.</p>'}</div>
   </section>
@@ -478,6 +639,8 @@ function storeView(){
       <button class="btn btn-primary" style="width:100%;justify-content:center">Reservar mesa 🍨</button>
     </form>
   </section>
+
+  ${clubSection()}
 
   <section id="why" class="features">
     <div class="feat"><i>🌿</i><h3>100% natural</h3><p>Sin colorantes ni saborizantes artificiales.</p></div>
@@ -509,9 +672,9 @@ function lineDetail(l){
 function pushLine(p,sel,adds,note){
   if(qtyOf(p.id)+1>p.stock){toast('No hay más stock de '+p.name);return}
   const extra=addonsOf(p).filter(a=>adds.includes(a[0])).reduce((x,a)=>x+a[1],0);
-  const key=JSON.stringify([p.id,sel,adds,note]);
+  const fl=flashOn(p),key=JSON.stringify([p.id,sel,adds,note,fl]);
   const it=cart.find(l=>l.key===key);
-  if(it)it.qty++;else cart.push({key,id:p.id,qty:1,sel,adds,note,unit:p.price+extra});
+  if(it)it.qty++;else cart.push({key,id:p.id,qty:1,sel,adds,note,flash:fl,unit:priceOf(p)+extra});
   toast(p.emoji+' '+p.name+' agregado'); render();
 }
 function addCart(id){
@@ -528,14 +691,14 @@ function openCustom(id){
   ${(p.opts||[]).map((g,gi)=>`<div class="opt-g"><b>${esc(g.label)}</b>${[...Array(g.n)].map((_,i)=>`<select id="oc_${gi}_${i}"><option value="">Elige${g.n>1?' ('+(i+1)+')':''}…</option>${listOf(g).map(v=>`<option>${esc(v)}</option>`).join('')}</select>`).join('')}</div>`).join('')}
   ${ads.length?`<div class="opt-g"><b>${p.adds?'Adiciones (opcional)':'Extras (opcional)'}</b><div class="addons">${ads.map((a,j)=>`<label><span><input type="checkbox" id="oc_a_${j}" onchange="ocTotal(${id})"> ${esc(a[0])}</span><span>+${money(a[1])}</span></label>`).join('')}</div></div>`:''}
   <div class="field"><label>Nota para la cocina (opcional)</label><input id="oc_note" maxlength="120" placeholder="Ej. sin queso, para llevar…"></div>
-  <div class="sum-row total"><span>Total</span><span id="oc_total">${money(p.price)}</span></div>
+  <div class="sum-row total"><span>Total</span><span id="oc_total">${money(priceOf(p))}</span></div>
   <div class="modal-actions"><button class="btn btn-ghost" onclick="closeCheckout()">Cancelar</button><button class="btn btn-primary" onclick="confirmCustom(${id})">Agregar al pedido</button></div></div>`;
   document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('show'));
 }
 function ocPicked(p){return addonsOf(p).filter((a,j)=>{const el=document.getElementById('oc_a_'+j);return el&&el.checked}).map(a=>a[0])}
 function ocTotal(id){
   const p=prod(id),sel=ocPicked(p);
-  $('#oc_total').textContent=money(p.price+addonsOf(p).filter(a=>sel.includes(a[0])).reduce((x,a)=>x+a[1],0));
+  $('#oc_total').textContent=money(priceOf(p)+addonsOf(p).filter(a=>sel.includes(a[0])).reduce((x,a)=>x+a[1],0));
 }
 function confirmCustom(id){
   const p=prod(id), sel=[];
@@ -553,11 +716,24 @@ function chQty(i,d){
   l.qty+=d; if(l.qty<=0)cart.splice(i,1);
   render(); openCart(true);
 }
-function totals(){
-  const sub=cart.reduce((a,l)=>a+l.unit*l.qty,0);
-  const disc=coupon?Math.round(sub*coupon.pct/100):0;
+function comboCalc(){
+  const q=f=>cart.reduce((a,l)=>a+(!l.flash&&f(prod(l.id))?l.qty:0),0);
+  const copas=q(p=>p.cat==='Copas'), wm=q(p=>p.name==='Waffle Medio'), ja=q(p=>p.name==='Jugo Natural en Agua');
+  const combos=[],hints=[];
+  if(copas>=2)combos.push({label:'Dúo de copas ×'+Math.floor(copas/2),disc:Math.floor(copas/2)*COMBO_COPAS});
+  if(copas%2===1)hints.push('Agrega otra copa y ahorra '+money(COMBO_COPAS));
+  if(Math.min(wm,ja)>0)combos.push({label:'Waffle medio + jugo ×'+Math.min(wm,ja),disc:Math.min(wm,ja)*COMBO_WAFFLE});
+  if(wm>ja)hints.push('Agrega un jugo natural en agua a tu waffle medio y ahorra '+money(COMBO_WAFFLE));
+  return {combos,hints,comboD:combos.reduce((a,c)=>a+c.disc,0)};
+}
+function totals(rid){
+  if(rid===undefined)rid=redeem;
+  const sub=cart.reduce((a,l)=>a+l.unit*l.qty,0), {combos,hints,comboD}=comboCalc();
+  const disc=coupon?Math.round((sub-comboD)*coupon.pct/100):0;
+  const pre=Math.max(0,sub-comboD-disc), r=rid?rewardById(rid):null;
+  const rew=r?Math.min(r.value,pre):0, base=pre-rew;
   const ship=sub>0?DB.settings.delivery:0;
-  return {sub,disc,ship,total:sub-disc+ship};
+  return {sub,combos,hints,comboD,disc,rew,base,ship,total:base+ship};
 }
 function openCart(keep){
   document.querySelectorAll('.drawer').forEach(e=>e.remove());
@@ -571,7 +747,9 @@ function openCart(keep){
     :'<p class="empty">Tu carrito está vacío 🍨<br>¡Agrega algo delicioso!</p>'}</div>
   <footer>
     <div class="coupon"><input id="cpn" placeholder="Código de descuento" style="flex:1;padding:10px 14px;border-radius:999px;border:1.5px solid var(--line)" value="${coupon?coupon.code:''}"><button class="btn btn-ghost btn-sm" onclick="applyCoupon()">Aplicar</button></div>
+    ${t.hints.map(h=>`<div class="hint" style="color:var(--violet);margin-bottom:6px">💡 ${h}</div>`).join('')}
     <div class="sum-row"><span>Subtotal</span><span>${money(t.sub)}</span></div>
+    ${t.combos.map(c=>`<div class="sum-row" style="color:var(--mint)"><span>🎁 ${c.label}</span><span>−${money(c.disc)}</span></div>`).join('')}
     ${coupon?`<div class="sum-row" style="color:var(--mint)"><span>Descuento ${coupon.pct}%</span><span>−${money(t.disc)}</span></div>`:''}
     <div class="sum-row"><span>Domicilio</span><span>${money(t.ship)}</span></div>
     <div class="sum-row total"><span>Total</span><span>${money(t.total)}</span></div>
@@ -593,20 +771,44 @@ function openCheckout(){
   m.innerHTML=`<div><h3>Casi listo 🎉</h3>
     <div class="field"><label>Tu nombre</label><input id="co_name" placeholder="Ej. Laura Gómez"></div>
     <div class="two"><div class="field"><label>Modalidad</label><select id="co_m"><option>Domicilio</option><option>Local</option></select></div>
-    <div class="field"><label>Teléfono</label><input id="co_t" placeholder="300 000 0000"></div></div>
-    <p style="margin-bottom:14px;color:var(--muted)">Total a pagar: <b style="color:var(--pink)">${money(totals().total)}</b></p>
+    <div class="field"><label>Teléfono</label><input id="co_t" inputmode="numeric" placeholder="300 000 0000" oninput="coLookup()" value="${esc(clubPhone)}"></div></div>
+    <div id="co_club"></div>
+    <p style="margin-bottom:14px;color:var(--muted)">Total a pagar: <b id="co_total" style="color:var(--pink)">${money(totals().total)}</b></p>
     <div class="modal-actions"><button class="btn btn-ghost" onclick="closeCheckout()">Cancelar</button><button class="btn btn-primary" onclick="placeOrder()">Confirmar pedido</button></div></div>`;
   document.body.appendChild(m); requestAnimationFrame(()=>m.classList.add('show'));
+  redeem=null; coLookup();
 }
+function coLookup(){
+  const box=$('#co_club'); if(!box)return;
+  const ph=digits($('#co_t').value), m=findMember(DB,ph), pre=totals(null).base;
+  if(!m&&redeem)redeem=null;
+  if(m){
+    const opts=rewardsFor(m,pre);
+    if(redeem&&!opts.some(r=>r.id===redeem))redeem=null;
+    box.innerHTML=`<div class="cbox"><span>💚 Hola, <b>${esc(m.name.split(' ')[0])}</b>: tienes <b>${m.points}</b> puntos y ganarás ~<b>${Math.floor(pre/1000*tierOf(DB,m).t.mult)}</b> con este pedido.</span>
+    ${opts.length?`<select id="co_rw" onchange="redeem=this.value||null;coTotal()"><option value="">No canjear premio ahora</option>${opts.map(r=>`<option value="${r.id}" ${redeem===r.id?'selected':''}>${r.label} · −${money(Math.min(r.value,pre))}${r.pts?' ('+r.pts+' pts)':' (gratis)'}</option>`).join('')}</select>`:`<small style="color:var(--muted)">Aún no alcanzas un premio (el primero son ${REWARDS[0].pts} puntos y un pedido de al menos ${money(REWARDS[0].value)}).</small>`}</div>`;
+  }else if(ph.length>=10){
+    box.innerHTML=`<label class="cbox" style="grid-template-columns:auto 1fr;align-items:center"><input type="checkbox" id="co_join" checked> <span>Unirme gratis al <b>Club Gro’smania</b> y ganar puntos con este pedido</span></label>`;
+  }else box.innerHTML='';
+  coTotal();
+}
+function coTotal(){const e=$('#co_total');if(e)e.textContent=money(totals().total)}
 function closeCheckout(){document.querySelectorAll('.modal').forEach(e=>e.remove())}
 function placeOrder(){
   const name=$('#co_name').value.trim(); if(!name){toast('Escribe tu nombre');return}
-  const t=totals();
+  const phone=digits($('#co_t').value);
+  let m=phone?findMember(DB,phone):null;
+  if(!m&&phone.length>=10&&$('#co_join')&&$('#co_join').checked)m=newMember(DB,name,phone,'','');
+  if(redeem){const r=rewardById(redeem);if(!(m&&r&&(r.pts===0?bdayEligible(m):m.points>=r.pts)&&totals(null).base>=r.value))redeem=null}
+  const t=totals(), r=redeem?rewardById(redeem):null;
   const id=Math.max(...DB.orders.map(o=>o.id),999)+1;
-  DB.orders.push({id,customer:name,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,status:'Pendiente',date:new Date().toISOString(),method:$('#co_m').value});
+  const o={id,customer:name,phone:m?m.phone:phone,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,base:t.base,ship:t.ship,combo:t.comboD,rew:r?{id:r.id,pts:r.pts,value:t.rew}:null,status:'Pendiente',date:new Date().toISOString(),method:$('#co_m').value};
+  DB.orders.push(o);
+  if(r&&m){if(r.pts>0){m.points-=r.pts;addLedger(m,-r.pts,'Canje: '+r.label+' (pedido #'+id+')')}else{m.bdayYear=new Date().getFullYear();addLedger(m,0,'Regalo de cumpleaños (pedido #'+id+')')}}
+  if(m)setClubPhone(m.phone);
   cart.forEach(l=>{prod(l.id).stock-=l.qty});
   if(coupon){coupon.uses=(coupon.uses||0)+1}
-  cart=[];coupon=null;save();closeAll();render();toast('¡Pedido #'+id+' enviado! 🍨');
+  cart=[];coupon=null;redeem=null;save();closeAll();render();toast('¡Pedido #'+id+' enviado! 🍨'+(m?' Sumas puntos cuando te lo entreguemos.':''));
 }
 
 /* =========================================================
@@ -638,10 +840,10 @@ function logout(){isAdmin=false;try{sessionStorage.removeItem('gm.admin')}catch(
 /* =========================================================
    ADMIN
    ========================================================= */
-const TABS=[['dashboard','📊','Dashboard'],['orders','🧾','Pedidos'],['reservations','📅','Reservas'],['products','🍨','Productos'],['customers','👥','Clientes'],['coupons','🎟️','Promociones'],['reports','📥','Reportes'],['settings','⚙️','Ajustes']];
+const TABS=[['dashboard','📊','Dashboard'],['orders','🧾','Pedidos'],['reservations','📅','Reservas'],['products','🍨','Productos'],['customers','👥','Clientes'],['club','💚','Club'],['coupons','🎟️','Promociones'],['reports','📥','Reportes'],['settings','⚙️','Ajustes']];
 function adminView(){
   const pendRes=DB.reservations.filter(r=>r.status==='Pendiente').length;
-  const titles={reservations:['Reservas','Mesas apartadas por tus clientes'],reports:['Reportes','Descarga la información de tu negocio'],dashboard:['Dashboard','Resumen de tu heladería en tiempo real'],orders:['Pedidos','Gestiona y actualiza el estado de cada pedido'],products:['Productos','Inventario, precios y disponibilidad'],customers:['Clientes','Quiénes te compran y cuánto'],coupons:['Promociones','Cupones de descuento'],settings:['Ajustes','Configuración general del negocio']};
+  const titles={reservations:['Reservas','Mesas apartadas por tus clientes'],reports:['Reportes','Descarga la información de tu negocio'],dashboard:['Dashboard','Resumen de tu heladería en tiempo real'],orders:['Pedidos','Gestiona y actualiza el estado de cada pedido'],products:['Productos','Inventario, precios y disponibilidad'],customers:['Clientes','Quiénes te compran y cuánto'],club:['Club','Miembros, puntos y qué tanto cuesta fidelizar'],coupons:['Promociones','Cupones de descuento'],settings:['Ajustes','Configuración general del negocio']};
   const pend=DB.orders.filter(o=>o.status==='Pendiente').length;
   return `<div class="admin">
   <aside class="side" id="side">
@@ -664,7 +866,7 @@ function adminView(){
         ${adminTab==='reservations'?`<button class="btn btn-primary" onclick="openResForm()">＋ Nueva reserva</button>`:''}
       </div>
     </div>
-    ${({dashboard,orders:ordersTab,reservations:reservationsTab,products:productsTab,customers:customersTab,coupons:couponsTab,reports:reportsTab,settings:settingsTab})[adminTab]()}
+    ${({dashboard,orders:ordersTab,reservations:reservationsTab,products:productsTab,customers:customersTab,club:clubTab,coupons:couponsTab,reports:reportsTab,settings:settingsTab})[adminTab]()}
   </main></div>`;
 }
 function setTab(t){adminTab=t;render()}
@@ -745,6 +947,7 @@ function setStatus(id,s){
   const o=DB.orders.find(o=>o.id===id);
   if(s==='Cancelado'&&o.status!=='Cancelado'){o.items.forEach(i=>{const p=prod(i.id);if(p)p.stock+=i.qty})}
   if(o.status==='Cancelado'&&s!=='Cancelado'){o.items.forEach(i=>{const p=prod(i.id);if(p)p.stock=Math.max(0,p.stock-i.qty)})}
+  clubOnStatus(o,s);
   o.status=s;save();render();toast('Pedido #'+id+' → '+s);
 }
 function viewOrder(id){
@@ -768,7 +971,7 @@ ${DB.products.map(p=>`<tr>
   <td style="min-width:150px"><div class="qty"><button onclick="adjStock(${p.id},-5)">−</button><b>${p.stock}</b><button onclick="adjStock(${p.id},5)">＋</button></div>
     <div class="progress"><i class="${p.stock<=10?'low':''}" style="width:${Math.min(p.stock,60)/60*100}%"></i></div></td>
   <td><label class="switch"><input type="checkbox" ${p.active?'checked':''} onchange="togProd(${p.id})"><span></span></label></td>
-  <td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" onclick="openProductForm(${p.id})">✏️ Editar</button> <button class="btn btn-danger btn-sm" onclick="delProd(${p.id})">🗑</button></td></tr>`).join('')}
+  <td style="white-space:nowrap"><button class="btn btn-ghost btn-sm" title="Oferta de última hora" onclick="setFlash(${p.id})">${flashOn(p)?'⚡ −'+p.flash.pct+'%':'⚡'}</button> <button class="btn btn-ghost btn-sm" onclick="openProductForm(${p.id})">✏️ Editar</button> <button class="btn btn-danger btn-sm" onclick="delProd(${p.id})">🗑</button></td></tr>`).join('')}
 </tbody></table></div></div>`}
 function adjStock(id,d){const p=prod(id);p.stock=Math.max(0,p.stock+d);save();render()}
 function togProd(id){const p=prod(id);p.active=!p.active;save();render();toast(p.name+(p.active?' visible':' oculto'))}
@@ -806,6 +1009,38 @@ function customersTab(){
   ${list.map((c,i)=>`<tr><td><div class="mini" style="border:0;padding:0"><div class="avatar">${esc(c.n[0])}</div><b>${esc(c.n)}</b></div></td><td>${c.orders}</td><td><b>${money(c.total)}</b></td><td>${fmtDate(c.last)}</td>
   <td><span class="status ${i<3?'st-Listo':c.orders>3?'st-Preparando':'st-Pendiente'}">${i<3?'⭐ VIP':c.orders>3?'Frecuente':'Nuevo'}</span></td></tr>`).join('')}
   </tbody></table></div></div>`;
+}
+
+/* ---------- Club (admin) ---------- */
+function adjPoints(ph){
+  const m=findMember(DB,ph);const v=parseInt(prompt('Ajustar puntos de '+m.name+' (ej. 10 o -10). Saldo actual: '+m.points,'0'),10);
+  if(!v)return;const why=prompt('Motivo del ajuste:','Ajuste manual')||'Ajuste manual';
+  m.points=Math.max(0,m.points+v);addLedger(m,v,why);save();render();toast('Puntos de '+m.name+' actualizados');
+}
+function clubTab(){
+  const ms=DB.members, cost=DB.club.cost;
+  const mine=DB.orders.filter(o=>o.status==='Entregado'&&ms.some(m=>m.phone===o.phone));
+  const sales=mine.reduce((a,o)=>a+(o.base??o.total),0);
+  const redeemed=DB.orders.filter(o=>o.rew&&o.status!=='Cancelado').reduce((a,o)=>a+o.rew.value,0);
+  const comboSav=DB.orders.filter(o=>o.status!=='Cancelado').reduce((a,o)=>a+(o.combo||0),0);
+  const inCirc=ms.reduce((a,m)=>a+m.points,0);
+  const last=m=>{const x=DB.orders.filter(o=>o.phone===m.phone&&o.status!=='Cancelado').sort((a,b)=>new Date(b.date)-new Date(a.date))[0];return x?x.date:null};
+  const dormant=ms.filter(m=>{const l=last(m);return l&&Date.now()-new Date(l)>30*864e5}).length;
+  return `
+  <div class="kpis">
+    <div class="kpi k1" data-e="💚"><small>Miembros</small><b>${ms.length}</b><span>${dormant} sin comprar hace +30 días</span></div>
+    <div class="kpi k2" data-e="🏷️"><small>Puntos en circulación</small><b>${inCirc}</b><span>≈ ${money(inCirc*100)} en premios si se canjean todos</span></div>
+    <div class="kpi k3" data-e="🎁"><small>Premios canjeados</small><b>${money(redeemed)}</b><span>costo real ≈ ${money(Math.round(redeemed*cost))} (costo ${Math.round(cost*100)}%)</span></div>
+    <div class="kpi k4" data-e="📈"><small>Ventas de miembros</small><b>${money(sales)}</b><span>${sales?Math.round(redeemed/sales*1000)/10:0}% devuelto en premios · combos: ${money(comboSav)}</span></div>
+  </div>
+  <div class="panel"><h3>${ms.length} miembros</h3><div class="table-wrap"><table><thead><tr><th>Miembro</th><th>Nivel</th><th>Compras 90 d</th><th>Puntos</th><th>Última compra</th><th></th></tr></thead><tbody>
+  ${[...ms].sort((a,b)=>b.lifetime-a.lifetime).map(m=>{const {t,visits}=tierOf(DB,m),l=last(m),old=l&&Date.now()-new Date(l)>30*864e5;return `<tr>
+    <td><b>${esc(m.name)}</b><br><small style="color:var(--muted)">📞 ${m.phone}${m.birthday?' · 🎂 '+m.birthday:''}</small></td>
+    <td><span class="status st-${t.mult>1?'Listo':'Pendiente'}">${t.e} ${t.n}</span></td><td>${visits}</td><td><b>${m.points}</b></td>
+    <td>${l?fmtDate(l):'—'}${old?'<br><small style="color:var(--pink)">⚠️ reactivar</small>':''}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="adjPoints('${m.phone}')">± Puntos</button></td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Aún no hay miembros</td></tr>'}
+  </tbody></table></div></div>
+  <p style="color:var(--muted);margin-top:14px;font-size:.88rem">Los puntos se suman cuando el pedido pasa a <b>Entregado</b> y se devuelven si se cancela. El costo del premio se estima con el ${Math.round(cost*100)}% de costo de producto.</p>`;
 }
 
 /* ---------- Cupones ---------- */
