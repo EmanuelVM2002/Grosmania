@@ -117,6 +117,9 @@ footer{padding:40px 5vw;text-align:center;color:var(--muted);border-top:1px soli
 .field input,.field select,.field textarea{padding:11px 14px;border-radius:14px;border:1.5px solid var(--line);background:#fff;outline:0;transition:.2s;width:100%}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(15,181,163,.12)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt-g{margin-bottom:14px}.opt-g>b{display:block;font-size:.9rem;margin-bottom:6px}.opt-g select{width:100%;margin-bottom:6px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:#fff}
+.addons{display:grid;gap:6px;max-height:210px;overflow:auto}.addons label{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:.88rem}.addons label:has(input:checked){border-color:var(--pink);background:#e6fbf8}
+.cart-item small.det{display:block;color:var(--muted);margin-top:2px;line-height:1.3}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 .toast-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center}
 .toast{background:var(--ink);color:#fff;padding:12px 22px;border-radius:999px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:pop .3s}
@@ -238,29 +241,100 @@ td select{padding:6px 10px;border-radius:10px;border:1.5px solid var(--line);bac
 /* =========================================================
    DATOS
    ========================================================= */
-const KEY = 'grosmania.v1';
-const CATS = ['Ensaladas','Waffles','Fresas','Copas','Bebidas'];
+const KEY = 'grosmania.v2';
+const CATS = ['Copas','Nuevas creaciones','Ensaladas','Malteadas','Waffles','Minidonas','Obleas','Chocolate','Conos y vasos','Infantiles','Bebidas','Mascotas'];
 const STATUS = ['Pendiente','Preparando','Listo','Entregado','Cancelado'];
-const COLORS = {Ensaladas:'#ffe3e3',Waffles:'#fff6b8',Fresas:'#ffdede',Copas:'#cfeff5',Bebidas:'#d8f5c8'};
+const COLORS = {'Copas':'#cfeff5','Nuevas creaciones':'#ffe9a8','Ensaladas':'#ffe3e3','Malteadas':'#f6dcf0','Waffles':'#fff6b8','Minidonas':'#ffe8cf','Obleas':'#fdf0d0','Chocolate':'#e9d8cf','Conos y vasos':'#dff3ff','Infantiles':'#e8e0ff','Bebidas':'#d8f5c8','Mascotas':'#e3f5e1'};
+const CAT_EMOJI = {'Copas':'🍨','Nuevas creaciones':'✨','Ensaladas':'🥗','Malteadas':'🥤','Waffles':'🧇','Minidonas':'🍩','Obleas':'🫓','Chocolate':'🍫','Conos y vasos':'🍦','Infantiles':'🧸','Bebidas':'🧃','Mascotas':'🐶'};
+const CAT_COLOR = {'Copas':'#35b6ee','Nuevas creaciones':'#ffb454','Ensaladas':'#ff8fa3','Malteadas':'#c77dff','Waffles':'#f4c542','Minidonas':'#ff9a62','Obleas':'#d9a441','Chocolate':'#8b5a4a','Conos y vasos':'#5fd0e8','Infantiles':'#8f7cff','Bebidas':'#7fd85e','Mascotas':'#5fb870'};
+
+/* Listas de la carta */
+const SALSAS = ['Chocolate','Arequipe','Maracuyá','Leche condensada','Mora'];
+const FRUTAS_WAFFLE = ['Banano','Durazno','Manzana','Fresa','Mango','Piña'];
+const TOP_WAFFLE = ['Chips de chocolate','Chocmelos','Mini chips','Queso','Maní','Oreo','Corazones de hojaldre','Crispy blanco','Masmelos','Gusanitos','Bolas chokis','Gomas clásicas','Galleta milo','Galletas chokis'];
+const TOP_DONAS = ['Fresas','Banano','Chips de chocolate','Maní','Galleta oreo','Galleta mini chips','Masmelos','Barquillos piazza','Bolas chokis','Galletas chokis','Galletas milo','Chocmelos'];
+const JUGOS = ['Frutos rojos','Piña - hierbabuena','Naranja - piña','Mango - maracuyá','Frutos amarillos','Mango','Guanábana','Mandarina','Maracuyá'];
+/* Adiciones: mismo precio en cualquier producto (carta, página «Adiciones») */
+const ADICIONES = [['Una bola de helado',2000],['Queso',4000],['Brownie',2500],['Chips de chocolate',2500],['Oreo',2000],['Gusanitos',2000],['Chocmelos',2500],['Bolas chokis',2000],['Chantillí',4000],['Almíbar de mora',3000],['Chocoramo',3000],['Concha',1500],['Gelatina',3000],['Masmelos',2000],['Crispy blanco',2000],['Piazza',2000],['Frutas',4000],['Chocolate caliente',6000],['Galletas milo',2000],['Galletas chokis',2000],['Nuggets de milo',3000],['Corazones de hojaldre',2000],['Milo en polvo',2500],['Maní',2500],['Cucurucho',1500]];
+/* Sabores de helado: la carta no los lista; se editan en Ajustes */
+const FLAVORS_DEFAULT = ['Vainilla','Chocolate','Brownie','Fresa','Frutos rojos','Mango','Maracuyá','Piña'];
 
 function seed(){
-  const P = (id,name,emoji,cat,price,stock,desc,tag='',img='')=>({id,name,emoji,cat,price,stock,desc,tag,img,active:true});
-  const products = [
-    P(1,'Ensalada de Frutas Clásica','🥗','Ensaladas',12000,40,'Frutas frescas de temporada con helado, crema y queso rallado.','Favorito'),
-    P(2,'Ensalada Tropical','🍍','Ensaladas',14000,32,'Piña, mango, papaya y fresa con tres bolas de helado.'),
-    P(3,'Ensalada Especial Gro’smania','🍓','Ensaladas',18000,20,'La más completa: frutas, helados, crema y topping de la casa.','Estrella'),
-    P(4,'Waffle con Helado','🧇','Waffles',15000,36,'Waffle caliente con dos bolas de helado y salsa a elegir.'),
-    P(5,'Waffle Brownie','🍫','Waffles',17000,22,'Brownie tibio sobre waffle, fresas, crema y fudge.','Nuevo','p3.jpg'),
-    P(6,'Waffle de Fresas','🍓','Waffles',16000,28,'Fresas frescas, crema chantilly y chocolate blanco.'),
-    P(7,'Fresas con Crema','🍓','Fresas',13000,45,'Fresas frescas con crema, helado y barquillo.','Top','p4.jpg'),
-    P(8,'Fresas con Helado','🍨','Fresas',15000,30,'Fresas, tres bolas de helado y salsa de chocolate.'),
-    P(9,'Copa Brownie Fudge','🍫','Copas',16000,24,'Brownie, helado de vainilla, crema y cereza.','Top','p1.jpg'),
-    P(10,'Copa Oreo','🍪','Copas',15000,18,'Helado cremoso, galleta Oreo triturada y salsa de chocolate.'),
-    P(11,'Cono Sencillo','🍦','Copas',5000,60,'Una bola de tu sabor favorito en cono crocante.'),
-    P(12,'Malteada de Fresa','🥤','Bebidas',11000,30,'Espesa y cremosa, con helado real.'),
-    P(13,'Limonada de Cereza','🍒','Bebidas',8000,40,'Limón natural, cereza y hielo frappé.'),
-    P(14,'Affogato','☕','Bebidas',9500,5,'Bola de vainilla ahogada en espresso caliente.')
-  ];
+  const products=[]; let nid=1;
+  const SAB=n=>({k:'sabor',label:n>1?`Sabores de helado (${n})`:'Sabor de helado',n,list:'flavors'});
+  const G=(k,label,n,list)=>({k,label,n,list});
+  const P=(name,cat,price,desc,x={})=>products.push({id:nid++,name,emoji:x.emoji||CAT_EMOJI[cat],cat,price,stock:50,desc,tag:x.tag||'',img:x.img||'',active:true,
+    opts:x.opts||[],adds:x.adds!==undefined?x.adds:!(cat==='Bebidas'||cat==='Mascotas'),addons:x.addons||[]});
+  // Copas
+  P('Copa Frutos Amarillos','Copas',15500,'Dos sabores de helado, mango, piña y duraznos, salsa de maracuyá, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Copa Frutos Rojos','Copas',15500,'Dos sabores de helado, fresa, cereza, almíbar de mora artesanal, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Copa Queso','Copas',15500,'Dos sabores de helado, abundante queso rallado, crema de leche, salsa a tu elección, chantillí, cereza, barquillo y viruta de chocolate.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)]});
+  P('Copa Gelatina','Copas',12500,'Gelatina en cubos, queso rallado, crema de leche, un sabor de helado, leche condensada y viruta de chocolate.',{opts:[SAB(1)]});
+  P('Copa Cereza','Copas',15500,'Dos sabores de helado, cerezas, salsa de mora, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Copa Oreo','Copas',16000,'Dos sabores de helado, galleta oreo, bolas chokis, chips de chocolate, salsa de arequipe y chantillí.',{opts:[SAB(2)]});
+  P('Copa Brevas','Copas',15500,'Dos sabores de helado, brevas, queso, crema de leche, salsa de arequipe, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Fresas Pequeñas','Copas',12000,'Un sabor de helado, fresas, crema de leche, leche condensada, chantillí y viruta de chocolate.',{opts:[SAB(1)]});
+  P('Fresas Grandes','Copas',16000,'Dos sabores de helado, fresas, queso rallado, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)],img:'p4.jpg',tag:'Top'});
+  P('Duraznos Pequeños','Copas',12500,'Un sabor de helado, duraznos, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
+  P('Duraznos Grandes','Copas',17000,'Dos sabores de helado, duraznos, queso rallado, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Copa Crema','Copas',16500,'Crema chantillí acompañada de una fruta a elección, salsa, barquillo y viruta de chocolate.',{opts:[G('fruta','Fruta',1,['Duraznos','Fresas','Brevas']),G('salsa','Salsa',1,SALSAS)]});
+  P('Sundae','Copas',14000,'Dos sabores de helado bañados en un delicioso almíbar de mora artesanal, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
+  P('Gro’smania','Copas',16500,'Dos sabores de helado, brownie en trozos, galletas mini chips, chocmelos, salsa de chocolate, chantillí y viruta de chocolate. Ideal si eres amante del chocolate.',{opts:[SAB(2)],img:'p1.jpg',tag:'La casa'});
+  P('Brownie','Copas',16500,'Brownie caliente o frío, acompañado de fresas, banano, un sabor de helado, arequipe y chips de chocolate.',{opts:[G('temp','Brownie',1,['Caliente','Frío']),SAB(1)],img:'p3.jpg'});
+  P('Banana Sencilla','Copas',14500,'Tres sabores de helado acompañado de un banano, salsas, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(3)]});
+  P('Banana Especial','Copas',17500,'Tres sabores de helado, banano, brownie en trozos, queso rallado, salsas, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(3)]});
+  // Nuevas creaciones
+  P('Copa Chocoramo','Nuevas creaciones',17500,'Dos sabores de helado, chocoramo en trozos, fresas, chantillí y salsa de chocolate.',{opts:[SAB(2)],tag:'Nuevo'});
+  P('Copa Chokis','Nuevas creaciones',16500,'Dos sabores de helado, galletas chokis trituradas, bolas chokis, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo'});
+  P('Copa Milo','Nuevas creaciones',17500,'Dos sabores de helado, milo en polvo, galleta de milo triturada, nuggets de milo, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo'});
+  P('Copa Corazón','Nuevas creaciones',16500,'Dos sabores de helado bañados en almíbar de mora, corazones de hojaldre, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo'});
+  // Ensaladas
+  P('Ensalada de Frutas Pequeña','Ensaladas',16000,'16 onzas. Piña, mango, manzana, papaya, banano, fresa, cereza, queso rallado, crema de leche, leche condensada, barquillo y viruta de chocolate. Incluye 1 sabor de helado y queso.',{opts:[SAB(1)]});
+  P('Ensalada de Frutas Mediana','Ensaladas',17500,'24 onzas. Las mismas frutas, con 1 sabor de helado y 1 porción de queso.',{opts:[SAB(1)]});
+  P('Ensalada de Frutas Grande','Ensaladas',21000,'32 onzas. Las mismas frutas, con 2 sabores de helado y 2 porciones de queso.',{opts:[SAB(2)]});
+  P('Salpicón Natural','Ensaladas',11000,'Deliciosas frutas frescas.');
+  P('Salpicón Sencillo','Ensaladas',13000,'Frutas frescas acompañadas de un sabor de helado, crispy blanco, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
+  P('Salpicón Especial','Ensaladas',16500,'Frutas frescas acompañadas de un sabor de helado, queso rallado, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
+  // Malteadas
+  P('Malteada Sencilla','Malteadas',12500,'Sabor de helado a elección, chantillí, barquillo piazza y viruta de chocolate.',{opts:[SAB(1)]});
+  P('Malteada Chokis','Malteadas',17000,'Helado de vainilla licuado con galletas chokis, terminada con chantillí, arequipe y bolas chokis.');
+  P('Malteada Frutos Rojos','Malteadas',17000,'Helado de frutos rojos licuado con almíbar de mora, terminada con trocitos de fresa, chantillí y más almíbar.');
+  P('Malteada Milo','Malteadas',17000,'Helado de vainilla licuado con milo y galletas milo, terminada con trocitos de galleta, chantillí, arequipe y milo en polvo.');
+  P('Malteada Brownie','Malteadas',17000,'Helado de brownie o vainilla licuado con brownie, terminada con chantillí, arequipe y trocitos de brownie.',{opts:[G('base','Helado',1,['Brownie','Vainilla'])]});
+  P('Malteada Maracumango','Malteadas',17000,'Helado de maracuyá licuado con pulpa de maracuyá, terminada con trocitos de mango, chantillí y salsa de maracuyá.');
+  P('Malteada Chocoramo','Malteadas',17000,'Helado de vainilla y chocolate licuado con chocoramo, terminada con chantillí, trocitos de chocoramo y salsa de chocolate.');
+  // Waffles
+  P('Waffle Completo','Waffles',19500,'2 frutas, 2 toppings, 1 salsa, 1 sabor de helado y chantillí. ¡Arma el tuyo!',{opts:[G('fruta','Frutas',2,FRUTAS_WAFFLE),G('topping','Toppings',2,TOP_WAFFLE),G('salsa','Salsa',1,SALSAS),SAB(1)]});
+  P('Waffle Medio','Waffles',12000,'1 fruta, 1 topping, 1 salsa y 1 sabor de helado. ¡Arma el tuyo!',{opts:[G('fruta','Fruta',1,FRUTAS_WAFFLE),G('topping','Topping',1,TOP_WAFFLE),G('salsa','Salsa',1,SALSAS),SAB(1)]});
+  // Minidonas
+  P('Minidonas Bandeja de 6','Minidonas',12500,'1 salsa, 2 toppings y 1 sabor de helado.',{opts:[G('salsa','Salsa',1,SALSAS),G('topping','Toppings',2,TOP_DONAS),SAB(1)]});
+  P('Minidonas Bandeja de 9','Minidonas',15500,'2 salsas, 2 toppings y 1 sabor de helado.',{opts:[G('salsa','Salsas',2,SALSAS),G('topping','Toppings',2,TOP_DONAS),SAB(1)]});
+  P('Minidonas Bandeja de 16','Minidonas',25000,'3 salsas, 3 toppings y 2 sabores de helado. Ideal para compartir.',{opts:[G('salsa','Salsas',3,SALSAS),G('topping','Toppings',3,TOP_DONAS),SAB(2)]});
+  // Obleas
+  P('Oblea Sencilla','Obleas',4500,'Oblea clásica.');
+  P('Oblea Extra Queso','Obleas',12500,'Obleas rellenas con queso rallado, lechera, arequipe, chantillí y viruta de chocolate.');
+  P('Oblea Frutal','Obleas',12500,'Obleas rellenas con queso rallado, una fruta a tu elección, lechera, arequipe, chantillí y viruta de chocolate.',{opts:[G('fruta','Fruta',1,['Fresa','Durazno','Mora en almíbar'])]});
+  // Chocolate
+  P('Fondue','Chocolate',28500,'Delicioso chocolate caliente donde podrás sumergir fresas, trozos crujientes de waffle, banano, brownie y dos sabores de helado a tu elección.',{opts:[SAB(2)]});
+  P('Fresas con Chocolate','Chocolate',17000,'Deliciosas fresas bañadas con chocolate caliente.');
+  // Conos y vasos
+  P('Cucurucho 1 bola','Conos y vasos',4000,'Una bola de helado en cucurucho.',{opts:[SAB(1)]});
+  P('Cucurucho 2 bolas','Conos y vasos',6000,'Dos bolas de helado en cucurucho.',{opts:[SAB(2)]});
+  P('Concha 1 bola','Conos y vasos',5000,'Una bola de helado en concha.',{opts:[SAB(1)]});
+  P('Concha 2 bolas','Conos y vasos',6500,'Dos bolas de helado en concha.',{opts:[SAB(2)]});
+  P('Vaso con Chantillí','Conos y vasos',9000,'Dos sabores de helado, chantillí y salsa.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)]});
+  P('Vaso con Queso','Conos y vasos',9000,'Dos sabores de helado, queso y salsa.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)]});
+  P('1 Litro de Helado','Conos y vasos',17000,'Un litro de helado para llevar.',{opts:[SAB(1)]});
+  // Infantiles
+  P('Helado Infantil','Infantiles',9000,'Helados decorados con carita, gomas, masmelos y confites. Pregunta por las figuras del día.',{opts:[SAB(2)]});
+  // Bebidas
+  P('Jugo Natural en Agua','Bebidas',5000,'Jugo natural de fruta, preparado en agua.',{opts:[G('fruta','Sabor',1,JUGOS)]});
+  P('Jugo Natural en Leche','Bebidas',6000,'Jugo natural de fruta, preparado en leche.',{opts:[G('fruta','Sabor',1,JUGOS)]});
+  P('Milo','Bebidas',8000,'Malteada de milo bien cargada de chocolate.',{addons:[['Chantillí (súbele el nivel)',2500]]});
+  // Mascotas
+  P('Helado para Mascotas Pequeño','Mascotas',5000,'Helado seguro para tu mejor amigo.',{opts:[G('sabor','Sabor',1,['Cabano','Mango','Fresa','Galleta'])]});
+  P('Helado para Mascotas Grande','Mascotas',6500,'Helado seguro para tu mejor amigo, tamaño grande.',{opts:[G('sabor','Sabor',1,['Cabano','Mango','Fresa','Galleta'])]});
+  P('Turrón de Pollo','Mascotas',5000,'Snack de pollo para mascotas.');
   let s=7; const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
   const names=['Laura Gómez','Andrés Ruiz','Camila Torres','Santiago Díaz','Valentina Mora','Mateo Rojas','Isabela Cruz','Daniel Pardo','Sofía Londoño','Juan Pérez','Mariana Silva','Felipe Castro'];
   const orders=[]; let id=1000; const now=Date.now();
@@ -268,8 +342,8 @@ function seed(){
     const n = 4+Math.floor(rnd()*5);
     for(let k=0;k<n;k++){
       const items=[]; const c=1+Math.floor(rnd()*3);
-      for(let j=0;j<c;j++){items.push({id:1+Math.floor(rnd()*products.length),qty:1+Math.floor(rnd()*3)})}
-      const total=items.reduce((a,i)=>a+products.find(p=>p.id===i.id).price*i.qty,0);
+      for(let j=0;j<c;j++){const pid=1+Math.floor(rnd()*products.length);items.push({id:pid,qty:1+Math.floor(rnd()*3),price:products.find(p=>p.id===pid).price})}
+      const total=items.reduce((a,i)=>a+i.price*i.qty,0);
       const date=new Date(now-d*864e5-Math.floor(rnd()*8)*36e5).toISOString();
       let st = d>0 ? (rnd()<.9?'Entregado':'Cancelado') : STATUS[Math.floor(rnd()*4)];
       orders.push({id:id++,customer:names[Math.floor(rnd()*names.length)],items,total,status:st,date,method:rnd()<.5?'Local':'Domicilio'});
@@ -286,13 +360,14 @@ function seed(){
     {id:4,name:'Empresa Nova SAS',phone:'6015550123',date:ymd(2),time:'15:00',people:12,occasion:'Evento empresarial',notes:'Factura electrónica',status:'Pendiente'},
     {id:5,name:'Santiago Díaz',phone:'3151112233',date:ymd(-1),time:'19:00',people:3,occasion:'Amigos',notes:'',status:'Completada'},
     {id:6,name:'Valentina Mora',phone:'3012223344',date:ymd(-2),time:'14:00',people:5,occasion:'Cumpleaños',notes:'',status:'Cancelada'}
-  ],settings:{name:'Gro’smania',open:true,delivery:3000,tables:6}};
+  ],settings:{name:'Gro’smania',open:true,delivery:3000,tables:6,flavors:[...FLAVORS_DEFAULT]}};
 }
 function ymd(off){const x=new Date(Date.now()+off*864e5);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
 let DB = (()=>{try{return JSON.parse(localStorage.getItem(KEY))||seed()}catch(e){return seed()}})();
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
 if(!DB.reservations)DB.reservations=seed().reservations;   // datos guardados antes de existir las reservas
 if(DB.settings.tables==null)DB.settings.tables=6;
+if(!DB.settings.flavors)DB.settings.flavors=[...FLAVORS_DEFAULT];
 const RES_STATUS=['Pendiente','Confirmada','Completada','Cancelada'];
 const SLOTS=['12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00'];
 let resFilter='Próximas', repPeriod='7';
@@ -360,7 +435,7 @@ function storeView(){
         <button class="btn btn-ghost" onclick="openCart()">Mi pedido</button>
       </div>
       <div class="hero-stats">
-        <div><b>15+</b><small>Postres</small></div>
+        <div><b>${DB.products.filter(p=>p.active).length}</b><small>Productos</small></div>
         <div><b>4.9★</b><small>Calificación</small></div>
         <div><b>753</b><small>Seguidores</small></div>
       </div>
@@ -381,7 +456,7 @@ function storeView(){
         <div class="pic" style="background:${COLORS[p.cat]||'#cfeff5'}">${p.img?`<img src="${p.img}" alt="${esc(p.name)}">`:p.emoji}</div>
         <h3>${esc(p.name)}</h3><p>${esc(p.desc)}</p>
         <div class="row"><span class="price">${money(p.price)}</span>
-          <button class="btn btn-primary btn-sm" ${p.stock<=0||!DB.settings.open?'disabled style="opacity:.5"':''} onclick="addCart(${p.id})">${p.stock<=0?'Agotado':'＋ Agregar'}</button></div>
+          <button class="btn btn-primary btn-sm" ${p.stock<=0||!DB.settings.open?'disabled style="opacity:.5"':''} onclick="addCart(${p.id})">${p.stock<=0?'Agotado':needsCustom(p)?'Armar / agregar':'＋ Agregar'}</button></div>
       </article>`).join('')||'<p class="empty">No hay productos en esta categoría.</p>'}</div>
   </section>
 
@@ -421,20 +496,65 @@ function storeView(){
 function setCat(c){filterCat=c;render();document.getElementById('menu')?.scrollIntoView()}
 
 /* ---------- Carrito ---------- */
-function addCart(id){
-  const p=prod(id); const it=cart.find(i=>i.id===id);
-  if((it?it.qty:0)+1>p.stock){toast('No hay más stock de '+p.name);return}
-  it?it.qty++:cart.push({id,qty:1});
+const needsCustom=p=>(p.opts&&p.opts.length)||p.adds||(p.addons&&p.addons.length);
+const addonsOf=p=>[...(p.adds?ADICIONES:[]),...(p.addons||[])];
+const listOf=g=>g.list==='flavors'?DB.settings.flavors:g.list;
+const qtyOf=id=>cart.filter(l=>l.id===id).reduce((a,l)=>a+l.qty,0);
+function lineDetail(l){
+  const parts=(l.sel||[]).map(x=>x.label.replace(/ \(\d\)$/,'')+': '+x.v.join(', '));
+  if(l.adds&&l.adds.length)parts.push('Adiciones: '+l.adds.join(', '));
+  if(l.note)parts.push('Nota: '+l.note);
+  return parts.join(' · ');
+}
+function pushLine(p,sel,adds,note){
+  if(qtyOf(p.id)+1>p.stock){toast('No hay más stock de '+p.name);return}
+  const extra=addonsOf(p).filter(a=>adds.includes(a[0])).reduce((x,a)=>x+a[1],0);
+  const key=JSON.stringify([p.id,sel,adds,note]);
+  const it=cart.find(l=>l.key===key);
+  if(it)it.qty++;else cart.push({key,id:p.id,qty:1,sel,adds,note,unit:p.price+extra});
   toast(p.emoji+' '+p.name+' agregado'); render();
 }
-function chQty(id,d){
-  const it=cart.find(i=>i.id===id); if(!it)return;
-  if(d>0&&it.qty+1>prod(id).stock){toast('Stock máximo alcanzado');return}
-  it.qty+=d; if(it.qty<=0)cart=cart.filter(i=>i.id!==id);
-  refreshCart(); render(); if(cart.length||true)openCart(true);
+function addCart(id){
+  const p=prod(id);
+  if(needsCustom(p))return openCustom(id);
+  pushLine(p,[],[],'');
+}
+function openCustom(id){
+  closeCheckout();
+  const p=prod(id), ads=addonsOf(p);
+  const m=document.createElement('div');m.className='modal';
+  m.innerHTML=`<div><h3>${p.emoji} ${esc(p.name)}</h3>
+  <p style="color:var(--muted);margin:-8px 0 14px;font-size:.9rem">${esc(p.desc)}</p>
+  ${(p.opts||[]).map((g,gi)=>`<div class="opt-g"><b>${esc(g.label)}</b>${[...Array(g.n)].map((_,i)=>`<select id="oc_${gi}_${i}"><option value="">Elige${g.n>1?' ('+(i+1)+')':''}…</option>${listOf(g).map(v=>`<option>${esc(v)}</option>`).join('')}</select>`).join('')}</div>`).join('')}
+  ${ads.length?`<div class="opt-g"><b>${p.adds?'Adiciones (opcional)':'Extras (opcional)'}</b><div class="addons">${ads.map((a,j)=>`<label><span><input type="checkbox" id="oc_a_${j}" onchange="ocTotal(${id})"> ${esc(a[0])}</span><span>+${money(a[1])}</span></label>`).join('')}</div></div>`:''}
+  <div class="field"><label>Nota para la cocina (opcional)</label><input id="oc_note" maxlength="120" placeholder="Ej. sin queso, para llevar…"></div>
+  <div class="sum-row total"><span>Total</span><span id="oc_total">${money(p.price)}</span></div>
+  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeCheckout()">Cancelar</button><button class="btn btn-primary" onclick="confirmCustom(${id})">Agregar al pedido</button></div></div>`;
+  document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('show'));
+}
+function ocPicked(p){return addonsOf(p).filter((a,j)=>{const el=document.getElementById('oc_a_'+j);return el&&el.checked}).map(a=>a[0])}
+function ocTotal(id){
+  const p=prod(id),sel=ocPicked(p);
+  $('#oc_total').textContent=money(p.price+addonsOf(p).filter(a=>sel.includes(a[0])).reduce((x,a)=>x+a[1],0));
+}
+function confirmCustom(id){
+  const p=prod(id), sel=[];
+  for(let gi=0;gi<(p.opts||[]).length;gi++){
+    const g=p.opts[gi], v=[...Array(g.n)].map((_,i)=>document.getElementById(`oc_${gi}_${i}`).value);
+    if(v.some(x=>!x)){toast('Falta elegir: '+g.label);return}
+    sel.push({label:g.label,v});
+  }
+  pushLine(p,sel,ocPicked(p),$('#oc_note').value.trim());
+  closeCheckout();
+}
+function chQty(i,d){
+  const l=cart[i]; if(!l)return;
+  if(d>0&&qtyOf(l.id)+1>prod(l.id).stock){toast('Stock máximo alcanzado');return}
+  l.qty+=d; if(l.qty<=0)cart.splice(i,1);
+  render(); openCart(true);
 }
 function totals(){
-  const sub=cart.reduce((a,i)=>a+prod(i.id).price*i.qty,0);
+  const sub=cart.reduce((a,l)=>a+l.unit*l.qty,0);
   const disc=coupon?Math.round(sub*coupon.pct/100):0;
   const ship=sub>0?DB.settings.delivery:0;
   return {sub,disc,ship,total:sub-disc+ship};
@@ -444,10 +564,10 @@ function openCart(keep){
   const t=totals();
   const d=document.createElement('aside');d.className='drawer';
   d.innerHTML=`<header><h3>Tu pedido 🛒</h3><button class="icon-btn" onclick="closeAll()">✕</button></header>
-  <div class="body">${cart.length?cart.map(i=>{const p=prod(i.id);return `
+  <div class="body">${cart.length?cart.map((l,ix)=>{const p=prod(l.id);return `
     <div class="cart-item"><div class="e" style="background:${COLORS[p.cat]}">${p.emoji}</div>
-    <div class="info"><b>${esc(p.name)}</b><br><small>${money(p.price)}</small></div>
-    <div class="qty"><button onclick="chQty(${p.id},-1)">−</button><b>${i.qty}</b><button onclick="chQty(${p.id},1)">＋</button></div></div>`}).join('')
+    <div class="info"><b>${esc(p.name)}</b><br><small>${money(l.unit)}</small>${lineDetail(l)?`<small class="det">${esc(lineDetail(l))}</small>`:''}</div>
+    <div class="qty"><button onclick="chQty(${ix},-1)">−</button><b>${l.qty}</b><button onclick="chQty(${ix},1)">＋</button></div></div>`}).join('')
     :'<p class="empty">Tu carrito está vacío 🍨<br>¡Agrega algo delicioso!</p>'}</div>
   <footer>
     <div class="coupon"><input id="cpn" placeholder="Código de descuento" style="flex:1;padding:10px 14px;border-radius:999px;border:1.5px solid var(--line)" value="${coupon?coupon.code:''}"><button class="btn btn-ghost btn-sm" onclick="applyCoupon()">Aplicar</button></div>
@@ -483,8 +603,8 @@ function placeOrder(){
   const name=$('#co_name').value.trim(); if(!name){toast('Escribe tu nombre');return}
   const t=totals();
   const id=Math.max(...DB.orders.map(o=>o.id),999)+1;
-  DB.orders.push({id,customer:name,items:cart.map(i=>({...i})),total:t.total,status:'Pendiente',date:new Date().toISOString(),method:$('#co_m').value});
-  cart.forEach(i=>{prod(i.id).stock-=i.qty});
+  DB.orders.push({id,customer:name,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,status:'Pendiente',date:new Date().toISOString(),method:$('#co_m').value});
+  cart.forEach(l=>{prod(l.id).stock-=l.qty});
   if(coupon){coupon.uses=(coupon.uses||0)+1}
   cart=[];coupon=null;save();closeAll();render();toast('¡Pedido #'+id+' enviado! 🍨');
 }
@@ -564,8 +684,8 @@ function dashboard(){
   const max=Math.max(...days.map(d=>d.v),1);
   // por categoría + top productos
   const byCat={},byProd={};
-  valid.forEach(o=>o.items.forEach(i=>{const p=prod(i.id);if(!p)return;const v=p.price*i.qty;byCat[p.cat]=(byCat[p.cat]||0)+v;byProd[p.id]=(byProd[p.id]||0)+i.qty}));
-  const catCol={Ensaladas:'#ff8fa3',Waffles:'#ffb454',Fresas:'#ff6b8b',Copas:'#35b6ee',Bebidas:'#7fd85e'};
+  valid.forEach(o=>o.items.forEach(i=>{const p=prod(i.id);if(!p)return;const v=(i.price??p.price)*i.qty;byCat[p.cat]=(byCat[p.cat]||0)+v;byProd[p.id]=(byProd[p.id]||0)+i.qty}));
+  const catCol=CAT_COLOR;
   const totCat=Object.values(byCat).reduce((a,b)=>a+b,0)||1;
   let acc=0;const stops=Object.entries(byCat).map(([k,v])=>{const s=acc;acc+=v/totCat*100;return `${catCol[k]} ${s}% ${acc}%`}).join(',');
   const top=Object.entries(byProd).sort((a,b)=>b[1]-a[1]).slice(0,5);
@@ -633,7 +753,7 @@ function viewOrder(id){
   const m=document.createElement('div');m.className='modal';
   m.innerHTML=`<div><h3>Pedido #${o.id} <span class="status st-${o.status}" style="font-size:.8rem;vertical-align:middle">${o.status}</span></h3>
   <p style="color:var(--muted);margin-bottom:12px">${esc(o.customer)} · ${fmtDate(o.date)} · ${o.method}</p>
-  ${o.items.map(i=>{const p=prod(i.id);return p?`<div class="mini"><div class="e" style="background:${COLORS[p.cat]}">${p.emoji}</div><div class="grow"><b>${esc(p.name)}</b><br><small>${i.qty} × ${money(p.price)}</small></div><b>${money(i.qty*p.price)}</b></div>`:''}).join('')}
+  ${o.items.map(i=>{const p=prod(i.id);return p?`<div class="mini"><div class="e" style="background:${COLORS[p.cat]}">${p.emoji}</div><div class="grow"><b>${esc(p.name)}</b><br><small>${i.qty} × ${money(i.price??p.price)}${lineDetail(i)?'<br>'+esc(lineDetail(i)):''}</small></div><b>${money(i.qty*(i.price??p.price))}</b></div>`:''}).join('')}
   <div class="sum-row total"><span>Total</span><span>${money(o.total)}</span></div>
   <div class="modal-actions"><button class="btn btn-primary" onclick="closeCheckout()">Cerrar</button></div></div>`;
   document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('show'));
@@ -712,13 +832,15 @@ function settingsTab(){return `
 <div class="cols"><div class="panel"><h3>Datos del negocio</h3>
 <div class="field"><label>Nombre de la heladería</label><input id="s_n" value="${esc(DB.settings.name)}"></div>
 <div class="field"><label>Costo de domicilio (COP)</label><input id="s_d" type="number" min="0" step="500" value="${DB.settings.delivery}"></div>
+<div class="field"><label>Sabores de helado disponibles (separados por coma)</label><textarea id="s_f" rows="3">${esc(DB.settings.flavors.join(', '))}</textarea></div>
 <div class="field"><label>Mesas disponibles por franja horaria</label><input id="s_t" type="number" min="1" max="50" value="${DB.settings.tables}"></div>
 <div class="mini"><div class="grow"><b>Local abierto</b><br><small>Si está cerrado, los clientes no pueden pedir</small></div><label class="switch"><input type="checkbox" id="s_o" ${DB.settings.open?'checked':''}><span></span></label></div>
 <button class="btn btn-primary" style="margin-top:16px" onclick="saveSettings()">Guardar cambios</button></div>
 <div class="panel"><h3>Zona de datos</h3><p style="color:var(--muted);margin-bottom:14px">Esta es una demo: los datos se guardan solo en tu navegador. Puedes restaurar los datos de ejemplo cuando quieras.</p>
 <button class="btn btn-danger" onclick="resetDemo()">↺ Restaurar datos de ejemplo</button></div></div>`}
 function saveSettings(){
-  DB.settings.name=$('#s_n').value.trim()||'Gro’smania';DB.settings.delivery=Math.max(0,+$('#s_d').value||0);DB.settings.tables=Math.max(1,+$('#s_t').value||6);DB.settings.open=$('#s_o').checked;
+  DB.settings.name=$('#s_n').value.trim()||'Gro’smania';DB.settings.delivery=Math.max(0,+$('#s_d').value||0);DB.settings.tables=Math.max(1,+$('#s_t').value||6);
+  const fl=$('#s_f').value.split(/[,\n]/).map(x=>x.trim()).filter(Boolean);if(fl.length)DB.settings.flavors=fl;DB.settings.open=$('#s_o').checked;
   save();render();toast('Ajustes guardados ✅');
 }
 function resetDemo(){if(!confirm('¿Restaurar todos los datos de ejemplo?'))return;DB=seed();save();cart=[];coupon=null;render();toast('Datos restaurados')}
@@ -820,7 +942,7 @@ function buildReport(kind){
   if(kind==='ventas')return {title:'Ventas y pedidos',headers:['Pedido','Fecha','Cliente','Tipo','Estado','Artículos','Total (COP)'],
     rows:[...orders].sort((a,b)=>new Date(b.date)-new Date(a.date)).map(o=>[o.id,new Date(o.date).toLocaleString('es-CO'),o.customer,o.method,o.status,o.items.reduce((a,i)=>a+i.qty,0),o.total])};
   if(kind==='productos'){
-    const m={};valid.forEach(o=>o.items.forEach(i=>{const p=prod(i.id);if(!p)return;const x=m[p.id]||(m[p.id]={p,q:0,v:0});x.q+=i.qty;x.v+=i.qty*p.price}));
+    const m={};valid.forEach(o=>o.items.forEach(i=>{const p=prod(i.id);if(!p)return;const x=m[p.id]||(m[p.id]={p,q:0,v:0});x.q+=i.qty;x.v+=i.qty*(i.price??p.price)}));
     return {title:'Productos vendidos',headers:['Producto','Categoría','Unidades vendidas','Ingresos (COP)'],rows:Object.values(m).sort((a,b)=>b.v-a.v).map(x=>[x.p.name,x.p.cat,x.q,x.v])};
   }
   if(kind==='inventario')return {title:'Inventario',headers:['Producto','Categoría','Precio (COP)','Stock','Estado','Valor a precio de venta (COP)','Visible en tienda'],
@@ -898,7 +1020,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
 (function(){
   const h=location.hash;
   if(/^#admin/.test(h)){isAdmin=true;route='admin';adminTab=(h.split('/')[1])||'dashboard'}
-  if(h==='#cart'){cart=[{id:7,qty:1},{id:9,qty:1},{id:12,qty:2}]}
+  if(h==='#cart'){const mk=(n,q)=>{const p=DB.products.find(x=>x.name===n);return {key:n,id:p.id,qty:q,sel:[],adds:[],note:'',unit:p.price}};cart=[mk('Fresas Grandes',1),mk('Gro’smania',1),mk('Malteada Milo',2)]}
 })();
 render();
 (function(){
