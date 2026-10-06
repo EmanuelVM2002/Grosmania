@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carta Gro’smania · Menta</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--teal:#0fb5a3;--teal-d:#07766b;--ink:#10302d;--bg:#e9faf7;--pink:#ff5fa2}
+*{box-sizing:border-box;margin:0}
+body{font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-size:17px;line-height:1.4}
+/* logo de fondo: grande, centrado y fijo para que acompañe todo el scroll y cada hoja impresa */
+body::before{content:"";position:fixed;inset:0;background:url(../logo-gm.png) center 55%/min(78vw,620px) no-repeat;opacity:.10;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:auto;padding:28px 20px 60px}
+header{text-align:center;padding:10px 0 26px}
+header img{height:120px}
+header h1{font-family:Fredoka;font-size:clamp(2.6rem,7vw,4.4rem);color:var(--teal-d);letter-spacing:.04em;line-height:1}
+header p{font-weight:800;color:var(--pink);font-size:1.15rem;margin-top:6px}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 26px;position:sticky;top:0;padding:10px 0;background:linear-gradient(var(--bg) 70%,transparent);z-index:5}
+nav a{background:#fff;border:2px solid var(--teal);color:var(--teal-d);text-decoration:none;font-weight:800;padding:7px 15px;border-radius:999px;font-size:.95rem}
+nav a:hover{background:var(--teal);color:#fff}
+section{margin-bottom:34px;break-inside:avoid-page}
+h2{font-family:Fredoka;font-size:2rem;color:#fff;background:var(--teal);display:inline-block;padding:6px 26px;border-radius:999px;margin-bottom:16px;box-shadow:0 6px 0 var(--teal-d)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.it{background:rgba(255,255,255,.92);border-radius:20px;padding:15px 18px;border:2px solid #bfeee8;display:flex;flex-direction:column;gap:5px;break-inside:avoid}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.it b{font-family:Fredoka;font-size:1.28rem;font-weight:600;line-height:1.15}
+.pr{font-family:Fredoka;font-weight:700;font-size:1.3rem;background:var(--pink);color:#fff;border-radius:12px;padding:2px 11px;white-space:nowrap}
+.it p{font-size:.93rem;color:#3d5e5a}
+.add{display:flex;flex-wrap:wrap;gap:8px}
+.add span{background:#fff;border:2px dashed var(--teal);border-radius:999px;padding:5px 13px;font-weight:700;font-size:.95rem}
+.add em{font-style:normal;color:var(--pink);font-weight:800;margin-left:4px}
+footer{text-align:center;font-family:Fredoka;font-size:1.4rem;color:var(--teal-d);margin-top:20px}
+@media print{@page{size:A4;margin:12mm}body{font-size:14px}nav{display:none}body::before{position:fixed}}
+</style></head><body><div class="wrap">
+<header><img src="../logo-gm.png" alt="Gro’smania"><h1>NUESTRA CARTA</h1><p>Un lugar para ser feliz 🍨</p></header>
+<nav id="nav"></nav><main id="m"></main>
+<footer>No dejes para mañana el helado que puedes comerte hoy</footer></div>
+<script src="datos.js"></script>
+<script>
+const f=n=>'$'+n.toLocaleString('es-CO');
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[^a-z]+/g,'-');
+const E={'Copas':'🍨','Nuevas creaciones':'✨','Ensaladas':'🥗','Malteadas':'🥤','Waffles':'🧇','Minidonas':'🍩','Obleas':'🥞','Chocolate':'🍫','Conos y vasos':'🍦','Infantiles':'🧸','Bebidas':'🧃','Mascotas':'🐶'};
+document.getElementById('nav').innerHTML=CARTA.cats.map(c=>`<a href="#${slug(c.cat)}">${E[c.cat]} ${c.cat}</a>`).join('')+'<a href="#adiciones">➕ Adiciones</a>';
+document.getElementById('m').innerHTML=CARTA.cats.map(c=>`<section id="${slug(c.cat)}"><h2>${E[c.cat]} ${c.cat}</h2><div class="grid">${c.items.map(i=>`<div class="it"><div class="top"><b>${i.n}</b><span class="pr">${f(i.p)}</span></div><p>${i.d}</p></div>`).join('')}</div></section>`).join('')
++`<section id="adiciones"><h2>➕ Adiciones</h2><div class="add">${CARTA.adiciones.map(a=>`<span>${a[0]}<em>${f(a[1])}</em></span>`).join('')}</div></section>`;
+</script></body></html>

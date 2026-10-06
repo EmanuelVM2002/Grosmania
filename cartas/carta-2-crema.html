@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carta Gro’smania · Crema</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#14246b;--gold:#b07a1f;--cream:#fbf5e4;--teal:#0fb5a3}
+*{box-sizing:border-box;margin:0}
+body{font-family:Montserrat,system-ui,sans-serif;color:var(--navy);background:var(--cream);font-size:16.5px;line-height:1.45}
+/* logo de fondo: esquina inferior, enorme y suave, como marca de agua de la carta impresa */
+html,body{overflow-x:hidden}
+body::before{content:"";position:fixed;right:0;bottom:0;width:min(70vw,640px);height:min(80vh,740px);background:url(../logo-gm.png) right bottom/contain no-repeat;opacity:.09;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1000px;margin:auto;padding:32px 22px 70px}
+header{display:flex;align-items:center;justify-content:center;gap:22px;padding-bottom:22px;border-bottom:4px double var(--gold);margin-bottom:30px;flex-wrap:wrap;text-align:center}
+header img{height:110px}
+header h1{font-family:Fredoka;font-size:clamp(2.4rem,7vw,4rem);color:var(--gold);letter-spacing:.14em;line-height:1}
+header small{display:block;letter-spacing:.3em;font-weight:700;margin-top:6px}
+section{margin-bottom:34px;break-inside:avoid-page}
+h2{font-family:Fredoka;font-size:1.9rem;letter-spacing:.18em;color:#fff;background:var(--navy);padding:8px 24px;border-radius:14px 14px 14px 0;display:inline-block;margin-bottom:14px;text-transform:uppercase}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 38px}
+.it{padding:9px 0;break-inside:avoid}
+.row{display:flex;align-items:baseline;gap:8px;font-weight:800;font-size:1.08rem;text-transform:uppercase}
+.row i{flex:1;border-bottom:3px dotted rgba(20,36,107,.35);transform:translateY(-4px)}
+.row span:last-child{color:var(--gold);font-size:1.2rem;white-space:nowrap}
+.it p{font-weight:500;font-size:.88rem;color:#3a4a8c;margin-top:2px}
+.add{columns:2;column-gap:38px}
+.add div{display:flex;gap:8px;font-weight:600;padding:3px 0;break-inside:avoid}
+.add i{flex:1;border-bottom:2px dotted rgba(20,36,107,.3);transform:translateY(-4px)}
+.add b{color:var(--gold)}
+.lema{margin-top:34px;text-align:center;font-family:Fredoka;font-size:1.5rem;color:var(--gold);letter-spacing:.06em}
+@media(max-width:700px){.cols,.add{grid-template-columns:1fr;columns:1}}
+@media print{@page{size:A4;margin:12mm}body{font-size:13.5px}}
+</style></head><body><div class="wrap">
+<header><img src="../logo-gm.png" alt="Gro’smania"><div><h1>CARTA</h1><small>HELADERÍA · GRO’SMANIA</small></div></header>
+<main id="m"></main><div class="lema">NO HAY MAL QUE DURE 100 AÑOS NI PENA QUE UN HELADO NO CURE</div></div>
+<script src="datos.js"></script>
+<script>
+const f=n=>n.toLocaleString('es-CO');
+document.getElementById('m').innerHTML=CARTA.cats.map(c=>`<section><h2>${c.cat}</h2><div class="cols">${c.items.map(i=>`<div class="it"><div class="row"><span>${i.n}</span><i></i><span>${f(i.p)}</span></div><p>${i.d}</p></div>`).join('')}</div></section>`).join('')
++`<section><h2>Adiciones</h2><div class="add">${CARTA.adiciones.map(a=>`<div><span>${a[0]}</span><i></i><b>${f(a[1])}</b></div>`).join('')}</div></section>`;
+</script></body></html>

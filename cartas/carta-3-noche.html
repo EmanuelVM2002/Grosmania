@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carta Gro’smania · Noche</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#062f33;--bg2:#0a4a4d;--teal:#36e5d0;--yel:#ffd45e;--pink:#ff7eb6;--ink:#f4fffd}
+*{box-sizing:border-box;margin:0}
+body{font-family:Nunito,system-ui,sans-serif;color:var(--ink);background:radial-gradient(circle at 20% 0,var(--bg2),var(--bg) 60%);background-attachment:fixed;font-size:17px;line-height:1.4}
+/* logo de fondo en blanco, grande y centrado: se lee como sello sin quitar contraste al texto */
+body::before{content:"";position:fixed;inset:0;background:url(../logo-gm-blanco.png) center/min(72vw,560px) no-repeat;opacity:.08;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1100px;margin:auto;padding:30px 20px 70px}
+header{text-align:center;margin-bottom:28px}
+header img{height:130px}
+header h1{font-family:Fredoka;font-size:clamp(2.6rem,8vw,4.8rem);line-height:1;color:var(--yel);text-shadow:0 0 28px rgba(255,212,94,.45)}
+header p{color:var(--teal);font-weight:800;letter-spacing:.32em;margin-top:8px}
+section{margin-bottom:36px}
+h2{font-family:Fredoka;font-size:2rem;color:var(--teal);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+h2::after{content:"";flex:1;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--teal),transparent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.it{background:rgba(255,255,255,.07);border:1.5px solid rgba(54,229,208,.35);border-radius:18px;padding:15px 18px;backdrop-filter:blur(2px);break-inside:avoid}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.it b{font-family:Fredoka;font-weight:600;font-size:1.3rem;line-height:1.15}
+.pr{font-family:Fredoka;font-weight:700;font-size:1.55rem;color:var(--yel);white-space:nowrap}
+.it p{font-size:.95rem;color:#c9ece7;margin-top:4px}
+.add{display:flex;flex-wrap:wrap;gap:9px}
+.add span{border:1.5px solid var(--pink);border-radius:999px;padding:6px 14px;font-weight:800}
+.add em{font-style:normal;color:var(--yel);margin-left:6px}
+footer{text-align:center;font-family:Fredoka;color:var(--pink);font-size:1.5rem;margin-top:10px}
+@media print{@page{size:A4;margin:10mm}body{background:var(--bg);-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:14px}}
+</style></head><body><div class="wrap">
+<header><img src="../logo-gm-blanco.png" alt="Gro’smania"><h1>La Carta</h1><p>HELADERÍA · UN LUGAR PARA SER FELIZ</p></header>
+<main id="m"></main><footer>A mal tiempo, buen helado 🍨</footer></div>
+<script src="datos.js"></script>
+<script>
+const f=n=>'$'+n.toLocaleString('es-CO');
+const E={'Copas':'🍨','Nuevas creaciones':'✨','Ensaladas':'🥗','Malteadas':'🥤','Waffles':'🧇','Minidonas':'🍩','Obleas':'🥞','Chocolate':'🍫','Conos y vasos':'🍦','Infantiles':'🧸','Bebidas':'🧃','Mascotas':'🐶'};
+document.getElementById('m').innerHTML=CARTA.cats.map(c=>`<section><h2>${E[c.cat]} ${c.cat}</h2><div class="grid">${c.items.map(i=>`<div class="it"><div class="top"><b>${i.n}</b><span class="pr">${f(i.p)}</span></div><p>${i.d}</p></div>`).join('')}</div></section>`).join('')
++`<section><h2>➕ Adiciones</h2><div class="add">${CARTA.adiciones.map(a=>`<span>${a[0]}<em>${f(a[1])}</em></span>`).join('')}</div></section>`;
+</script></body></html>
