@@ -2,1544 +2,195 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0fb5a3">
-<meta name="description" content="Heladería Gro’smania en Medellín: copas, waffles, fresas con crema y más. Pide por WhatsApp y suma puntos con el Club Gro’smania.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gro’smania · Heladería</title>
+<meta name="description" content="Heladería Gro’smania: copas, waffles, fresas con crema y más. Pide por WhatsApp y suma puntos en el Club Gro’smania.">
+<meta name="theme-color" content="#087f73">
 <meta property="og:title" content="Gro’smania · Heladería">
 <meta property="og:description" content="Mira la carta, pide por WhatsApp y suma puntos con el Club Gro’smania.">
-<meta property="og:image" content="fotos/banner-tres-copas.jpg">
+<meta property="og:image" content="fotos/banner-tres-copas.jpg"><!-- usar URL absoluta al publicar -->
 <link rel="icon" href="favicon.ico?v=2" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="logos/logo-teal-v.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=2">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
 <link rel="manifest" href="manifest.webmanifest">
-<title>Gro’smania · Heladería</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--pink:#0fb5a3;--rose:#ff5fa2;--mint:#7fd85e;--violet:#35b6ee;--orange:#ffb454;--bg:#f2fbfa;--ink:#16302f;--muted:#5d7a7c;--line:#d9f0ee;--shadow:0 10px 30px rgba(15,181,163,.15);--r:22px;--hh:62px}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;line-height:1.45}
-h1,h2,h3,.brand{font-family:Fredoka,Inter,sans-serif;letter-spacing:.2px}
-button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
-input,select,textarea{font:inherit;color:inherit;font-size:16px} /* 16px evita el zoom automático de iOS */
-[hidden]{display:none!important}
-.btn{text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:600;transition:.2s;white-space:nowrap;min-height:44px}
-.btn-primary{background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;box-shadow:0 8px 20px rgba(15,181,163,.3)}
-.btn-ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
-.btn-danger{background:#ffe6e6;color:#d6285c}
-.btn-wa{background:#25d366;color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.3)}
-.btn-sm{padding:8px 14px;font-size:.85rem;min-height:38px}
-.btn.block{width:100%}
-.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#fff;border:1.5px solid var(--line);position:relative;font-size:1.1rem}
-.badge{position:absolute;top:-4px;right:-4px;background:var(--rose);color:#fff;font-size:.7rem;font-weight:700;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
-.badge:empty{display:none}
-
-/* ---------- Encabezado ---------- */
-.top{position:sticky;top:0;z-index:50;height:var(--hh);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 max(4vw,14px);background:rgba(242,251,250,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;gap:10px;font-size:1.45rem;font-weight:700;color:var(--pink)}
-.logo-img{width:42px;height:42px;border-radius:12px;object-fit:cover;box-shadow:0 3px 10px rgba(15,181,163,.25)}
-.links{display:flex;gap:24px;font-weight:600}
-.links a{color:var(--muted);text-decoration:none}.links a:hover{color:var(--pink)}
-.acts{display:flex;gap:8px;align-items:center}
-
-/* ---------- Portada ---------- */
-.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:center;padding:34px max(5vw,16px) 40px;max-width:1150px;margin:auto}
-.pill{display:inline-block;background:#fff;border:1.5px solid var(--line);padding:6px 14px;border-radius:999px;font-weight:600;font-size:.84rem;color:var(--pink);margin-bottom:14px}
-.hero h1{font-size:clamp(2.3rem,7vw,4.4rem);line-height:1.03}
-.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--pink),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{margin:14px 0 22px;font-size:1.05rem;color:var(--muted);max-width:480px}
-.cta{display:flex;gap:10px;flex-wrap:wrap}
-.stage{position:relative;display:grid;place-items:center;min-height:300px}
-.stage .disc{width:min(300px,72vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,#c9f4ee 60%,#a4e8de);display:grid;place-items:center;box-shadow:0 24px 60px rgba(15,181,163,.3);animation:float 5s ease-in-out infinite}
-.stage .disc img{width:62%}
-.spr{position:absolute;font-size:2.3rem;animation:float 5s ease-in-out infinite}
-.spr.a{top:6%;left:6%}.spr.b{top:12%;right:4%;animation-delay:-2s}.spr.c{bottom:8%;left:2%;animation-delay:-3s}.spr.d{bottom:4%;right:8%;animation-delay:-1s}
-@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-14px) rotate(3deg)}}
-
-/* ---------- Carta corrida ---------- */
-section{padding:44px max(4vw,14px)}
-section[id]{scroll-margin-top:calc(var(--hh) + 6px)}
-.sec-head{text-align:center;margin-bottom:20px}
-.sec-head h2{font-size:clamp(1.9rem,5vw,2.8rem)}
-.sec-head p{color:var(--muted);margin-top:6px}
-.carta{padding-top:24px}
-.tools{max-width:860px;margin:0 auto 12px;display:flex;gap:8px}
-.tools .search{flex:1;position:relative}
-.tools input{width:100%;padding:12px 16px 12px 42px;border-radius:999px;border:1.5px solid var(--line);background:#fff;outline:0;min-height:46px}
-.tools input:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(15,181,163,.12)}
-.tools .search::before{content:"🔍";position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:.95rem}
-.tools .btn{padding:0 16px}
-.tools .on{background:var(--rose);color:#fff;border-color:var(--rose)}
-.chipbar{position:sticky;top:var(--hh);z-index:40;background:linear-gradient(var(--bg) 82%,transparent);padding:8px max(4vw,14px) 10px;margin:0 calc(-1 * max(4vw,14px));display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
-.chipbar::-webkit-scrollbar{display:none}
-.chip{flex:0 0 auto;scroll-snap-align:start;padding:9px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-weight:600;font-size:.92rem;white-space:nowrap;min-height:40px;transition:.2s}
-.chip.active{background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;border-color:transparent;transform:scale(1.04)}
-.menu{position:relative;max-width:860px;margin:6px auto 0;background:#fff;border-radius:28px;padding:10px 22px 24px;box-shadow:var(--shadow);overflow:hidden}
-.menu::before{content:"";position:absolute;inset:0;background:url(logo-gm.png?v=2) center top/340px auto repeat-y;opacity:.045;pointer-events:none}
-.menu>*{position:relative}
-.cat{scroll-margin-top:calc(var(--hh) + 62px);padding-top:18px}
-.cat h2{font-size:1.5rem;display:flex;align-items:center;gap:10px;color:var(--pink);padding-bottom:6px;border-bottom:3px solid var(--line);margin-bottom:2px}
-.cat h2 small{font-family:Inter;font-size:.78rem;color:var(--muted);font-weight:600;margin-left:auto}
-.it{display:grid;grid-template-columns:1fr auto;gap:3px 12px;padding:14px 6px;border-bottom:1px dashed var(--line);cursor:pointer;border-radius:14px;transition:background .15s}
-.it:active{background:#e9faf7}
-.it .nm{font-weight:700;font-size:1.02rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.it .pr{font-family:Fredoka;font-weight:600;color:var(--pink);font-size:1.15rem;text-align:right;white-space:nowrap}
-.it .ds{color:var(--muted);font-size:.88rem;line-height:1.4}
-.it .ad{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;font-size:1.5rem;font-weight:600;display:grid;place-items:center;position:relative;box-shadow:0 6px 14px rgba(15,181,163,.3);transition:transform .15s}
-.it .ad:active{transform:scale(.9)}
-.it .ad.bump{animation:bump .4s}
-@keyframes bump{40%{transform:scale(1.25)}}
-.it .inq{position:absolute;top:-6px;right:-6px;background:var(--rose);color:#fff;font-size:.72rem;font-weight:700;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
-.it .inq:empty{display:none}
-.tagp{background:#e6fbf8;color:var(--pink);border-radius:999px;font-size:.68rem;font-weight:700;padding:2px 9px}
-.heart{font-size:1.05rem;line-height:1;padding:4px;filter:grayscale(1);opacity:.45}
-.heart.on{filter:none;opacity:1}
-.it.hl{animation:hl 1.6s}
-@keyframes hl{0%,60%{background:#fff3b0}100%{background:transparent}}
-.addbox{display:flex;flex-wrap:wrap;gap:8px;padding:12px 0 4px}
-.addbox span{background:#f2fbfa;border:1.5px dashed var(--line);border-radius:999px;padding:6px 12px;font-size:.88rem;font-weight:600}
-.addbox em{font-style:normal;color:var(--pink);margin-left:6px}
-.nores{text-align:center;color:var(--muted);padding:30px 10px}
-
-/* ---------- Carrito / modal ---------- */
-.overlay{position:fixed;inset:0;background:rgba(22,48,47,.45);backdrop-filter:blur(4px);z-index:90;opacity:0;pointer-events:none;transition:.25s}
-.overlay.show{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:0;height:100%;width:min(430px,100%);background:#fff;z-index:100;transform:translateX(100%);transition:.3s;display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.15)}
-.drawer.show{transform:none}
-.drawer header{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line)}
-.drawer .body{flex:1;overflow:auto;padding:14px 20px}
-.drawer footer{padding:14px 20px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
-.cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.cart-item .info{flex:1;min-width:0}.cart-item small{color:var(--muted)}
-.cart-item small.det{display:block;margin-top:2px;line-height:1.3}
-.qty{display:flex;align-items:center;gap:8px}
-.qty button{width:36px;height:36px;border-radius:50%;background:var(--bg);border:1.5px solid var(--line);font-weight:700;font-size:1.1rem}
-.sum-row{display:flex;justify-content:space-between;margin:6px 0;gap:10px}
-.sum-row.total{font-family:Fredoka;font-size:1.4rem;font-weight:600;margin-top:10px}
-.hint{font-size:.85rem}
-.modal{position:fixed;inset:0;display:grid;place-items:center;z-index:110;pointer-events:none;padding:16px}
-.modal>div{background:#fff;border-radius:26px;padding:24px;width:min(520px,100%);max-height:92vh;overflow:auto;transform:scale(.94);opacity:0;transition:.25s;pointer-events:none}
-.modal.show>div{transform:none;opacity:1;pointer-events:auto}
-.modal h3{font-size:1.4rem;margin-bottom:14px}
-.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:10px}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.field label{font-size:.82rem;font-weight:600;color:var(--muted)}
-.field input,.field select,.field textarea,.opt-g select{padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);background:#fff;outline:0;width:100%;min-height:46px}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--pink);box-shadow:0 0 0 4px rgba(15,181,163,.12)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.opt-g{margin-bottom:14px}.opt-g>b{display:block;font-size:.92rem;margin-bottom:6px}.opt-g select{margin-bottom:6px}
-.addons{display:grid;gap:6px;max-height:230px;overflow:auto}
-.addons label{display:flex;justify-content:space-between;gap:10px;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;font-size:.9rem;min-height:44px;align-items:center}
-.addons label:has(input:checked){border-color:var(--pink);background:#e6fbf8}
-.cbox{background:#f2fbfa;border:1.5px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px;font-size:.9rem;display:grid;gap:8px}
-.cbox select{padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:#fff;width:100%;min-height:44px}
-.toast-wrap{position:fixed;bottom:calc(84px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;width:max-content;max-width:92vw;pointer-events:none}
-.toast{background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:500;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:pop .3s;text-align:center}
-@keyframes pop{from{transform:translateY(20px);opacity:0}}
-
-.quiz-cta{display:flex;align-items:center;gap:14px;width:100%;max-width:860px;margin:0 auto 14px;padding:14px 18px;border-radius:22px;background:linear-gradient(135deg,#fff3f9,#fffbe6 55%,#e6fbf8);border:2px dashed var(--rose);text-align:left;box-shadow:var(--shadow);transition:transform .15s}
-.quiz-cta:active{transform:scale(.98)}
-.quiz-cta .q-e{font-size:2.2rem;animation:float 3s ease-in-out infinite}
-.quiz-cta .q-t{flex:1;display:grid}
-.quiz-cta b{font-family:Fredoka;font-size:1.2rem}
-.quiz-cta small{color:var(--muted);font-size:.86rem}
-.quiz-cta .q-go{background:var(--rose);color:#fff;font-weight:700;border-radius:999px;padding:8px 14px;font-size:.88rem;white-space:nowrap}
-.quiz{position:fixed;inset:0;z-index:150;background:linear-gradient(160deg,#e6fbf8,#fff3f9 55%,#fffbe6);overflow:auto;display:flex;flex-direction:column;align-items:center;padding:12px 14px calc(24px + env(safe-area-inset-bottom))}
-.quiz::before{content:"";position:fixed;inset:0;background:url(logo-gm.png?v=2) center/min(80vw,420px) no-repeat;opacity:.06;pointer-events:none}
-.q-top{width:100%;max-width:560px;display:flex;justify-content:flex-end;position:relative}
-.q-card{position:relative;width:100%;max-width:560px;margin:auto;background:#fff;border-radius:28px;padding:26px 22px;box-shadow:var(--shadow);text-align:center}
-.q-in{animation:qin .35s ease}
-@keyframes qin{from{opacity:0;transform:translateY(18px) scale(.97)}}
-.q-big{font-size:3.4rem;line-height:1;margin-bottom:8px}
-.q-card h2{font-size:clamp(1.4rem,5vw,1.8rem);line-height:1.2;margin-bottom:8px}
-.q-sub{color:var(--muted);margin-bottom:16px}
-.q-prog{height:10px;background:#e6f6f4;border-radius:99px;overflow:hidden;margin-bottom:8px}
-.q-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--rose));border-radius:99px;transition:width .4s}
-.q-count{display:block;color:var(--muted);font-weight:600;margin-bottom:10px}
-.q-opts{display:grid;gap:10px;margin-top:14px}
-.q-opt{padding:14px 16px;border-radius:18px;border:2px solid var(--line);background:#fff;font-weight:600;font-size:1.02rem;min-height:54px;text-align:center;transition:.15s;display:grid;gap:2px;justify-items:center}
-.q-opt small{color:var(--muted);font-weight:500;font-size:.8rem}
-.q-opt:active,.q-opt:hover{border-color:var(--pink);background:#e6fbf8;transform:scale(1.02)}
-.q-res h4{margin:16px 0 8px;font-family:Fredoka;font-size:1.1rem}
-.q-bars{display:grid;gap:7px;margin-bottom:16px;text-align:left}
-.q-bars div{display:grid;grid-template-columns:130px 1fr;align-items:center;gap:10px;font-size:.85rem;font-weight:600}
-.q-bars i{height:10px;background:#e6f6f4;border-radius:99px;overflow:hidden;display:block}
-.q-bars b{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--violet));border-radius:99px;animation:grow .8s ease}
-@keyframes grow{from{width:0!important}}
-.q-win{background:linear-gradient(135deg,#e6fbf8,#fff3f9);border:2px solid var(--pink);border-radius:22px;padding:18px 16px}
-.q-win h3{font-size:1.6rem;margin:4px 0}
-.q-pct{display:inline-block;background:var(--rose);color:#fff;font-weight:700;border-radius:999px;padding:3px 12px;font-size:.82rem;margin-bottom:8px}
-.q-win p{color:var(--muted);font-size:.92rem;margin-bottom:8px}
-.q-why{color:var(--ink)!important;font-weight:600}
-.q-price{font-family:Fredoka;font-size:1.8rem;font-weight:700;color:var(--pink);margin:6px 0 10px}
-.q-alt{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:10px 12px;border:1.5px solid var(--line);border-radius:16px;margin-bottom:8px}
-.q-end{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.conf{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:28px}
-.conf span{position:absolute;top:-30px;animation:fall 3s linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(360deg);opacity:0}}
-@media(max-width:820px){.q-bars div{grid-template-columns:110px 1fr}}
-.ubi{display:grid;grid-template-columns:1fr 1.15fr;gap:20px;max-width:1100px;margin:auto;align-items:stretch}
-.ubi-card{background:#fff;border-radius:26px;padding:24px;box-shadow:var(--shadow)}
-.ubi-card h3{font-size:1.15rem;margin-bottom:6px}
-.ubi-dir{font-size:1.02rem;font-weight:600;margin-bottom:12px}
-.ubi-btns{display:flex;gap:8px;flex-wrap:wrap}
-.ubi-st{margin-bottom:12px}
-.ubi-badge{display:inline-block;border-radius:999px;padding:6px 14px;font-weight:700;font-size:.9rem}
-.ubi-badge.on{background:#dff7e6;color:#17803d}.ubi-badge.off{background:#ffe6ec;color:#c2325a}
-.ubi-h{width:100%;border-collapse:collapse;font-size:.95rem}
-.ubi-h td{padding:7px 4px;border-bottom:1px dashed var(--line)}
-.ubi-h td:last-child{text-align:right;font-weight:600}
-.ubi-h tr.hoy td{color:var(--pink);font-weight:700}
-.ubi-map{border-radius:26px;overflow:hidden;box-shadow:var(--shadow);min-height:380px;background:#e6f6f4}
-.ubi-map iframe{width:100%;height:100%;min-height:380px;border:0;display:block}
-.wa{background:linear-gradient(135deg,#e7fbef,#f2fbfa);max-width:1100px;margin:auto;border-radius:30px;display:grid;grid-template-columns:1fr 1.1fr;gap:26px;align-items:center}
-.wa h2{font-size:clamp(1.7rem,4vw,2.4rem);margin-bottom:8px}
-.wa .lead{color:var(--muted);margin-bottom:12px}
-.wa ul{list-style:none;display:grid;gap:8px;font-weight:500}
-.wa .form{background:#fff;border-radius:26px;padding:22px;box-shadow:var(--shadow)}
-.wa textarea{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);outline:0;min-height:90px;resize:vertical}
-/* ---------- Club ---------- */
-.club{background:linear-gradient(135deg,#e6fbf8,#fff3f9 60%,#fffbe6)}
-.club-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;align-items:start;max-width:1100px;margin:auto}
-.mcard{background:#fff;border-radius:28px;padding:24px;box-shadow:var(--shadow)}
-.mcard h3{font-size:1.25rem;margin-bottom:10px}
-.mcard form{display:grid;gap:10px;margin-bottom:14px}
-.mcard input{padding:12px 14px;border-radius:14px;border:1.5px solid var(--line);width:100%;min-height:46px}
-.sep{color:var(--muted);text-align:center;font-size:.85rem;margin:6px 0}
-.pts{font-family:Fredoka;font-size:3.2rem;font-weight:700;line-height:1;color:var(--pink)}
-.tierpill{display:inline-block;background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;font-weight:700;border-radius:999px;padding:4px 14px;font-size:.85rem}
-.bar{height:12px;border-radius:99px;background:#e6f6f4;overflow:hidden;margin:8px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--mint));border-radius:99px}
-.hist{margin-top:12px;font-size:.88rem;color:var(--muted);display:grid;gap:5px}.hist div{display:flex;justify-content:space-between;gap:10px}
-.club-info{display:grid;gap:18px}.club-info h3{font-size:1.15rem;margin-bottom:6px}
-.rw{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-.rw>div,.tiers>div{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:12px 14px}
-.rw b{font-family:Fredoka;font-size:1.45rem;color:var(--pink);display:block}
-.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tiers b{display:block}
-.club-info ul,.guide ul{list-style:none;display:grid;gap:7px}
-.gift{background:#fff7d6;border:1.5px dashed #e8c44a;border-radius:14px;padding:10px 12px;margin-top:10px;font-weight:600;font-size:.92rem}
-
-footer.foot{padding:28px max(4vw,14px) 40px;text-align:center;color:var(--muted);font-size:.9rem}
-footer.foot a{color:var(--pink);font-weight:600;cursor:pointer}
-
-/* ---------- Barra inferior (celular) ---------- */
-.tabbar{display:none}
-@media(max-width:820px){
-  :root{--hh:56px}
-  .links{display:none}
-  .hero{grid-template-columns:1fr;padding-top:22px;text-align:left}
-  .stage{min-height:230px;order:-1}
-  .stage .disc{width:min(210px,56vw)}
-  .club-grid,.wa,.ubi{grid-template-columns:1fr}
-  .ubi-map,.ubi-map iframe{min-height:320px}
-  .tiers{grid-template-columns:1fr}
-  .menu{padding:6px 14px 20px;border-radius:22px}
-  body{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
-  .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-  .tabbar a,.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.74rem;font-weight:600;color:var(--muted);text-decoration:none;padding:4px 0;position:relative;min-height:48px;justify-content:center}
-  .tabbar span.e{font-size:1.4rem;line-height:1}
-  .tabbar .badge{top:0;right:calc(50% - 26px)}
-  .drawer{width:100%}
-  .modal{align-items:end;padding:0}
-  .modal>div{width:100%;border-radius:26px 26px 0 0;max-height:88vh;transform:translateY(40px)}
-  .modal.show>div{transform:none}
-  .two{grid-template-columns:1fr}
-  .modal .two.keep{grid-template-columns:1fr 1fr}
-  section{padding:30px max(4vw,14px)}
-}
-
-/* ---------- Login y administración del Club ---------- */
-.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#d5f7f1,#e3f4ff 55%,#fbf9d0)}
-.login .card{background:#fff;border-radius:30px;padding:32px 26px;width:min(420px,100%);box-shadow:0 30px 70px rgba(53,182,238,.25);text-align:center}
-.login .card .brand{justify-content:center;margin-bottom:4px}
-.login .card p{color:var(--muted);margin-bottom:18px}
-.login .field{text-align:left}
-.demo{margin-top:14px;background:#e8f9f7;border-radius:14px;padding:10px;font-size:.82rem;color:#0b7f72}
-.adm{max-width:1000px;margin:auto;padding:0 max(4vw,14px) 60px}
-.adm-top{position:sticky;top:0;z-index:50;background:rgba(242,251,250,.95);backdrop-filter:blur(14px);margin:0 calc(-1 * max(4vw,14px));padding:10px max(4vw,14px) 0;border-bottom:1px solid var(--line)}
-.adm-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
-.adm-bar .brand{font-size:1.2rem}
-.tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:10px}
-.tabs::-webkit-scrollbar{display:none}
-.tab{flex:0 0 auto;padding:10px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--line);font-weight:600;font-size:.92rem;white-space:nowrap;min-height:42px}
-.tab.active{background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;border-color:transparent}
-.adm h1{font-size:1.7rem;margin:20px 0 2px}.adm .sub{color:var(--muted);margin-bottom:18px}
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:18px}
-.kpi{border-radius:var(--r);padding:18px;color:#fff;position:relative;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,.12)}
-.kpi::after{content:attr(data-e);position:absolute;right:-4px;bottom:-12px;font-size:4.6rem;opacity:.22}
-.kpi small{opacity:.92;font-weight:500}.kpi b{display:block;font-family:Fredoka;font-size:1.8rem;margin:4px 0 2px}.kpi span{font-size:.8rem;opacity:.92}
-.k1{background:linear-gradient(135deg,#0fb5a3,#5fe0b8)}.k2{background:linear-gradient(135deg,#35b6ee,#6a8cff)}.k3{background:linear-gradient(135deg,#7fd85e,#34c4a0)}.k4{background:linear-gradient(135deg,#ff8fa3,#ff6b8b)}
-.panel{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
-.panel h3{font-size:1.15rem;margin-bottom:12px}
-.mini{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line);flex-wrap:wrap}
-.mini:last-child{border:0}
-.mini .grow{flex:1;min-width:150px}.mini small{color:var(--muted)}
-.status{padding:4px 12px;border-radius:999px;font-size:.78rem;font-weight:700;display:inline-block;background:#fff3d6;color:#b77900}
-.st-top{background:#d6f7ee;color:#0f8f70}
-.warn{color:var(--rose);font-weight:600;font-size:.8rem}
-.empty{text-align:center;color:var(--muted);padding:26px}
-.guide h3{margin-top:4px}.guide p,.guide li{font-size:.95rem}
-.guide ol{padding-left:20px;display:grid;gap:8px;font-size:.95rem}
-.guide table{width:100%;border-collapse:collapse;font-size:.9rem;margin:8px 0}
-.guide th{text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:8px;border-bottom:2px solid var(--line)}
-.guide td{padding:9px 8px;border-bottom:1px solid var(--line)}
-.guide .tw{overflow:auto}
-.note{background:#fff7d6;border:1.5px dashed #e8c44a;border-radius:14px;padding:12px 14px;font-size:.92rem;margin:10px 0}
-.okbox{background:#e6fbf8;border:1.5px solid #bfeee8;border-radius:14px;padding:12px 14px;font-size:.92rem;margin:10px 0}
-
-/* ---------- Carta directa, fotos, WhatsApp flotante, Instagram y clientes (14/10/2026) ---------- */
-.brand-logo{height:46px;width:auto;display:block}
-.openbar{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:center;justify-content:center;padding:14px max(4vw,14px) 0}
-.openbar .pill{margin:0}
-.openbar a{color:var(--pink);font-weight:700;text-decoration:none;font-size:.92rem}
-.carta{padding-top:14px}
-.it.has-img{grid-template-columns:84px 1fr auto;align-items:start}
-.it.has-img .th{grid-row:1 / span 2;grid-column:1;width:84px;height:84px;border-radius:16px;object-fit:cover;background:#e6f6f4;border:0;padding:0;cursor:zoom-in;display:block}
-.ph{width:100%;max-height:56vh;object-fit:cover;border-radius:18px;display:block;margin-bottom:12px}
-.wa-float{position:fixed;left:14px;bottom:18px;z-index:70;display:inline-flex;align-items:center;gap:8px;min-height:54px;padding:0 20px 0 14px;border-radius:999px;background:#128c4a;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 10px 26px rgba(0,0,0,.28);border:3px solid #fff}
-.wa-float svg{width:30px;height:30px;flex:none}
-.igband{background:linear-gradient(135deg,#087f73,#0fb5a3);color:#fff;padding:0;margin-top:20px}
-.ig-in{max-width:1100px;margin:auto;display:grid;grid-template-columns:1fr 260px;gap:28px;align-items:center;padding:38px max(4vw,16px)}
-.igband h2{font-size:clamp(1.7rem,4vw,2.4rem)}
-.igband p{margin:8px 0 16px;color:#eafffc;font-size:1.05rem}
-.ig-btns{display:flex;flex-wrap:wrap;gap:10px}
-.ig-btns svg,.btn-wa svg{width:22px;height:22px;flex:none}
-.btn-cream{background:#fff7d8;color:#0b3d3a}
-.ig-info{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:16px;font-weight:600;color:#fff7d8;font-size:.95rem}
-.ig-photo{border-radius:24px;overflow:hidden;border:5px solid #fff;box-shadow:0 14px 34px rgba(0,0,0,.25);transform:rotate(2deg)}
-.ig-photo img{display:block;width:100%}
-footer.foot .credit{margin-top:6px}
-.cl-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.cl-bar input{flex:1 1 220px;padding:12px 16px;border-radius:999px;border:1.5px solid var(--line);min-height:46px;outline:0}
-.cl-bar input:focus{border-color:var(--pink)}
-@media(max-width:820px){
-  .wa-float{bottom:calc(78px + env(safe-area-inset-bottom));min-height:50px}
-  .ig-in{grid-template-columns:1fr}
-  .ig-photo{max-width:230px;margin:0 auto}
-  .brand-logo{height:40px}
-}
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div id="app"></div>
-<div class="overlay" id="overlay"></div>
-<div class="toast-wrap" id="toasts"></div>
+<!-- Iconos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23s8.23 3.69 8.23 8.23-3.7 8.24-8.23 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></symbol>
+  <symbol id="i-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.800 7 12 7 12z"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 6.500V12l3.800 2.300"/></symbol>
+  <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="5.500" cy="16.500" r="3.500" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="18.500" cy="16.500" r="3.500" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5.500 16.500 9 8h4l3 8.500M9 8H7M13 8l5.500 8.500M11 12h5"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="m12 3 2.700 5.600 6.100.8-4.500 4.300 1.100 6.100L12 17l-5.400 2.800 1.100-6.100L3.200 9.400l6.100-.8z"/></symbol>
+</svg>
 
-<script>
-/* =========================================================
-   DATOS DE LA CARTA
-   ========================================================= */
-const KEY = 'grosmania.v3';
-const CATS = ['Copas','Nuevas creaciones','Ensaladas','Malteadas','Waffles','Minidonas','Obleas','Chocolate','Conos y vasos','Infantiles','Bebidas','Mascotas'];
-const STATUS = ['Pendiente','Preparando','Listo','Entregado','Cancelado'];
-const COLORS = {'Copas':'#cfeff5','Nuevas creaciones':'#ffe9a8','Ensaladas':'#ffe3e3','Malteadas':'#f6dcf0','Waffles':'#fff6b8','Minidonas':'#ffe8cf','Obleas':'#fdf0d0','Chocolate':'#e9d8cf','Conos y vasos':'#dff3ff','Infantiles':'#e8e0ff','Bebidas':'#d8f5c8','Mascotas':'#e3f5e1'};
-const CAT_EMOJI = {'Copas':'🍨','Nuevas creaciones':'✨','Ensaladas':'🥗','Malteadas':'🥤','Waffles':'🧇','Minidonas':'🍩','Obleas':'🫓','Chocolate':'🍫','Conos y vasos':'🍦','Infantiles':'🧸','Bebidas':'🧃','Mascotas':'🐶'};
-const CAT_COLOR = {'Copas':'#35b6ee','Nuevas creaciones':'#ffb454','Ensaladas':'#ff8fa3','Malteadas':'#c77dff','Waffles':'#f4c542','Minidonas':'#ff9a62','Obleas':'#d9a441','Chocolate':'#8b5a4a','Conos y vasos':'#5fd0e8','Infantiles':'#8f7cff','Bebidas':'#7fd85e','Mascotas':'#5fb870'};
+<a class="skip" href="#menu">Saltar a la carta</a>
 
-/* Listas de la carta */
-const SALSAS = ['Chocolate','Arequipe','Maracuyá','Leche condensada','Mora'];
-const FRUTAS_WAFFLE = ['Banano','Durazno','Manzana','Fresa','Mango','Piña'];
-const TOP_WAFFLE = ['Chips de chocolate','Chocmelos','Mini chips','Queso','Maní','Oreo','Corazones de hojaldre','Crispy blanco','Masmelos','Gusanitos','Bolas chokis','Gomas clásicas','Galleta milo','Galletas chokis'];
-const TOP_DONAS = ['Fresas','Banano','Chips de chocolate','Maní','Galleta oreo','Galleta mini chips','Masmelos','Barquillos piazza','Bolas chokis','Galletas chokis','Galletas milo','Chocmelos'];
-const JUGOS = ['Frutos rojos','Piña - hierbabuena','Naranja - piña','Mango - maracuyá','Frutos amarillos','Mango','Guanábana','Mandarina','Maracuyá'];
-/* Adiciones: mismo precio en cualquier producto (carta, página «Adiciones») */
-const ADICIONES = [['Una bola de helado',2000],['Queso',4000],['Brownie',2500],['Chips de chocolate',2500],['Oreo',2000],['Gusanitos',2000],['Chocmelos',2500],['Bolas chokis',2000],['Chantillí',4000],['Almíbar de mora',3000],['Chocoramo',3000],['Concha',1500],['Gelatina',3000],['Masmelos',2000],['Crispy blanco',2000],['Piazza',2000],['Frutas',4000],['Chocolate caliente',6000],['Galletas milo',2000],['Galletas chokis',2000],['Nuggets de milo',3000],['Corazones de hojaldre',2000],['Milo en polvo',2500],['Maní',2500],['Cucurucho',1500]];
-/* Sabores de helado: la carta no los lista; se editan en Ajustes */
-const FLAVORS_DEFAULT = ['Vainilla','Chocolate','Brownie','Fresa','Frutos rojos','Mango','Maracuyá','Piña'];
+<!-- ========================== PÁGINA ========================== -->
+<div id="site">
 
-const TIERS=[{n:'Bolita',e:'🍧',min:0,mult:1},{n:'Cono',e:'🍦',min:4,mult:1.25},{n:'Copa',e:'🍨',min:8,mult:1.5}];
-const REWARDS=[{id:'r25',pts:25,value:2500,label:'Una adición gratis'},{id:'r60',pts:60,value:6000,label:'Cucurucho de 2 bolas'},{id:'r120',pts:120,value:15500,label:'Una copa de la casa'}];
-const BDAY={id:'bday',pts:0,value:2500,label:'Regalo de cumpleaños 🎂'};
-const COMBO_COPAS=2000, COMBO_WAFFLE=1500, REF_BONUS=20;
-const MEMBERS_DEMO=[['Laura Gómez','3001110001','06-12'],['Andrés Ruiz','3001110002',''],['Camila Torres','3001110003','10-03'],['Santiago Díaz','3001110004',''],['Valentina Mora','3001110005','']];
-function seed(){
-  const products=[]; let nid=1;
-  const SAB=n=>({k:'sabor',label:n>1?`Sabores de helado (${n})`:'Sabor de helado',n,list:'flavors'});
-  const G=(k,label,n,list)=>({k,label,n,list});
-  const P=(name,cat,price,desc,x={})=>products.push({id:nid++,name,emoji:x.emoji||CAT_EMOJI[cat],cat,price,stock:50,desc,tag:x.tag||'',img:x.img||'',active:true,
-    opts:x.opts||[],adds:x.adds!==undefined?x.adds:!(cat==='Bebidas'||cat==='Mascotas'),addons:x.addons||[]});
-  // Copas
-  P('Copa Frutos Amarillos','Copas',15500,'Dos sabores de helado, mango, piña y duraznos, salsa de maracuyá, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
-  P('Copa Frutos Rojos','Copas',15500,'Dos sabores de helado, fresa, cereza, almíbar de mora artesanal, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)],img:'fotos/copa-frutos-rojos.jpg'});
-  P('Copa Queso','Copas',15500,'Dos sabores de helado, abundante queso rallado, crema de leche, salsa a tu elección, chantillí, cereza, barquillo y viruta de chocolate.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)],img:'fotos/fresas-con-helado.jpg'});
-  P('Copa Gelatina','Copas',12500,'Gelatina en cubos, queso rallado, crema de leche, un sabor de helado, leche condensada y viruta de chocolate.',{opts:[SAB(1)]});
-  P('Copa Cereza','Copas',15500,'Dos sabores de helado, cerezas, salsa de mora, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
-  P('Copa Oreo','Copas',16000,'Dos sabores de helado, galleta oreo, bolas chokis, chips de chocolate, salsa de arequipe y chantillí.',{opts:[SAB(2)],img:'fotos/copa-brownie-caramelo.jpg'});
-  P('Copa Brevas','Copas',15500,'Dos sabores de helado, brevas, queso, crema de leche, salsa de arequipe, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
-  P('Fresas Pequeñas','Copas',12000,'Un sabor de helado, fresas, crema de leche, leche condensada, chantillí y viruta de chocolate.',{opts:[SAB(1)]});
-  P('Fresas Grandes','Copas',16000,'Dos sabores de helado, fresas, queso rallado, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)],img:'fotos/fresas-con-crema.jpg',tag:'Top'});
-  P('Duraznos Pequeños','Copas',12500,'Un sabor de helado, duraznos, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
-  P('Duraznos Grandes','Copas',17000,'Dos sabores de helado, duraznos, queso rallado, crema de leche, leche condensada, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
-  P('Copa Crema','Copas',16500,'Crema chantillí acompañada de una fruta a elección, salsa, barquillo y viruta de chocolate.',{opts:[G('fruta','Fruta',1,['Duraznos','Fresas','Brevas']),G('salsa','Salsa',1,SALSAS)]});
-  P('Sundae','Copas',14000,'Dos sabores de helado bañados en un delicioso almíbar de mora artesanal, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(2)]});
-  P('Gro’smania','Copas',16500,'Dos sabores de helado, brownie en trozos, galletas mini chips, chocmelos, salsa de chocolate, chantillí y viruta de chocolate. Ideal si eres amante del chocolate.',{opts:[SAB(2)],img:'p1.jpg',tag:'La casa'});
-  P('Brownie','Copas',16500,'Brownie caliente o frío, acompañado de fresas, banano, un sabor de helado, arequipe y chips de chocolate.',{opts:[G('temp','Brownie',1,['Caliente','Frío']),SAB(1)],img:'p3.jpg'});
-  P('Banana Sencilla','Copas',14500,'Tres sabores de helado acompañado de un banano, salsas, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(3)]});
-  P('Banana Especial','Copas',17500,'Tres sabores de helado, banano, brownie en trozos, queso rallado, salsas, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(3)]});
-  // Nuevas creaciones
-  P('Copa Chocoramo','Nuevas creaciones',17500,'Dos sabores de helado, chocoramo en trozos, fresas, chantillí y salsa de chocolate.',{opts:[SAB(2)],tag:'Nuevo',img:'fotos/copa-ponque-fresas.jpg'});
-  P('Copa Chokis','Nuevas creaciones',16500,'Dos sabores de helado, galletas chokis trituradas, bolas chokis, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo',img:'fotos/copa-caramelo-crocante.jpg'});
-  P('Copa Milo','Nuevas creaciones',17500,'Dos sabores de helado, milo en polvo, galleta de milo triturada, nuggets de milo, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo'});
-  P('Copa Corazón','Nuevas creaciones',16500,'Dos sabores de helado bañados en almíbar de mora, corazones de hojaldre, chantillí y arequipe.',{opts:[SAB(2)],tag:'Nuevo',img:'fotos/copa-palmeritas-frutos-rojos.jpg'});
-  // Ensaladas
-  P('Ensalada de Frutas Pequeña','Ensaladas',16000,'16 onzas. Piña, mango, manzana, papaya, banano, fresa, cereza, queso rallado, crema de leche, leche condensada, barquillo y viruta de chocolate. Incluye 1 sabor de helado y queso.',{opts:[SAB(1)]});
-  P('Ensalada de Frutas Mediana','Ensaladas',17500,'24 onzas. Las mismas frutas, con 1 sabor de helado y 1 porción de queso.',{opts:[SAB(1)],img:'fotos/ensalada-frutas-especial.jpg'});
-  P('Ensalada de Frutas Grande','Ensaladas',21000,'32 onzas. Las mismas frutas, con 2 sabores de helado y 2 porciones de queso.',{opts:[SAB(2)]});
-  P('Salpicón Natural','Ensaladas',11000,'Deliciosas frutas frescas.');
-  P('Salpicón Sencillo','Ensaladas',13000,'Frutas frescas acompañadas de un sabor de helado, crispy blanco, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
-  P('Salpicón Especial','Ensaladas',16500,'Frutas frescas acompañadas de un sabor de helado, queso rallado, chantillí, barquillo y viruta de chocolate.',{opts:[SAB(1)]});
-  // Malteadas
-  P('Malteada Sencilla','Malteadas',12500,'Sabor de helado a elección, chantillí, barquillo piazza y viruta de chocolate.',{opts:[SAB(1)]});
-  P('Malteada Chokis','Malteadas',17000,'Helado de vainilla licuado con galletas chokis, terminada con chantillí, arequipe y bolas chokis.');
-  P('Malteada Frutos Rojos','Malteadas',17000,'Helado de frutos rojos licuado con almíbar de mora, terminada con trocitos de fresa, chantillí y más almíbar.');
-  P('Malteada Milo','Malteadas',17000,'Helado de vainilla licuado con milo y galletas milo, terminada con trocitos de galleta, chantillí, arequipe y milo en polvo.');
-  P('Malteada Brownie','Malteadas',17000,'Helado de brownie o vainilla licuado con brownie, terminada con chantillí, arequipe y trocitos de brownie.',{opts:[G('base','Helado',1,['Brownie','Vainilla'])]});
-  P('Malteada Maracumango','Malteadas',17000,'Helado de maracuyá licuado con pulpa de maracuyá, terminada con trocitos de mango, chantillí y salsa de maracuyá.');
-  P('Malteada Chocoramo','Malteadas',17000,'Helado de vainilla y chocolate licuado con chocoramo, terminada con chantillí, trocitos de chocoramo y salsa de chocolate.');
-  // Waffles
-  P('Waffle Completo','Waffles',19500,'2 frutas, 2 toppings, 1 salsa, 1 sabor de helado y chantillí. ¡Arma el tuyo!',{opts:[G('fruta','Frutas',2,FRUTAS_WAFFLE),G('topping','Toppings',2,TOP_WAFFLE),G('salsa','Salsa',1,SALSAS),SAB(1)],img:'fotos/waffle-oreo-fresas.jpg'});
-  P('Waffle Medio','Waffles',12000,'1 fruta, 1 topping, 1 salsa y 1 sabor de helado. ¡Arma el tuyo!',{opts:[G('fruta','Fruta',1,FRUTAS_WAFFLE),G('topping','Topping',1,TOP_WAFFLE),G('salsa','Salsa',1,SALSAS),SAB(1)]});
-  // Minidonas
-  P('Minidonas Bandeja de 6','Minidonas',12500,'1 salsa, 2 toppings y 1 sabor de helado.',{opts:[G('salsa','Salsa',1,SALSAS),G('topping','Toppings',2,TOP_DONAS),SAB(1)],img:'fotos/mini-waffles-helado.jpg'});
-  P('Minidonas Bandeja de 9','Minidonas',15500,'2 salsas, 2 toppings y 1 sabor de helado.',{opts:[G('salsa','Salsas',2,SALSAS),G('topping','Toppings',2,TOP_DONAS),SAB(1)]});
-  P('Minidonas Bandeja de 16','Minidonas',25000,'3 salsas, 3 toppings y 2 sabores de helado. Ideal para compartir.',{opts:[G('salsa','Salsas',3,SALSAS),G('topping','Toppings',3,TOP_DONAS),SAB(2)]});
-  // Obleas
-  P('Oblea Sencilla','Obleas',4500,'Oblea clásica.');
-  P('Oblea Extra Queso','Obleas',12500,'Obleas rellenas con queso rallado, lechera, arequipe, chantillí y viruta de chocolate.');
-  P('Oblea Frutal','Obleas',12500,'Obleas rellenas con queso rallado, una fruta a tu elección, lechera, arequipe, chantillí y viruta de chocolate.',{opts:[G('fruta','Fruta',1,['Fresa','Durazno','Mora en almíbar'])]});
-  // Chocolate
-  P('Fondue','Chocolate',28500,'Delicioso chocolate caliente donde podrás sumergir fresas, trozos crujientes de waffle, banano, brownie y dos sabores de helado a tu elección.',{opts:[SAB(2)]});
-  P('Fresas con Chocolate','Chocolate',17000,'Deliciosas fresas bañadas con chocolate caliente.');
-  // Conos y vasos
-  P('Cucurucho 1 bola','Conos y vasos',4000,'Una bola de helado en cucurucho.',{opts:[SAB(1)]});
-  P('Cucurucho 2 bolas','Conos y vasos',6000,'Dos bolas de helado en cucurucho.',{opts:[SAB(2)]});
-  P('Concha 1 bola','Conos y vasos',5000,'Una bola de helado en concha.',{opts:[SAB(1)]});
-  P('Concha 2 bolas','Conos y vasos',6500,'Dos bolas de helado en concha.',{opts:[SAB(2)]});
-  P('Vaso con Chantillí','Conos y vasos',9000,'Dos sabores de helado, chantillí y salsa.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)]});
-  P('Vaso con Queso','Conos y vasos',9000,'Dos sabores de helado, queso y salsa.',{opts:[SAB(2),G('salsa','Salsa',1,SALSAS)]});
-  P('1 Litro de Helado','Conos y vasos',17000,'Un litro de helado para llevar.',{opts:[SAB(1)]});
-  // Infantiles
-  P('Helado Infantil','Infantiles',9000,'Helados decorados con carita, gomas, masmelos y confites. Pregunta por las figuras del día.',{opts:[SAB(2)]});
-  // Bebidas
-  P('Jugo Natural en Agua','Bebidas',5000,'Jugo natural de fruta, preparado en agua.',{opts:[G('fruta','Sabor',1,JUGOS)]});
-  P('Jugo Natural en Leche','Bebidas',6000,'Jugo natural de fruta, preparado en leche.',{opts:[G('fruta','Sabor',1,JUGOS)]});
-  P('Milo','Bebidas',8000,'Malteada de milo bien cargada de chocolate.',{addons:[['Chantillí (súbele el nivel)',2500]]});
-  // Mascotas
-  P('Helado para Mascotas Pequeño','Mascotas',5000,'Helado seguro para tu mejor amigo.',{opts:[G('sabor','Sabor',1,['Cabano','Mango','Fresa','Galleta'])]});
-  P('Helado para Mascotas Grande','Mascotas',6500,'Helado seguro para tu mejor amigo, tamaño grande.',{opts:[G('sabor','Sabor',1,['Cabano','Mango','Fresa','Galleta'])]});
-  P('Turrón de Pollo','Mascotas',5000,'Snack de pollo para mascotas.');
-
-  // Historial de demostración: solo compras de miembros del Club, ya entregadas
-  let s=7; const rnd=()=>{s=(s*9301+49297)%233280;return s/233280};
-  const orders=[]; let id=1000; const now=Date.now();
-  for(let d=6;d>=0;d--){
-    const n=2+Math.floor(rnd()*3);
-    for(let k=0;k<n;k++){
-      const items=[]; const c=1+Math.floor(rnd()*2);
-      for(let j=0;j<c;j++){const pid=1+Math.floor(rnd()*products.length);items.push({id:pid,qty:1+Math.floor(rnd()*2),price:products.find(p=>p.id===pid).price})}
-      const total=items.reduce((a,i)=>a+i.price*i.qty,0);
-      const date=new Date(now-d*864e5-Math.floor(rnd()*8)*36e5).toISOString();
-      const mm=MEMBERS_DEMO[Math.floor(rnd()*MEMBERS_DEMO.length)];
-      orders.push({id:id++,customer:mm[0],phone:mm[1],items,total,base:total,status:'Entregado',date,method:'Local',src:'demo'});
-    }
-  }
-  const db={products,orders,members:[],club:{cost:0.35}};
-  seedClub(db);
-  return db;
-}
-
-/* =========================================================
-   ESTADO
-   ========================================================= */
-const FLAVORS=FLAVORS_DEFAULT;
-function load(){
-  let d=null; try{d=JSON.parse(localStorage.getItem(KEY))}catch(e){}
-  if(!d||!d.members||!d.orders)d=seed();
-  d.products=seed().products;          // la carta siempre sale del código, no del navegador
-  if(!d.club)d.club={cost:0.35};
-  return d;
-}
-let DB=load();
-function save(){try{const {products,...rest}=DB;localStorage.setItem(KEY,JSON.stringify(rest))}catch(e){}}
-let route='store', adminTab='resumen', isAdmin=false;
-try{isAdmin=sessionStorage.getItem('gm.admin')==='1'}catch(e){}
-let cart=[], redeem=null;
-let favs=new Set(); try{favs=new Set(JSON.parse(localStorage.getItem('gm.favs')||'[]'))}catch(e){}
-let favOnly=false;
-
-const $=s=>document.querySelector(s);
-const money=n=>new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const prod=id=>DB.products.find(p=>p.id===id);
-const fmtDate=iso=>new Date(iso).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
-const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-');
-function toast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;$('#toasts').appendChild(t);setTimeout(()=>t.remove(),2600)}
-function showOverlay(on){$('#overlay').classList.toggle('show',on)}
-
-/* =========================================================
-   CLUB GRO’SMANIA
-   ========================================================= */
-function digits(v){return String(v||'').replace(/\D/g,'')}
-function findMember(db,ph){return db.members.find(m=>m.phone===digits(ph))}
-function tierOf(db,m){
-  const visits=db.orders.filter(o=>o.phone===m.phone&&o.status==='Entregado'&&Date.now()-new Date(o.date)<90*864e5).length;
-  let t=TIERS[0];TIERS.forEach(x=>{if(visits>=x.min)t=x});
-  return {t,visits,next:TIERS[TIERS.indexOf(t)+1]};
-}
-function newMember(db,name,phone,birthday,ref){
-  const m={phone:digits(phone),name,birthday:birthday||'',points:0,lifetime:0,joined:new Date().toISOString(),ref:ref&&ref!==digits(phone)&&findMember(db,ref)?digits(ref):'',refPaid:false,bdayYear:0,ledger:[]};
-  db.members.push(m);return m;
-}
-function addLedger(m,pts,desc){m.ledger.unshift({d:new Date().toISOString(),pts,desc});if(m.ledger.length>40)m.ledger.length=40}
-function awardPoints(db,o){
-  const m=findMember(db,o.phone); if(!m||o.pointsAwarded)return;
-  const base=o.base??o.total, mult=tierOf(db,m).t.mult;
-  const pts=Math.floor(base/1000*mult); if(pts<=0)return;
-  m.points+=pts;m.lifetime+=pts;o.pointsAwarded=pts;addLedger(m,pts,'Compra #'+o.id+(mult>1?' (x'+mult+')':''));
-  if(m.ref&&!m.refPaid&&base>=10000){
-    const r=findMember(db,m.ref);
-    if(r){r.points+=REF_BONUS;r.lifetime+=REF_BONUS;addLedger(r,REF_BONUS,'Tu amigo/a '+m.name.split(' ')[0]+' hizo su primera compra');
-      m.points+=REF_BONUS;m.lifetime+=REF_BONUS;addLedger(m,REF_BONUS,'Bono por venir de parte de un amigo/a')}
-    m.refPaid=true;
-  }
-}
-function revokePoints(db,o){
-  const m=findMember(db,o.phone); if(!m||!o.pointsAwarded)return;
-  m.points-=o.pointsAwarded;m.lifetime-=o.pointsAwarded;addLedger(m,-o.pointsAwarded,'Compra #'+o.id+' ya no cuenta');o.pointsAwarded=0;
-}
-function clubOnStatus(o,s){
-  const m=findMember(DB,o.phone), was=o.status;
-  if(was==='Entregado'&&s!=='Entregado')revokePoints(DB,o);
-  if(m&&o.rew&&o.rew.pts>0){
-    if(s==='Cancelado'&&was!=='Cancelado'){m.points+=o.rew.pts;addLedger(m,o.rew.pts,'Puntos devueltos: pedido #'+o.id+' cancelado');o.rewRefunded=true}
-    else if(was==='Cancelado'&&s!=='Cancelado'&&o.rewRefunded){m.points-=o.rew.pts;addLedger(m,-o.rew.pts,'Canje del pedido #'+o.id+' reactivado');o.rewRefunded=false}
-  }
-  if(s==='Entregado'&&was!=='Entregado')awardPoints(DB,o);
-}
-function bdayEligible(m){
-  if(!m.birthday)return false;
-  const y=new Date().getFullYear(); if(m.bdayYear===y)return false;
-  const [mm,dd]=m.birthday.split('-').map(Number), d=new Date(y,mm-1,dd);
-  return Math.abs(Date.now()-d)<=3.5*864e5;
-}
-function rewardsFor(m,base){
-  const list=REWARDS.filter(r=>m.points>=r.pts&&base>=r.value);
-  if(bdayEligible(m)&&base>=BDAY.value)list.unshift(BDAY);
-  return list;
-}
-const rewardById=id=>id==='bday'?BDAY:REWARDS.find(r=>r.id===id);
-/* Aplica el canje de un premio: descuenta puntos o marca el regalo de cumpleaños */
-function spendReward(m,r,orderId){
-  if(r.pts>0){m.points-=r.pts;addLedger(m,-r.pts,'Canje: '+r.label+' (#'+orderId+')')}
-  else{m.bdayYear=new Date().getFullYear();addLedger(m,0,'Regalo de cumpleaños (#'+orderId+')')}
-}
-function seedClub(db){
-  MEMBERS_DEMO.forEach(([n,p,b])=>newMember(db,n,p,b));
-  db.orders.filter(o=>o.phone&&o.status==='Entregado').sort((a,b)=>new Date(a.date)-new Date(b.date)).forEach(o=>awardPoints(db,o));
-}
-let clubPhone=''; try{clubPhone=localStorage.getItem('gm.member')||''}catch(e){}
-function setClubPhone(p){clubPhone=p;try{p?localStorage.setItem('gm.member',p):localStorage.removeItem('gm.member')}catch(e){}}
-
-/* =========================================================
-   RENDER RAÍZ
-   ========================================================= */
-let spy=null;
-function render(keep){
-  if(route==='admin'&&!isAdmin)route='login';
-  const y=window.scrollY;
-  $('#app').innerHTML = route==='store'?storeView():route==='login'?loginView():adminView();
-  if(!keep)window.scrollTo({top:0,behavior:'instant'});else window.scrollTo({top:y,behavior:'instant'});
-  if(route==='store')initCarta();
-}
-function go(r){route=r;closeAll();render()}
-function closeAll(){document.querySelectorAll('.drawer,.modal').forEach(e=>e.remove());showOverlay(false)}
-function closeModal(){document.querySelectorAll('.modal').forEach(e=>e.remove());if(!document.querySelector('.drawer'))showOverlay(false)}
-function openModal(html){
-  document.querySelectorAll('.modal').forEach(e=>e.remove());showOverlay(true);
-  const m=document.createElement('div');m.className='modal';m.innerHTML='<div>'+html+'</div>';
-  document.body.appendChild(m);requestAnimationFrame(()=>m.classList.add('show'));
-  m.addEventListener('click',e=>{if(e.target===m)closeModal()});
-}
-
-/* =========================================================
-   TIENDA
-   ========================================================= */
-const cartCount=()=>cart.reduce((a,l)=>a+l.qty,0);
-function itemRow(p){
-  const q=qtyOf(p.id);
-  return `<article class="it${p.img?' has-img':''}" data-id="${p.id}" data-t="${esc(norm(p.name+' '+p.desc))}" onclick="tapItem(${p.id})">
-    ${p.img?`<img class="th" src="${thumbOf(p)}" alt="${esc(p.name)}" loading="lazy" width="84" height="84" onclick="event.stopPropagation();showPhoto(${p.id})">`:''}
-    <div class="nm">${esc(p.name)}${p.tag?`<span class="tagp">${esc(p.tag)}</span>`:''}<button class="heart ${favs.has(p.id)?'on':''}" aria-label="Favorito" onclick="event.stopPropagation();toggleFav(${p.id},this)">❤️</button></div>
-    <div class="pr">${money(p.price)}</div>
-    <div class="ds">${esc(p.desc)}</div>
-    <button class="ad" id="ad${p.id}" aria-label="Agregar ${esc(p.name)}">＋<span class="inq" id="q${p.id}">${q||''}</span></button>
-  </article>`;
-}
-/* Foto grande de un producto (se abre al tocar la miniatura) */
-function showPhoto(id){
-  const p=prod(id);
-  openModal(`<img class="ph" src="${p.img}" alt="${esc(p.name)}">
-  <h3>${p.emoji} ${esc(p.name)}</h3>
-  <p style="color:var(--muted);margin:-8px 0 12px;font-size:.92rem">${esc(p.desc)}</p>
-  <div class="sum-row total"><span>${money(p.price)}</span><span></span></div>
-  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cerrar</button><button class="btn btn-primary" onclick="closeModal();tapItem(${id})">Agregar al pedido</button></div>`);
-}
-function storeView(){
-  const cnt=cartCount();
-  return `
   <header class="top">
-    <a class="brand" href="#carta" aria-label="Gro’smania Heladería"><img class="brand-logo" src="logos/logo-teal-h.svg" alt="Gro’smania Heladería" width="82" height="40"></a>
-    <nav class="links"><a href="#carta">Carta</a><a href="#whatsapp">WhatsApp</a><a href="#club">Club</a><a href="#ubicacion">Dónde estamos</a></nav>
-    <div class="acts">
-      <button class="icon-btn" aria-label="Mi pedido" onclick="openCart()">🛒<span class="badge" data-cartcount>${cnt||''}</span></button>
-      <button class="icon-btn" aria-label="Administración del Club" onclick="go(isAdmin?'admin':'login')">🔐</button>
+    <div class="wrap top-row">
+      <a class="brand" href="#menu" aria-label="Gro’smania Heladería, ir a la carta"><img src="logos/logo-teal-h.svg" alt="Gro’smania Heladería" width="127" height="62"></a>
+      <nav class="main-nav" aria-label="Secciones">
+        <a href="#menu">Carta</a>
+        <a href="#club">Club de puntos</a>
+        <a href="#donde">Dónde estamos</a>
+      </nav>
+      <div class="top-actions">
+        <a class="btn btn-wa btn-sm" data-wa="hola" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
+        <button class="btn btn-primary btn-sm cart-btn" id="cartBtn" type="button" aria-label="Ver mi pedido">Mi pedido <span class="count" id="cartCount" hidden>0</span></button>
+      </div>
     </div>
   </header>
 
-  <div class="openbar"><span class="pill">${openPill()}</span><a href="#ubicacion">📍 Cómo llegar</a></div>
-
-  <section id="carta" class="carta">
-    <div class="sec-head"><h2>Nuestra carta</h2><p>Toca un producto para armarlo y agregarlo a tu pedido.</p></div>
-    <button class="quiz-cta" onclick="openQuiz()"><span class="q-e">🤔</span><span class="q-t"><b>¿No sabes qué pedir?</b><small>Te ayudamos a escoger tu helado ideal con un juego rápido</small></span><span class="q-go">Jugar →</span></button>
-    <div class="tools"><div class="search"><input id="q" type="search" placeholder="Buscar en la carta…" oninput="filterMenu()" autocomplete="off"></div>
-      <button class="btn btn-ghost" id="favbtn" onclick="toggleFavOnly()" aria-label="Solo favoritos">❤️</button>
-      <button class="btn btn-ghost" onclick="surprise()" aria-label="Sorpréndeme">🎲</button></div>
-    <div class="chipbar" id="chips">${CATS.map(c=>`<button class="chip" data-c="${slug(c)}" onclick="goCat('${slug(c)}')">${CAT_EMOJI[c]} ${c}</button>`).join('')}<button class="chip" data-c="adiciones" onclick="goCat('adiciones')">➕ Adiciones</button></div>
-    <div class="menu" id="menu">
-      ${CATS.map(c=>{const ps=DB.products.filter(p=>p.cat===c);return `<div class="cat" id="cat-${slug(c)}" data-c="${slug(c)}"><h2>${CAT_EMOJI[c]} ${c}<small>${ps.length}</small></h2>${ps.map(itemRow).join('')}</div>`}).join('')}
-      <div class="cat" id="cat-adiciones" data-c="adiciones"><h2>➕ Adiciones</h2><p class="hint" style="color:var(--muted);margin:8px 0 2px">Se agregan al pedir cualquier producto (menos bebidas y mascotas).</p><div class="addbox">${ADICIONES.map(a=>`<span>${esc(a[0])}<em>${money(a[1])}</em></span>`).join('')}</div></div>
-      <div class="nores" id="nores" hidden>No encontramos eso en la carta 🙈<br><small>Prueba con otra palabra.</small></div>
+  <div class="info-strip">
+    <div class="wrap">
+      <span><svg aria-hidden="true"><use href="#i-clock"/></svg>Abrimos todos los días desde <span data-text="open"></span></span>
+      <a href="#donde"><svg aria-hidden="true"><use href="#i-pin"/></svg>Cómo llegar</a>
     </div>
-  </section>
+  </div>
 
-  <section id="whatsapp"><div class="wa">
-    <div><span class="pill">💬 Pedido personalizado</span><h2>Pídelo por WhatsApp</h2>
-      <p class="lead">¿Prefieres que te atendamos por chat? Arma tu pedido en la carta o cuéntanos qué se te antoja, y te escribimos para confirmarlo.</p>
-      <ul><li>✔ Tu pedido ya va escrito en el mensaje</li><li>✔ Puedes pedir cambios, sabores y fechas especiales</li><li>✔ Ideal para tortas de helado, eventos y celebraciones</li></ul></div>
-    <div class="form">
-      <p style="margin-bottom:10px;font-weight:600">${cnt?`Llevas <b>${cnt}</b> producto${cnt===1?'':'s'} en tu pedido: se enviarán en el mensaje.`:'Aún no tienes productos en tu pedido: puedes escribirnos igual.'}</p>
-      <div class="field"><label>Tu nombre (opcional)</label><input id="wa_n" placeholder="Para saludarte por tu nombre" autocomplete="name"></div>
-      <div class="field"><label>Cuéntanos qué se te antoja (opcional)</label><textarea id="wa_x" placeholder="Ej. una torta de helado para el sábado, sin maní…"></textarea></div>
-      <button class="btn btn-wa block" onclick="openWA()">Abrir WhatsApp 💬</button>
-    </div>
-  </div></section>
 
-  ${clubSection()}
-
-  <section id="ubicacion"><div class="sec-head"><h2>Dónde estamos 📍</h2><p>Ven a visitarnos: te esperamos con tu helado favorito.</p></div>
-    <div class="ubi">
-      <div class="ubi-card">
-        <div class="ubi-st">${openBadge()}</div>
-        <h3>📍 Dirección</h3>
-        <p class="ubi-dir">${esc(UBI.dir)}</p>
-        <div class="ubi-btns">
-          <a class="btn btn-primary" href="${mapsDir()}" target="_blank" rel="noopener">🧭 Cómo llegar</a>
-          <a class="btn btn-ghost" href="${UBI.link}" target="_blank" rel="noopener">🗺️ Abrir en Google Maps</a>
+  <main>
+    <!-- CARTA: es lo primero que se ve -->
+    <section id="menu" aria-labelledby="menuTitle">
+      <div class="wrap">
+        <div class="sec-head">
+          <h1 id="menuTitle"><span class="sr-only">Gro’smania Heladería · </span>Nuestra carta</h1>
+          <p>Toca <b>Agregar</b> en lo que se te antoje y envía tu pedido por WhatsApp.</p>
         </div>
-        <h3 style="margin-top:16px">🕐 Horario</h3>
-        <table class="ubi-h">${horarioRows()}</table>
-        <div class="ubi-btns" style="margin-top:12px">
-          <a class="btn btn-wa" href="https://wa.me/${WHATSAPP}" target="_blank" rel="noopener">💬 Escríbenos</a>
-          <a class="btn btn-ghost" href="tel:+${WHATSAPP}">📞 Llamar</a>
+        <div class="chips" id="chips" role="group" aria-label="Filtrar la carta por tipo"></div>
+        <div class="grid" id="grid"></div>
+        <p class="note-example">¿No ves lo que buscas? Escríbenos por WhatsApp y te contamos qué más tenemos.</p>
+      </div>
+    </section>
+
+    <!-- CLUB DE PUNTOS -->
+    <section id="club" aria-labelledby="clubTitle">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="clubTitle">Club Gro’smania</h2>
+          <p>Cada compra suma puntos que se cambian por helado. ¡Es gratis y solo necesitas tu celular!</p>
+        </div>
+
+        <div class="steps">
+          <div class="step"><b>1</b><h3>Únete</h3><p>Te registramos con tu nombre, celular y fecha de cumpleaños.</p></div>
+          <div class="step"><b>2</b><h3>Suma puntos</h3><p>Ganas <strong data-text="ppp"></strong> con cada compra en la heladería.</p></div>
+          <div class="step"><b>3</b><h3>Canjea premios</h3><p>Cambia tus puntos por adiciones, conos y copas.</p></div>
+        </div>
+
+        <div class="club-grid">
+          <div class="panel">
+            <h3>Premios que puedes ganar</h3>
+            <ul class="rewards" id="rewardsList"></ul>
+            <div class="levels" id="levelsList" aria-label="Niveles del Club"></div>
+            <p class="gift" id="giftNote"></p>
+          </div>
+
+          <div class="forms">
+            <form class="panel" id="joinForm" novalidate>
+              <h3>Quiero unirme</h3>
+              <div class="field"><label for="jn">Nombre completo</label><input id="jn" autocomplete="name" required></div>
+              <div class="two">
+                <div class="field"><label for="jp">Celular</label><input id="jp" inputmode="numeric" autocomplete="tel" placeholder="300 123 4567" required></div>
+                <div class="field"><label for="jb">Cumpleaños</label><input id="jb" type="date" required></div>
+              </div>
+              <p class="field err" id="joinErr" role="alert" hidden></p>
+              <button class="btn btn-wa btn-block" type="submit"><svg aria-hidden="true"><use href="#i-wa"/></svg>Enviar mis datos por WhatsApp</button>
+            </form>
+
+            <form class="panel" id="pointsForm" novalidate>
+              <h3>¿Cuántos puntos tengo?</h3>
+              <div class="field"><label for="qp">Tu celular</label><input id="qp" inputmode="numeric" autocomplete="tel" placeholder="300 123 4567" required></div>
+              <p class="field err" id="pointsErr" role="alert" hidden></p>
+              <button class="btn btn-primary btn-block" type="submit">Consultar por WhatsApp</button>
+            </form>
+          </div>
         </div>
       </div>
-      <div class="ubi-map"><iframe title="Mapa de Gro’smania Heladería" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen src="${mapsEmbed()}"></iframe></div>
-    </div>
-  </section>
+    </section>
 
-  <section class="igband" aria-labelledby="igT"><div class="ig-in">
-    <div>
-      <h2 id="igT">Síguenos en Instagram</h2>
-      <p>Mira nuestras copas, waffles y novedades. ¡Te vas a antojar!</p>
-      <div class="ig-btns">
-        <a class="btn btn-cream" href="${INSTAGRAM.url}" target="_blank" rel="noopener">${ICO_IG} ${INSTAGRAM.handle}</a>
-        <a class="btn btn-wa" href="${waUrl('Hola Gro’smania 👋, quisiera más información.')}" target="_blank" rel="noopener">${ICO_WA} Escríbenos</a>
+    <!-- DÓNDE ESTAMOS -->
+    <section id="donde" aria-labelledby="whereTitle">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="whereTitle">Dónde estamos</h2>
+          <p>Te esperamos en el local, o pídenos por WhatsApp y te lo llevamos.</p>
+        </div>
+        <div class="where">
+          <div class="panel">
+            <ul>
+              <li><svg aria-hidden="true"><use href="#i-pin"/></svg><div><b>Nuestro local</b>Mira la ubicación en el mapa y toca el botón para que Google Maps te guíe hasta la puerta.</div></li>
+              <li><svg aria-hidden="true"><use href="#i-clock"/></svg><div><b>Horario</b>Todos los días desde <span data-text="open"></span>.</div></li>
+              <li><svg aria-hidden="true"><use href="#i-bike"/></svg><div><b>Domicilios</b>Pide por WhatsApp. El costo del domicilio se confirma según tu dirección.</div></li>
+            </ul>
+            <a class="btn btn-primary" id="mapsBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-pin"/></svg>Cómo llegar con Google Maps</a>
+            <a class="btn btn-ghost" data-wa="hola" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Escribirnos por WhatsApp</a>
+          </div>
+          <div class="map"><iframe id="mapFrame" title="Mapa con la ubicación de Gro’smania" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+        </div>
       </div>
-      <div class="ig-info"><span>✓ Abierto todos los días</span><span>✓ Domicilios por WhatsApp</span><span>✓ Club de puntos</span></div>
-    </div>
-    <div class="ig-photo"><img src="fotos/banner-tres-copas.jpg" alt="Tres de nuestros postres" loading="lazy" width="260" height="334"></div>
-  </div></section>
+    </section>
 
-  <footer class="foot">© ${new Date().getFullYear()} Gro’smania Heladería.<br><span class="credit">Página creada por <a href="${SONETIX_URL}" target="_blank" rel="noopener">Sonetix</a> · Páginas web a la medida.</span><br><a onclick="go(isAdmin?'admin':'login')">Administración del Club</a></footer>
+    <!-- BANNER DE INFORMACIÓN + INSTAGRAM -->
+    <section class="insta" aria-labelledby="igTitle">
+      <div class="wrap insta-inner">
+        <div>
+          <h2 id="igTitle">Síguenos en Instagram</h2>
+          <p>Mira nuestras copas, waffles y novedades. ¡Te vas a antojar!</p>
+          <div class="row">
+            <a class="btn btn-light" id="igBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span id="igHandle"></span></a>
+            <a class="btn btn-wa" data-wa="hola" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Pedir por WhatsApp</a>
+          </div>
+          <div class="insta-info">
+            <span>Todos los días desde <span data-text="open"></span></span>
+            <span>Domicilios por WhatsApp</span>
+            <span>Club de puntos</span>
+          </div>
+        </div>
+        <div class="insta-photo"><img src="fotos/banner-tres-copas.jpg" alt="Tres de nuestros postres: copa de frutos rojos, malteada de chocolate y copa de caramelo" width="340" height="437" loading="lazy"></div>
+      </div>
+    </section>
+  </main>
 
-  <a class="wa-float" href="${waUrl('Hola Gro’smania 👋, quisiera más información.')}" target="_blank" rel="noopener" aria-label="Escribirnos por WhatsApp">${ICO_WA}WhatsApp</a>
-
-  <nav class="tabbar">
-    <a href="#carta"><span class="e">🍨</span>Carta</a>
-    <a href="#club"><span class="e">💚</span>Club</a>
-    <a href="#whatsapp"><span class="e">💬</span>WhatsApp</a>
-    <a href="#ubicacion"><span class="e">📍</span>Dónde</a>
-    <button onclick="openCart()"><span class="e">🛒</span>Pedido<span class="badge" data-cartcount>${cnt||''}</span></button>
-  </nav>`;
-}
-function initCarta(){
-  if(spy)spy.disconnect();
-  spy=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setActiveChip(e.target.dataset.c)})},{rootMargin:'-120px 0px -65% 0px'});
-  document.querySelectorAll('.cat').forEach(c=>spy.observe(c));
-  setActiveChip('copas');
-  if(favOnly)$('#favbtn')?.classList.add('on');
-}
-function setActiveChip(c){
-  const bar=$('#chips'); if(!bar)return;
-  bar.querySelectorAll('.chip').forEach(b=>{const on=b.dataset.c===c;b.classList.toggle('active',on);if(on){const l=b.offsetLeft-bar.clientWidth/2+b.clientWidth/2;bar.scrollTo({left:l,behavior:'smooth'})}});
-}
-function goCat(c){
-  const el=document.getElementById('cat-'+c); if(!el)return;
-  if($('#q')&&$('#q').value){$('#q').value='';filterMenu()}
-  const y=el.getBoundingClientRect().top+window.scrollY-(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hh'))+58);
-  window.scrollTo({top:y,behavior:'smooth'});
-}
-function filterMenu(){
-  const q=norm($('#q').value.trim());let any=false;
-  document.querySelectorAll('.cat').forEach(sec=>{
-    if(sec.dataset.c==='adiciones'){sec.hidden=!!q||favOnly;return}
-    let n=0;sec.querySelectorAll('.it').forEach(el=>{const ok=(!q||el.dataset.t.includes(q))&&(!favOnly||favs.has(+el.dataset.id));el.hidden=!ok;if(ok)n++});
-    sec.hidden=!n;any=any||n>0;
-  });
-  $('#nores').hidden=any;
-}
-function toggleFav(id,btn){
-  favs.has(id)?favs.delete(id):favs.add(id);btn.classList.toggle('on',favs.has(id));
-  try{localStorage.setItem('gm.favs',JSON.stringify([...favs]))}catch(e){}
-  toast(favs.has(id)?'❤️ Guardado en tus favoritos':'Quitado de favoritos');if(favOnly)filterMenu();
-}
-function toggleFavOnly(){
-  favOnly=!favOnly;$('#favbtn').classList.toggle('on',favOnly);
-  if(favOnly&&!favs.size)toast('Aún no tienes favoritos: toca el ❤️ de un producto');
-  filterMenu();
-}
-function surprise(){
-  if($('#q').value){$('#q').value='';}favOnly=false;$('#favbtn').classList.remove('on');filterMenu();
-  const pool=DB.products.filter(p=>p.cat!=='Mascotas'&&p.cat!=='Bebidas');
-  const p=pool[Math.floor(Math.random()*pool.length)], el=document.querySelector(`.it[data-id="${p.id}"]`);
-  el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl');
-  toast('🎲 ¿Y si hoy pruebas '+p.name+'?');
-}
-
-/* ---------- Carrito ---------- */
-const needsCustom=p=>(p.opts&&p.opts.length)||p.adds||(p.addons&&p.addons.length);
-const addonsOf=p=>[...(p.adds?ADICIONES:[]),...(p.addons||[])];
-const listOf=g=>g.list==='flavors'?FLAVORS:g.list;
-const qtyOf=id=>cart.filter(l=>l.id===id).reduce((a,l)=>a+l.qty,0);
-function lineDetail(l){
-  const parts=(l.sel||[]).map(x=>x.label.replace(/ \(\d\)$/,'')+': '+x.v.join(', '));
-  if(l.adds&&l.adds.length)parts.push('Adiciones: '+l.adds.join(', '));
-  if(l.note)parts.push('Nota: '+l.note);
-  return parts.join(' · ');
-}
-function updateCartUI(bumpId){
-  document.querySelectorAll('[data-cartcount]').forEach(e=>e.textContent=cartCount()||'');
-  DB.products.forEach(p=>{const e=document.getElementById('q'+p.id);if(e)e.textContent=qtyOf(p.id)||''});
-  if(bumpId){const b=document.getElementById('ad'+bumpId);if(b){b.classList.remove('bump');void b.offsetWidth;b.classList.add('bump')}}
-}
-function pushLine(p,sel,adds,note){
-  const extra=addonsOf(p).filter(a=>adds.includes(a[0])).reduce((x,a)=>x+a[1],0);
-  const key=JSON.stringify([p.id,sel,adds,note]);
-  const it=cart.find(l=>l.key===key);
-  if(it)it.qty++;else cart.push({key,id:p.id,qty:1,sel,adds,note,unit:p.price+extra});
-  toast(p.emoji+' '+p.name+' agregado'); updateCartUI(p.id);
-}
-function tapItem(id){const p=prod(id);needsCustom(p)?openCustom(id):pushLine(p,[],[],'')}
-function openCustom(id){
-  const p=prod(id), ads=addonsOf(p);
-  openModal(`<h3>${p.emoji} ${esc(p.name)}</h3>
-  <p style="color:var(--muted);margin:-8px 0 14px;font-size:.9rem">${esc(p.desc)}</p>
-  ${(p.opts||[]).map((g,gi)=>`<div class="opt-g"><b>${esc(g.label)}</b>${[...Array(g.n)].map((_,i)=>`<select id="oc_${gi}_${i}"><option value="">Elige${g.n>1?' ('+(i+1)+')':''}…</option>${listOf(g).map(v=>`<option>${esc(v)}</option>`).join('')}</select>`).join('')}</div>`).join('')}
-  ${ads.length?`<div class="opt-g"><b>${p.adds?'Adiciones (opcional)':'Extras (opcional)'}</b><div class="addons">${ads.map((a,j)=>`<label><span><input type="checkbox" id="oc_a_${j}" onchange="ocTotal(${id})"> ${esc(a[0])}</span><span>+${money(a[1])}</span></label>`).join('')}</div></div>`:''}
-  <div class="field"><label>Nota para la cocina (opcional)</label><input id="oc_note" maxlength="120" placeholder="Ej. sin queso, para llevar…"></div>
-  <div class="sum-row total"><span>Total</span><span id="oc_total">${money(p.price)}</span></div>
-  <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="confirmCustom(${id})">Agregar al pedido</button></div>`);
-}
-function ocPicked(p){return addonsOf(p).filter((a,j)=>{const el=document.getElementById('oc_a_'+j);return el&&el.checked}).map(a=>a[0])}
-function ocTotal(id){const p=prod(id),sel=ocPicked(p);$('#oc_total').textContent=money(p.price+addonsOf(p).filter(a=>sel.includes(a[0])).reduce((x,a)=>x+a[1],0))}
-function confirmCustom(id){
-  const p=prod(id), sel=[];
-  for(let gi=0;gi<(p.opts||[]).length;gi++){
-    const g=p.opts[gi], v=[...Array(g.n)].map((_,i)=>document.getElementById(`oc_${gi}_${i}`).value);
-    if(v.some(x=>!x)){toast('Falta elegir: '+g.label.replace(/ \(\d\)$/,''));return}
-    sel.push({label:g.label,v});
-  }
-  pushLine(p,sel,ocPicked(p),$('#oc_note').value.trim());closeModal();
-}
-function chQty(i,d){
-  const l=cart[i]; if(!l)return;
-  l.qty+=d; if(l.qty<=0)cart.splice(i,1);
-  updateCartUI(); openCart();
-}
-function comboCalc(){
-  const q=f=>cart.reduce((a,l)=>a+(f(prod(l.id))?l.qty:0),0);
-  const copas=q(p=>p.cat==='Copas'), wm=q(p=>p.name==='Waffle Medio'), ja=q(p=>p.name==='Jugo Natural en Agua');
-  const combos=[],hints=[];
-  if(copas>=2)combos.push({label:'Dúo de copas ×'+Math.floor(copas/2),disc:Math.floor(copas/2)*COMBO_COPAS});
-  if(copas%2===1)hints.push('Agrega otra copa y ahorra '+money(COMBO_COPAS));
-  if(Math.min(wm,ja)>0)combos.push({label:'Waffle medio + jugo ×'+Math.min(wm,ja),disc:Math.min(wm,ja)*COMBO_WAFFLE});
-  if(wm>ja)hints.push('Agrega un jugo natural en agua a tu waffle medio y ahorra '+money(COMBO_WAFFLE));
-  return {combos,hints,comboD:combos.reduce((a,c)=>a+c.disc,0)};
-}
-function totals(rid){
-  if(rid===undefined)rid=redeem;
-  const sub=cart.reduce((a,l)=>a+l.unit*l.qty,0), {combos,hints,comboD}=comboCalc();
-  const pre=Math.max(0,sub-comboD), r=rid?rewardById(rid):null;
-  const rew=r?Math.min(r.value,pre):0, base=pre-rew, ship=sub>0?DELIVERY:0;
-  return {sub,combos,hints,comboD,rew,base,ship,total:base+ship};
-}
-const DELIVERY=3000;
-/* Redes y créditos. El usuario de Instagram es un SUPUESTO: confirmarlo antes de publicar. */
-const INSTAGRAM={handle:'@grosmania',url:'https://www.instagram.com/grosmania'};
-const SONETIX_URL='https://sonetix.emanuelvillada10.workers.dev/';
-const ICO_WA='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15c-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.23 8.25-8.23s8.23 3.69 8.23 8.23-3.7 8.24-8.23 8.24zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.15.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg>';
-const ICO_IG='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor"/></svg>';
-/* Miniatura de la lista: fotos/t-<nombre>.jpg si existe; las fotos antiguas (p1, p3) se usan tal cual */
-const thumbOf=p=>p.img.startsWith('fotos/')?p.img.replace('fotos/','fotos/t-'):p.img;
-/* Ubicación y horario del local (días 0=domingo … 6=sábado; minutos desde la medianoche) */
-const UBI={dir:'Cra. 16 #55-09, San Antonio, Villa Hermosa, Medellín, Antioquia',link:'https://maps.app.goo.gl/c2L7uqFson3YxZ9f8'};
-const HORARIO=[[750,1230],[810,1230],[810,1230],[810,1230],[810,1230],[810,1230],[810,1230]];
-const DIAS=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
-const mapsDir=()=>'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(UBI.dir);
-const mapsEmbed=()=>'https://www.google.com/maps?q='+encodeURIComponent(UBI.dir)+'&z=17&output=embed';
-const hhmm=m=>{const h=Math.floor(m/60),mm=m%60,p=h>=12?'p. m.':'a. m.',h12=h%12||12;return h12+':'+String(mm).padStart(2,'0')+' '+p};
-function nowCO(){ // hora de Colombia, sin importar dónde esté el visitante
-  const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Bogota',weekday:'short',hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date());
-  const g=k=>p.find(x=>x.type===k).value;
-  return {d:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g('weekday')),m:(+g('hour')%24)*60+ +g('minute')};
-}
-function openState(){
-  const n=nowCO(), [a,c]=HORARIO[n.d];
-  if(n.m>=a&&n.m<c)return {open:true,txt:'Abierto ahora · cerramos a las '+hhmm(c)};
-  if(n.m<a)return {open:false,txt:'Cerrado · hoy abrimos a las '+hhmm(a)};
-  const nx=(n.d+1)%7;return {open:false,txt:'Cerrado · mañana abrimos a las '+hhmm(HORARIO[nx][0])};
-}
-const openPill=()=>{const s=openState();return (s.open?'🟢 ':'🔴 ')+s.txt};
-const openBadge=()=>{const s=openState();return `<span class="ubi-badge ${s.open?'on':'off'}">${s.open?'🟢':'🔴'} ${s.txt}</span>`};
-function horarioRows(){
-  const hoy=nowCO().d;
-  return [1,2,3,4,5,6,0].map(d=>`<tr class="${d===hoy?'hoy':''}"><td>${DIAS[d][0].toUpperCase()+DIAS[d].slice(1)}${d===hoy?' (hoy)':''}</td><td>${hhmm(HORARIO[d][0])} – ${hhmm(HORARIO[d][1])}</td></tr>`).join('');
-}
-/* Número de WhatsApp del negocio, con indicativo y sin signos: p. ej. '573001234567'.
-   Mientras esté vacío, WhatsApp deja elegir a quién enviar el mensaje. */
-const WHATSAPP='573017759082';
-function waMessage(name,extra){
-  const t=totals(null), L=['Hola Gro’smania 👋, quiero hacer un pedido:'];
-  if(name)L.push('Mi nombre: '+name);
-  if(cart.length){
-    L.push('');
-    cart.forEach(l=>{const d=lineDetail(l);L.push('• '+l.qty+'× '+prod(l.id).name+(d?' ('+d+')':'')+' — '+money(l.unit*l.qty))});
-    t.combos.forEach(c=>L.push('🎁 '+c.label+': −'+money(c.disc)));
-    L.push('Total de productos: '+money(t.sub-t.comboD));
-  }
-  if(extra){L.push('');L.push(extra)}
-  if(!cart.length&&!extra)L.push('','Quisiera pedir… (cuéntanos qué se te antoja)');
-  if(clubPhone)L.push('','Mi celular del Club: '+clubPhone);
-  return L.join('\n');
-}
-const waUrl=text=>'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(text);
-function waOrderMessage(o,t){
-  const L=['Hola Gro’smania 👋, quiero hacer este pedido:','','*Pedido #'+o.id+'*','Nombre: '+o.customer,'Modalidad: '+o.method];
-  if(o.address)L.push('Dirección: '+o.address);
-  L.push('');
-  cart.forEach(l=>{const d=lineDetail(l);L.push('• '+l.qty+'× '+prod(l.id).name+(d?' ('+d+')':'')+' — '+money(l.unit*l.qty))});
-  t.combos.forEach(c=>L.push('🎁 '+c.label+': −'+money(c.disc)));
-  if(o.rew)L.push('💚 Premio del Club: −'+money(o.rew.value));
-  if(t.ship)L.push('Domicilio: '+money(t.ship));
-  L.push('*Total a pagar: '+money(t.total)+'*');
-  if(o.phone)L.push('','Mi celular: '+o.phone);
-  return L.join('\n');
-}
-function openWA(){
-  const name=($('#wa_n')||{value:''}).value.trim(), extra=($('#wa_x')||{value:''}).value.trim();
-  const url=waUrl(waMessage(name,extra));
-  window.open(url,'_blank','noopener')||(location.href=url);
-}
-function openCart(){
-  const t=totals(), ex=document.querySelector('.drawer');
-  const html=`<header><h3>Tu pedido 🛒</h3><button class="icon-btn" aria-label="Cerrar" onclick="closeAll()">✕</button></header>
-  <div class="body">${cart.length?cart.map((l,ix)=>{const p=prod(l.id);return `
-    <div class="cart-item"><div class="info"><b>${esc(p.name)}</b><br><small>${money(l.unit)}</small>${lineDetail(l)?`<small class="det">${esc(lineDetail(l))}</small>`:''}</div>
-    <div class="qty"><button onclick="chQty(${ix},-1)" aria-label="Quitar uno">−</button><b>${l.qty}</b><button onclick="chQty(${ix},1)" aria-label="Agregar uno">＋</button></div></div>`}).join('')
-    :'<p class="empty">Tu pedido está vacío 🍨<br>¡Agrega algo delicioso de la carta!</p>'}</div>
   <footer>
-    ${t.hints.map(h=>`<div class="hint" style="color:#0b7f72;margin-bottom:6px">💡 ${h}</div>`).join('')}
-    <div class="sum-row"><span>Subtotal</span><span>${money(t.sub)}</span></div>
-    ${t.combos.map(c=>`<div class="sum-row" style="color:#2f9a5d"><span>🎁 ${c.label}</span><span>−${money(c.disc)}</span></div>`).join('')}
-    <div class="sum-row"><span>Domicilio</span><span>${money(t.ship)}</span></div>
-    <div class="sum-row total"><span>Total</span><span>${money(t.total)}</span></div>
-    <button class="btn btn-primary block" style="margin-top:10px" ${cart.length?'':'disabled'} onclick="openCheckout()">Finalizar y enviar por WhatsApp 💬</button>
-
-  </footer>`;
-  if(ex){ex.innerHTML=html;return}
-  const d=document.createElement('aside');d.className='drawer';d.innerHTML=html;
-  document.body.appendChild(d);requestAnimationFrame(()=>d.classList.add('show'));showOverlay(true);
-}
-function openCheckout(){
-  redeem=null;
-  openModal(`<h3>Casi listo 🎉</h3>
-    <div class="field"><label>Tu nombre</label><input id="co_name" placeholder="Ej. Laura Gómez" autocomplete="name"></div>
-    <div class="two keep"><div class="field"><label>Modalidad</label><select id="co_m" onchange="coMode()"><option>Domicilio</option><option>Local</option></select></div>
-    <div class="field"><label>Celular</label><input id="co_t" inputmode="numeric" placeholder="300 000 0000" oninput="coLookup()" value="${esc(clubPhone)}" autocomplete="tel"></div></div>
-    <div class="field" id="co_addr_f"><label>Dirección de entrega</label><input id="co_addr" placeholder="Barrio, calle y número" autocomplete="street-address"></div>
-    <div id="co_club"></div>
-    <p style="margin-bottom:12px;color:var(--muted)">Total a pagar: <b id="co_total" style="color:var(--pink)">${money(totals().total)}</b></p>
-    <div class="modal-actions"><button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-wa" onclick="placeOrder()">Enviar pedido por WhatsApp 💬</button></div>
-    <p class="hint" style="color:var(--muted);margin-top:10px;text-align:right">Se abrirá WhatsApp con tu pedido ya escrito; solo toca «Enviar».</p>`);
-  showOverlay(true);coLookup();
-}
-function coLookup(){
-  const box=$('#co_club'); if(!box)return;
-  const ph=digits($('#co_t').value), m=findMember(DB,ph), pre=totals(null).base;
-  if(!m&&redeem)redeem=null;
-  if(m){
-    const opts=rewardsFor(m,pre);
-    if(redeem&&!opts.some(r=>r.id===redeem))redeem=null;
-    box.innerHTML=`<div class="cbox"><span>💚 Hola, <b>${esc(m.name.split(' ')[0])}</b>: tienes <b>${m.points}</b> puntos y ganarás ~<b>${Math.floor(pre/1000*tierOf(DB,m).t.mult)}</b> con este pedido.</span>
-    ${opts.length?`<select id="co_rw" onchange="redeem=this.value||null;coTotal()"><option value="">No canjear premio ahora</option>${opts.map(r=>`<option value="${r.id}" ${redeem===r.id?'selected':''}>${r.label} · −${money(Math.min(r.value,pre))}${r.pts?' ('+r.pts+' pts)':' (gratis)'}</option>`).join('')}</select>`:`<small style="color:var(--muted)">Aún no alcanzas un premio (el primero son ${REWARDS[0].pts} puntos y un pedido de al menos ${money(REWARDS[0].value)}).</small>`}</div>`;
-  }else if(ph.length>=10){
-    box.innerHTML=`<label class="cbox" style="grid-template-columns:auto 1fr;align-items:center"><input type="checkbox" id="co_join" checked> <span>Unirme gratis al <b>Club Gro’smania</b> y ganar puntos con este pedido</span></label>`;
-  }else box.innerHTML='';
-  coTotal();
-}
-function coMode(){const d=$('#co_m').value==='Domicilio';$('#co_addr_f').hidden=!d;const e=$('#co_total');if(e)e.textContent=money(totals().total-(d?0:DELIVERY))}
-function coTotal(){const e=$('#co_total');if(e)e.textContent=money(totals().total-($('#co_m').value==='Local'?DELIVERY:0))}
-function placeOrder(){
-  const name=$('#co_name').value.trim(); if(!name){toast('Escribe tu nombre');return}
-  const mode=$('#co_m').value, address=$('#co_addr').value.trim();
-  if(mode==='Domicilio'&&!address){toast('Escribe la dirección de entrega');return}
-  const phone=digits($('#co_t').value);
-  let m=phone?findMember(DB,phone):null;
-  if(!m&&phone.length>=10&&$('#co_join')&&$('#co_join').checked)m=newMember(DB,name,phone,'','');
-  if(redeem){const r=rewardById(redeem);if(!(m&&r&&(r.pts===0?bdayEligible(m):m.points>=r.pts)&&totals(null).base>=r.value))redeem=null}
-  const t=totals(), r=redeem?rewardById(redeem):null;
-  if(mode==='Local'){t.ship=0;t.total=t.base}
-  const id=Math.max(...DB.orders.map(o=>o.id),999)+1;
-  const o={id,customer:name,phone:m?m.phone:phone,items:cart.map(l=>({id:l.id,qty:l.qty,price:l.unit,sel:l.sel,adds:l.adds,note:l.note})),total:t.total,base:t.base,ship:t.ship,combo:t.comboD,rew:r?{id:r.id,pts:r.pts,value:t.rew}:null,status:'Pendiente',date:new Date().toISOString(),method:mode,address:mode==='Domicilio'?address:'',src:'online'};
-  DB.orders.push(o);
-  if(r&&m)spendReward(m,r,id);
-  if(m)setClubPhone(m.phone);
-  const url=waUrl(waOrderMessage(o,t));
-  cart=[];redeem=null;save();closeAll();render(true);
-  window.open(url,'_blank','noopener')||(location.href=url);
-  toast('Pedido #'+id+' listo 🍨 Toca «Enviar» en WhatsApp para confirmarlo.'+(m?' Sumas puntos cuando te lo entreguemos.':''));
-}
-
-/* ---------- Club en la tienda ---------- */
-function clubLookup(e){
-  e.preventDefault();const p=digits($('#cl_p').value),m=findMember(DB,p);
-  if(!m){toast('No encontramos ese número. ¡Únete abajo, es gratis! 💚');return}
-  setClubPhone(p);render(true);toast('¡Hola, '+m.name.split(' ')[0]+'! 👋');
-}
-function clubJoin(e){
-  e.preventDefault();
-  const name=$('#cj_n').value.trim(),p=digits($('#cj_p').value);
-  if(!name||p.length<10){toast('Escribe tu nombre y un celular de 10 dígitos');return}
-  if(findMember(DB,p)){toast('Ese número ya está en el Club');return}
-  const b=$('#cj_b').value, ref=digits($('#cj_r').value);
-  if(ref&&!findMember(DB,ref)){toast('El número de quien te invitó no está en el Club');return}
-  newMember(DB,name,p,b?b.slice(5):'',ref).birth=b||'';save();setClubPhone(p);render(true);toast('¡Bienvenido/a al Club, '+name.split(' ')[0]+'! 💚');
-}
-function clubExit(){setClubPhone('');render(true)}
-function memberCard(){
-  const m=clubPhone?findMember(DB,clubPhone):null;
-  if(m){
-    const {t,visits,next}=tierOf(DB,m);
-    const nr=REWARDS.find(r=>r.pts>m.points), top=nr?nr.pts:REWARDS[REWARDS.length-1].pts;
-    return `<h3>Tu tarjeta 💚</h3>
-    <p style="margin-bottom:6px"><b>${esc(m.name)}</b> · <span class="tierpill">${t.e} ${t.n}${t.mult>1?' · puntos x'+t.mult:''}</span></p>
-    <div class="pts">${m.points}<small style="font-size:1rem;color:var(--muted);font-family:Inter"> puntos</small></div>
-    <div class="bar"><i style="width:${Math.min(100,m.points/top*100)}%"></i></div>
-    <small>${nr?`Te faltan <b>${nr.pts-m.points}</b> puntos para: ${nr.label}`:'¡Ya puedes canjear el premio mayor! 🎉'}</small>
-    <p class="hint" style="color:var(--muted);margin-top:10px">${next?`Llevas ${visits} compra${visits===1?'':'s'} en 90 días. Con ${next.min} subes a ${next.e} ${next.n} y ganas más puntos.`:`Llevas ${visits} compras en 90 días: estás en el nivel más alto 🏆`}</p>
-    ${bdayEligible(m)?'<div class="gift">🎂 ¡Esta semana es tu cumpleaños! Tienes una adición gratis. Úsala al finalizar tu pedido.</div>':''}
-    <div class="gift" style="background:#e6fbf8;border-color:#7fd8cc">🤝 Invita a un amigo/a: que se una con tu número <b>${m.phone}</b> y ambos ganan ${REF_BONUS} puntos en su primera compra.</div>
-    <div class="hist">${m.ledger.slice(0,5).map(l=>`<div><span>${fmtDate(l.d)} · ${esc(l.desc)}</span><b style="color:${l.pts>=0?'#2f9a5d':'var(--rose)'}">${l.pts>0?'+':''}${l.pts}</b></div>`).join('')||'<div>Aún no tienes movimientos. ¡Haz tu primera compra!</div>'}</div>
-    <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="clubExit()">Salir</button>`;
-  }
-  return `<h3>Ya soy del Club</h3>
-  <form onsubmit="clubLookup(event)"><input id="cl_p" inputmode="numeric" placeholder="Tu celular" required><button class="btn btn-primary">Ver mis puntos</button></form>
-  <div class="sep">— o únete gratis —</div>
-  <h3>Quiero unirme 🍨</h3>
-  <form onsubmit="clubJoin(event)"><input id="cj_n" placeholder="Tu nombre" required autocomplete="name"><input id="cj_p" inputmode="numeric" placeholder="Celular (10 dígitos)" required autocomplete="tel">
-  <label class="hint" style="color:var(--muted)">Cumpleaños (opcional, para tu regalo)<input id="cj_b" type="date"></label>
-  <input id="cj_r" inputmode="numeric" placeholder="Celular de quien te invitó (opcional)">
-  <button class="btn btn-primary">Unirme al Club</button></form>`;
-}
-function clubSection(){
-  return `<section id="club" class="club">
-  <div class="sec-head"><h2>Club Gro’smania 💚</h2><p>Cada compra suma. Canjea puntos por helado y ahorra con los combos.</p></div>
-  <div class="club-grid">
-    <div class="mcard">${memberCard()}</div>
-    <div class="club-info">
-      <div><h3>Así funciona</h3><ul><li>🍨 Ganas <b>1 punto por cada $1.000</b> de tu compra, cuando te la entregamos.</li><li>📱 Solo con tu celular, sin tarjetas ni contraseñas.</li><li>🎂 En la semana de tu cumpleaños, una adición gratis.</li></ul></div>
-      <div><h3>Premios</h3><div class="rw">${REWARDS.map(r=>`<div><b>${r.pts} pts</b>${r.label}</div>`).join('')}</div></div>
-      <div><h3>Niveles (según tus compras en 90 días)</h3><div class="tiers">${TIERS.map(t=>`<div><b>${t.e} ${t.n}</b><small>${t.min?t.min+'+ compras':'Desde el inicio'} · puntos x${t.mult}</small></div>`).join('')}</div></div>
-      <div><h3>Combos que ahorran</h3><ul><li>🍨🍨 <b>Dúo de copas:</b> llévate 2 y ahorra ${money(COMBO_COPAS)}.</li><li>🧇🧃 <b>Waffle medio + jugo natural en agua:</b> ahorra ${money(COMBO_WAFFLE)}.</li></ul></div>
+    <div class="wrap">
+      <div class="foot">
+        <img src="logos/logo-cream-h.svg" alt="Gro’smania Heladería" width="171" height="84" loading="lazy">
+        <nav aria-label="Enlaces del pie de página">
+          <a href="#menu">Carta</a><a href="#club">Club de puntos</a><a href="#donde">Dónde estamos</a>
+        </nav>
+      </div>
+      <div class="credit">
+        <span>© <span id="year"></span> Gro’smania Heladería. Todos los derechos reservados.</span>
+        <span>Página creada por <a href="#" id="sonetix">Sonetix</a> · Páginas web a la medida. <a class="admin-link" href="#admin">Acceso administrador</a></span>
+      </div>
     </div>
-  </div></section>`;
-}
+  </footer>
 
-/* =========================================================
-   ¿NO SABES QUÉ PEDIR? Juego para encontrar tu helado ideal
-   - Banco de 110 preguntas (cada partida usa unas pocas, al azar)
-   - Cada respuesta suma puntos a «rasgos» de gusto (chocolate, fruta, cremoso…)
-   - Cada producto de la carta tiene su propio perfil de rasgos, calculado a
-     partir de su categoría, su precio y las palabras de su descripción
-   - El helado ideal es el producto cuyo perfil más se parece al del cliente
-   ========================================================= */
-const TRL={ch:'chocolate',fr:'fruta',cm:'lo cremoso',cj:'lo crocante',fs:'lo fresco',in:'los antojos grandes',cp:'compartir',av:'probar cosas nuevas',cl:'los clásicos',bb:'algo para sorber',cn:'lo calientito',kd:'divertirte como niño/a'};
-const TRP={ch:'Chocoholic 🍫',fr:'Alma frutal 🍓',cm:'Cremoso/a de corazón ☁️',cj:'Adicto/a a lo crujiente 🥨',fs:'Espíritu fresco 🌴',in:'Antojo sin freno 🔥',cp:'Alma de compartir 🤝',av:'Aventurero/a 🚀',cl:'Clásico/a de oro 🏆',bb:'Sorbo feliz 🥤',cn:'Corazón calientito ☕',kd:'Peque eterno/a 🧸'};
-function fxp(s){const o={tr:{},sp:[]};(s||'').split(/\s+/).filter(Boolean).forEach(t=>{const m=t.match(/^([a-z]{2})(-?\d)$/);if(m)o.tr[m[1]]=(o.tr[m[1]]||0)+ +m[2];else o.sp.push(t)});return o}
-const Q=(e,t,...o)=>({e,t,o:o.map(x=>{const i=x.lastIndexOf('|');return {a:x.slice(0,i),f:fxp(x.slice(i+1))}})});
-const QBANK=[
-Q('🦷','¿Qué te gusta más al morder?','Algo crocante|cj3','Algo suavecito|cm3','Algo jugoso|fr2 fs1','De todo un poquito|in2 cp1'),
-Q('🍫','¿Chocolate o fruta?','Chocolate, siempre|ch3','Fruta fresca|fr3 fs1','Las dos, ¡no me hagas elegir!|ch1 fr1 in1','Sorpréndeme|av2'),
-Q('☁️','Tu textura favorita','Cremosa|cm3','Crujiente|cj3','Fresca y jugosa|fs2 fr2','Espesa y bien cargada|in3'),
-Q('🍦','¿Chantillí en tu postre?','Montañas de chantillí|cm3 in1','Un poquito|cm1 cl1','Sin chantillí|fs2'),
-Q('🍬','¿Qué tan dulce lo quieres?','Dulcísimo|in3 ch1','Dulce normal|cl2','Suave y fresquito|fs3'),
-Q('🥫','Tu salsa preferida','Arequipe|cm1 in1 cl1','Chocolate|ch3','Mora o maracuyá|fr2 av1','Leche condensada|cm2 in1'),
-Q('🍪','¿Qué galleta te representa?','Oreo|ch2 cj1','Chokis|cj1 av1 ch1','Milo|ch1 kd1 cj1','Prefiero fruta|fr2'),
-Q('🥜','Un topping que no negocias','Masmelos|kd1 av1','Maní|cj2','Queso rallado|cm2 cl2','Chips de chocolate|ch2 cj1'),
-Q('🧀','Queso rallado en el postre…','¡Obvio!|cm2 cl2','Jamás|fr1 ch1','Solo si es poquito|cl1'),
-Q('🍓','¿Cuánta fruta quieres en tu helado?','Muchísima|fr3 fs1','Una o dos|fr1 cl1','Ninguna|ch1 in1'),
-Q('🍑','Tu fruta del alma','Fresa|fr2 cl1','Mango o maracuyá|fr2 av1 fs1','Durazno|fr1 cm1 cl1','Banano|fr1 in1'),
-Q('🍌','¿Banano en el postre?','Sí, bien cargado|in2 fr1 cp1','Si hay helado y salsas|cm1 in1','No, gracias|cl1'),
-Q('🧇','¿Waffle, dona u oblea?','Waffle calientico|cn2 cj2','Minidonas para picar|cp2 cj1 av1','Oblea tradicional|cl3 cj1','Mejor en copa|cm1 cl1'),
-Q('🍩','¿Te gustan las minidonas?','Muchísimo|cp2 av1','Me da igual|cl1','Prefiero otra cosa|fs1'),
-Q('🥤','¿Malteada?','Espesa y con galleta|bb2 in2 ch1','Fresca de frutas|bb2 fr2 fs1','No, mejor con cuchara|DS'),
-Q('☕','¿Algo calientito en el postre?','Sí, con chocolate|cn3 ch2','Mejor helado y bien frío|fs2','Mezcla de caliente y frío|cn1 av2 in1'),
-Q('🥭','Jugo natural: ¿en agua o en leche?','En agua, bien fresco|fs2 fr1','En leche, más cremoso|cm2','No soy de jugos|ch1'),
-Q('🍒','¿Cereza encima?','Es obligatoria|cl2 fr1','Me da igual|','Mejor sin|fs1'),
-Q('🧊','¿Qué tan frío lo quieres?','Congelado|fs2 cl1','Cremoso y casi derretido|cm2','Tibio con helado encima|cn2 in1'),
-Q('🍫','¿Brownie?','Con helado y todo|ch2 in2 cn1','Solo si está tibio|cn2 ch1','No es lo mío|fr1'),
-Q('🦸','Si tuvieras un superpoder…','Volar|av2','Leer mentes|cl1','Congelar el tiempo|fs2','Teletransportarme a comer|in2 cp1'),
-Q('🎬','Plan de película','Maratón con manta|cn2 cm1 ch1','Cine con crispetas|cj2','Documental con tarro de helado|in2 cp1','Cualquiera, con mi gente|cp2'),
-Q('🌤️','Un sábado ideal','Playa y sol|fs3 fr1','Sofá y series|cn1 cm2','Fiesta con amigos|cp2 av1','Paseo en familia|kd1 cp1 cl1'),
-Q('🎶','Tu música del momento','Salsa|av1 in1','Baladas|cm2 cn1','Reguetón|av2 cj1','Rock|ch1 in1 cj1'),
-Q('🐾','Tu animal interior','León|in2','Delfín|fs2 av1','Oso perezoso|cm2 cn1','Mono juguetón|kd2 av1'),
-Q('🎨','Tu color favorito','Rojo|fr2','Café|ch3','Amarillo|fr1 fs1','Rosado|kd1 cm1 fr1'),
-Q('🧭','Viajarías a…','Un bosque|fs1 cl1','Una isla tropical|fr2 fs2','Una ciudad con nieve|cn2 ch1','La luna|av3'),
-Q('🧠','¿Planeas o improvisas?','Todo planeado|cl2','Improviso siempre|av2','Depende del antojo|in1 av1'),
-Q('🎲','¿Te arriesgas a probar cosas nuevas?','Siempre|av3','A veces|av1 cl1','Prefiero lo seguro|cl3'),
-Q('👑','Si fueras un postre serías…','Un clásico|cl3','Uno exótico|av3','Uno explosivo|in2 av1','Uno liviano y sano|fs2 fr1'),
-Q('🏃','¿Haces deporte?','Todos los días|fs2 fr1','A veces|cl1','Mi deporte es comer|in2 cp1'),
-Q('🛌','Tu hora favorita del día','Mañana|fs1 fr1','Tarde|cl1','Noche|cn1 ch1 in1','Madrugada 🦉|av1 in1'),
-Q('💬','En un grupo eres…','El que organiza|cp2','El que más se ríe|kd1 av1','El que escucha|cm1 cl1','El que pide por todos|cp3 in1'),
-Q('🧸','¿Cuánto niño/a llevas dentro?','Muchísimo|kd3 av1','Un poquito|kd1','Soy muy serio/a|cl2 fr1'),
-Q('🌈','Un día ideal sería…','Lleno de colores|kd1 av1 fr1','Lleno de calma|cm2 cl1','Lleno de aventuras|av3','Lleno de comida|in2 cp2'),
-Q('📱','Tu app más usada','Redes sociales|av1','Mensajes|cp1 cl1','Música|cm1','Domicilios de comida|in2'),
-Q('🎮','¿Qué juegas?','Videojuegos|cj1 av1','Juegos de mesa|cp2','Cartas|cl1','No juego|fr1'),
-Q('🔮','Tu horóscopo de hoy dice…','Llegará un antojo|in2','Será un día tranquilo|cm1','Viene un cambio inesperado|av2','No creo en eso|cl2'),
-Q('🎁','El mejor regalo es…','Una sorpresa|av2','Algo hecho a mano|cl1 cm1','Un abrazo|cm2','Comida rica|in2'),
-Q('🚗','Viaje largo: ¿qué llevas?','Snacks salados|cj1','Dulces|in2 ch1','Fruta|fr2 fs1','Nada, pido parada|av1 in1'),
-Q('😢','Día difícil… ¿qué te ayuda?','Chocolate|ch3 cn1','Helado bien frío|cm1 fs1','Algo bien cargado|in3','Algo fresquito|fs2 fr1'),
-Q('🎉','Celebración: ¿qué pides?','Algo grande para todos|cp3','Algo especial solo para mí|in2 av1','Algo clásico|cl2','Algo nuevo|av2'),
-Q('💑','Una cita perfecta es…','Fondue romántico|cp2 ch2 cn1','Una copa con dos cucharas|cp2 cm1','Waffle para picar|cp1 cj1 cn1','Fresas con chocolate|fr2 ch2 cn1'),
-Q('👨‍👩‍👧','¿Con quién vienes hoy?','Con mi pareja|cp2','Con mi familia|cp2 kd1','Con mis amigos|cp2 av1','Conmigo mismo/a|in1'),
-Q('😋','Tu hambre hoy es nivel…','Poquita|fs2 cl1','Normal|cl1','Brava|in3','Hambre de dos|cp2 in2'),
-Q('☀️','Hace muchísimo calor','Algo bien helado|fs3','Una malteada|bb2 cm1','Un jugo natural|bb2 fr1 fs2','Ensalada de frutas|fr2 fs2'),
-Q('🌧️','Está lloviendo','Algo calientito|cn3','Chocolate y waffle|cn2 ch2 cj1','Helado igual, ¡soy valiente!|fs1 av1','Fondue en pareja|cn2 cp1 ch1'),
-Q('🕐','Es de tarde: ¿merienda?','Algo ligero|fs2 fr1','Un dulce clásico|cl2','Un banquete|in3 cp1','Algo para picar|cj2 cp1'),
-Q('🎒','Después del trabajo o el colegio…','Merezco algo grande|in3','Algo rápido|cl2','Algo refrescante|fs2','Algo para compartir con amigos|cp2'),
-Q('📸','¿Foto antes de comer?','Siempre, debe verse lindo|av2 in1','A veces|cl1','Me lo como ya|in1'),
-Q('🥄','¿Cuchara pequeña o grande?','Grande, hay hambre|in2 cp1','Pequeña, para disfrutar|cl1 fs1','Dos cucharas: hay que compartir|cp3'),
-Q('🏆','La última cucharada…','La guardo con cariño|cl1 cm1','Me la como de una|in1','La comparto|cp2','Lamo el vaso|kd2 in1'),
-Q('🧁','¿Eres de repetir?','Sí, siempre lo mismo|cl3','Pido distinto cada vez|av3','Depende del humor|av1'),
-Q('🍽️','¿Postre antes que la comida?','Por supuesto|in2 av1','Primero lo salado|cl2','Hoy solo postre|in3'),
-Q('🕺','Plan para esta noche','Fiesta|av1 cp2','Casa|cn2 cm1','Cine|cj1 cp1','Antojarme y ya|in2'),
-Q('🧑‍🍳','¿Cocinas?','Sí, mucho|av1 cl1','Lo básico|cl2','Nada, yo pido|in1'),
-Q('🧃','Tu bebida de todos los días','Agua|fs2','Café|cn2 ch1','Jugo|fr2 fs1 bb1','Gaseosa|in1'),
-Q('🧀','¿Pan con queso o con chocolate?','Con chocolate|ch2 cn1','Con queso, ¡qué rico!|cm2 cl1','Con arequipe|cm2 in1','Solo|cl2'),
-Q('🥜','¿Maní o almendras?','Maní|cj2 cl1','Almendras|cj1 av1','Ninguno|fs1'),
-Q('🍯','¿Miel, arequipe o leche condensada?','Miel|fs1 fr1','Arequipe|cm2 in1 cl1','Leche condensada|cm2 in1'),
-Q('🌋','Un helado debe ser…','Una explosión de sabores|av2 in2','Elegante y simple|cl3','Refrescante|fs3','Abundante|in3 cp1'),
-Q('🏔️','¿Montaña o plano?','Una montaña bien alta|in3 cm1','Tamaño normal|cl2','Pequeño y fino|fs1 cl1'),
-Q('🥤','¿Pajilla o cuchara?','Pajilla|bb2','Cuchara|DS','Las dos|in1 bb1'),
-Q('🍬','¿Gomitas encima?','Sí, mucho color|kd2 av1','Poquitas|kd1','No|cl1 fr1'),
-Q('🌟','Lo mejor de un postre es…','La presentación|av2','El sabor|cl1','El tamaño|in2 cp1','La frescura|fs2'),
-Q('🧊','Tu mayor miedo es…','Que se derrita|fs2','Que se acabe|in2','Que me quede corto|in3','Que no me guste|cl2'),
-Q('🔥','Tu sabor favorito','Chocolate|ch3','Fresa|fr2 cl1','Maracuyá|fr2 av1 fs1','Vainilla|cl2 cm1'),
-Q('🥭','El mango va con…','Chamoy y limón|av2','Sal y limón|av1 fs1','Solo, natural|fr1 fs1','Con helado|fr1 cm1'),
-Q('🍓','Las fresas van con…','Crema|cm2 fr1','Chocolate|ch2 fr1 cn1','Azúcar|cl1','Solas|fs1'),
-Q('🍑','¿Durazno en almíbar?','Sí, es mi infancia|cl2 fr1','Meh|av1','No|ch1'),
-Q('🧀','¿Queso sobre un postre dulce?','Sí, delicioso|cm1 cl2','¿Eso se puede?|av2','No|ch1 fr1'),
-Q('🍫','¿Chocolate blanco, con leche o negro?','Blanco|cm2','Con leche|ch2 cl1','Negro|ch3 av1','Todos|ch2 in2'),
-Q('🌰','Barquillo u hojaldre en tu postre…','Sí, me gusta crujir|cj3','Poquito|cj1','Prefiero suave|cm2'),
-Q('🎂','Cumpleaños: ¿pastel o helado?','Helado, siempre|cm1 fs1','Torta de helado|cp2 in1','Pastel con helado|in2 cp1','Brownie con velitas|ch2 cn1'),
-Q('🍫','¿Trozos de brownie?','Sí, bien cargado|ch2 in2','Uno o dos|ch1','No|fr1'),
-Q('🎥','Si tu helado fuera una película…','Acción|in2 av1','Comedia|kd1 cp1','Romance|cm2 ch1','Terror: ¡se derrite!|av1 fs1'),
-Q('📆','¿Es un antojo o un plan?','Antojo ya mismo|in2','Plan con tiempo|cl1 cp1','Las dos cosas|av1'),
-Q('🧩','¿Qué armas mejor?','Mi propio waffle|av2 cj1','Mi bandeja de minidonas|cp2 av1','Mi copa|cl1 cm1','No armo nada, me lo traen|cl1'),
-Q('🪄','¿Te gusta elegir salsas y toppings?','Me encanta|av3','Dame opciones|av1','Ya viene armado|cl2'),
-Q('🍨','¿Cuántos sabores de helado?','Uno solo, soy fiel|cl3','Dos|cl1 av1','Tres, ¡todos!|in2 av1','Los que quepan|in3 cp1'),
-Q('🍧','¿Helado de agua o de crema?','De crema|cm3','De agua|fs3','Ni uno ni otro: malteada|bb2 cm1'),
-Q('🍯','Tu merienda de infancia','Galletas|cj2 kd1','Chocolate caliente|cn2 ch1','Fruta|fr2','Helado de palito|kd2 fs1'),
-Q('🧃','Un jugo de…','Mango|fr2 fs1','Mora|fr2','Maracuyá|fr1 av1 fs1','Guanábana|fr1 cm1 cl1'),
-Q('🍋','¿Te gusta lo ácido?','Sí, mucho|fr2 av1 fs1','Un poquito|fr1','Prefiero dulce|in1 cm1'),
-Q('🌴','Vacaciones soñadas','Playa|fs3','Montaña fría|cn2 ch1','Ciudad|av1 cp1','Casa de campo|cl2 cm1'),
-Q('🛒','En el mercado, ¿qué buscas primero?','Fruta|fr2','Dulces|in2','Lácteos|cm2','Galletas|cj2'),
-Q('📚','Tu libro favorito es de…','Aventura|av2','Romance|cm2','Humor|kd1','Misterio|ch1 av1'),
-Q('🕹️','Hoy manda…','Mi antojo|in3','Mi bolsillo|cl1','Mi dieta|fs2 fr1','Mi corazón|cm2 ch1'),
-Q('🌙','Último helado de la noche: ¿cómo?','En copa con todo|in2 cm1','En cono para caminar|cl2 kd1','Con waffle caliente|cn2 cj1','Mejor una malteada|bb2'),
-Q('🍰','Un postre de la casa de la abuela','Flan|cm2 cl1','Brownie|ch2','Ensalada de frutas|fr2 fs1','Galletas|cj1 cl1'),
-Q('😎','El emoji que más usas','😋|in1','😎|fs1 av1','🥰|cm2','🤪|kd2 av1'),
-Q('🧪','Mezclas inesperadas: ¿te atreves?','Sí: dulce con queso|av2 cm1','Sí: fruta con chocolate|av1 fr1 ch1','No, cada cosa en su sitio|cl3'),
-Q('🚀','Si pudieras pedir lo imposible…','Un helado que no se derrite|fs2','Uno que nunca se acaba|in3 cp1','Uno con todos los sabores|av2 in1','Uno gigante para todo el barrio|cp3'),
-Q('🐻','Tu peluche favorito','Oso|cm2 kd1','Perro|kd1 cl1','Unicornio|kd2 av2','No tengo|cl1'),
-Q('🎠','En un parque de diversiones…','Montaña rusa|av3','Carrusel|cl2 kd1','Mejor los puestos de comida|in2 cp1','Paso de largo|fs1'),
-Q('🕊️','Tu ritmo para comer','Despacito, a saborear|cl2 cm1','Rapidísimo|in2','A mitad lo comparto|cp2','Entre charla y charla|cp1 fs1'),
-Q('🧸','Un sabor de tu niñez','Chocolate con leche|ch2 kd1','Arequipe|cm2 kd1','Fresa|fr2 kd1','Maracuyá|fr1 fs1'),
-Q('🧂','¿Dulce o salado?','Dulce, sin duda|in2','Salado|cj2 cl1','Dulce con toque salado|cm1 av2','Ambos|in1 cj1'),
-Q('🍇','¿Mora, uvas o frutos rojos?','Mora|fr2 av1','Uvas|fr1 fs1','Frutos rojos mixtos|fr2 av1','Ninguna|ch1'),
-Q('🎈','Para ti un helado es…','Un abrazo|cm2','Una fiesta|av2 cp1','Un refresco|fs3','Un premio|in3'),
-Q('🥁','Elige una palabra','Crujiente|cj3','Cremoso|cm3','Fresco|fs3','Intenso|in3'),
-Q('☁️','¿Nubes, estrellas o arcoíris?','Nubes: suavecito|cm2','Estrellas: crocante|cj2','Arcoíris: frutas|fr2 av1','Lluvia de chocolate|ch3'),
-Q('🧗','¿Aventura gastronómica o clásico?','Aventura|av3','Clásico|cl3','Mitad y mitad|av1 cl1'),
-Q('🧿','Hoy tu espíritu es…','Chispeante|av2 kd1','Tranquilo|cm2 cl1','Enérgico|fs2 fr1','Goloso|in3 ch1'),
-Q('🍾','Un brindis con…','Jugo de fruta|bb2 fr2','Malteada|bb2 cm2','Chocolate caliente|cn2 ch2','Agua fresca|fs2'),
-Q('🐝','Más dulce que…','La miel|in2','Un abrazo|cm2','Un caramelo|kd1 in1','No me gusta tan dulce|fs2 cl1'),
-Q('🌶️','¿Algo picante en el postre?','Jamás|cl2','Un toque|av2','Sí, ¡sorpresa!|av3','Prefiero fresquito|fs2'),
-Q('🥇','¿Qué cuenta más para ti?','La cantidad|in2 cp1','La calidad|cl2','La novedad|av2','El precio|cl1'),
-Q('🔔','Pregunta final: ¿cómo te sientes ahora?','Con antojo|in2','Con hambre|in2 cp1','Con curiosidad|av2','Con calor|fs2')
-];
-const QANCHOR=[
-Q('🍨','¿Para quién es el helado?','Para mí solo/a|','Para compartir|cp2','Para un peque 🧸|kd6','Para mi peludo 🐶|PET'),
-Q('💸','¿Cuánto quieres gastar?','Hasta $8.000|B8','Hasta $14.000|B14','Hasta $18.500|B185','Hoy sin límite 🤑|B99'),
-Q('🥄','¿Cuchara o pajilla?','Cuchara: un postre|DS','Pajilla: algo para tomar|DR','Lo que más me enamore|')
-];
-const QPET=[
-Q('🐕','¿De qué tamaño es tu peludo?','Pequeñito|SZ0','Mediano o grande|SZ1'),
-Q('🍖','¿Cuál es su comida favorita?','Carne o pollo|p:cabano','Fruta|p:mango','Galletas|p:galleta','Come de todo|p:fresa'),
-Q('🐾','¿Cómo es su personalidad?','Glotón|p:cabano','Dulcero|p:galleta','Le encanta el verano|p:mango','Delicado|p:fresa'),
-Q('👀','Cuando ve un helado…','Salta de felicidad|p:fresa','Mueve la cola|p:mango','Se queda mirando fijo|p:galleta','Intenta robarlo|p:cabano'),
-Q('🎁','¿Un detalle extra para él o ella?','Sí, un turrón de pollo|TURRON','No, solo el helado|')
-];
+  <a class="wa-float" data-wa="hola" target="_blank" rel="noopener" aria-label="Escribirnos por WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
+  <div class="order-bar" id="orderBar"><span id="orderBarText"></span><button class="btn btn-light btn-sm" type="button" id="orderBarBtn">Ver pedido</button></div>
 
-/* ---------- Perfil de cada producto ---------- */
-const KW={ch:['chocolate','brownie','chocoramo','milo','oreo','chokis','chips','chocmelos','fondue'],
- fr:['fresa','mango','maracuy','pina','durazno','mora','cereza','breva','fruta','banano','manzana','papaya','mandarina','guanabana','naranja'],
- cm:['chantilli','crema','queso','condensada','arequipe','lechera','malteada'],
- cj:['barquillo','galleta','oreo','chokis','crispy','nuggets','waffle','oblea','mani','hojaldre','dona'],
- fs:['jugo','ensalada','salpicon','fresca','natural','agua']};
-const CATV={'Copas':{cm:1,cl:1},'Nuevas creaciones':{av:1,in:1},'Ensaladas':{fs:2,fr:2,cl:1},'Malteadas':{bb:3,cm:2},'Waffles':{cj:2,av:1,cn:1},'Minidonas':{cj:1,cp:2,av:1,cn:1},'Obleas':{cj:2,cl:1,cm:1},'Chocolate':{ch:3,cn:2,in:1},'Conos y vasos':{cl:2,kd:1},'Infantiles':{kd:3,av:1},'Bebidas':{bb:3,fs:1}};
-const _pv=new Map();
-function prodVec(p){
-  if(_pv.has(p.id))return _pv.get(p.id);
-  const txt=norm(p.name+' '+p.desc), v={ch:0,fr:0,cm:0,cj:0,fs:0,in:0,cp:0,av:0,cl:0,bb:0,cn:0,kd:0};
-  Object.keys(KW).forEach(k=>{v[k]=Math.min(2,KW[k].filter(w=>txt.includes(w)).length)*0.5});
-  Object.entries(CATV[p.cat]||{}).forEach(([k,x])=>v[k]+=x);
-  if(p.price>=16500)v.in+=1;
-  if(p.price>=24000){v.cp+=2;v.in+=1}
-  if(p.price<=6500)v.cl+=1;
-  if(/fondue|litro|banana|bandeja de 16/.test(txt))v.cp+=2;
-  if(/especial|nuevas/.test(txt))v.av+=1;
-  if(/fondue|brownie caliente|chocolate caliente|waffle|donas/.test(txt))v.cn+=1;
-  if(/oblea sencilla|cucurucho|concha|sundae/.test(txt))v.cl+=1;
-  _pv.set(p.id,v);return v;
-}
-function quizScore(st){
-  const u=st.tr, un=Math.sqrt(Object.values(u).reduce((a,x)=>a+x*x,0))||1;
-  return DB.products.filter(p=>p.cat!=='Mascotas').map(p=>{
-    const v=prodVec(p), vn=Math.sqrt(Object.values(v).reduce((a,x)=>a+x*x,0))||1;
-    let s=Object.keys(u).reduce((a,k)=>a+u[k]*(v[k]||0),0)/(un*vn);
-    if(st.bud&&p.price>st.bud)s-=0.35+(p.price-st.bud)/25000;
-    if(st.sp.includes('DR'))s+=v.bb>=3?0.35:-0.25;
-    if(st.sp.includes('DS'))s+=v.bb>=3?-0.3:0.05;
-    return {p,s};
-  }).sort((a,b)=>b.s-a.s);
-}
+  <div class="overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+    <div class="drawer-head"><h2 id="drawerTitle">Mi pedido</h2><button class="icon-btn" type="button" id="drawerClose" aria-label="Cerrar">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-foot" id="drawerFoot"></div>
+  </aside>
+</div>
 
-/* ---------- Pantallas del juego ---------- */
-let QZ=null;
-const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-function openQuiz(){
-  closeAll();closeQuiz();
-  const el=document.createElement('div');el.className='quiz';el.id='quiz';document.body.appendChild(el);
-  document.body.style.overflow='hidden';QZ={step:'start',ans:[],qs:[]};quizDraw();
-}
-function closeQuiz(){const e=$('#quiz');if(e)e.remove();document.body.style.overflow='';QZ=null}
-function quizDraw(){
-  const el=$('#quiz');if(!el||!QZ)return;
-  const top=`<div class="q-top"><button class="icon-btn" aria-label="Cerrar" onclick="closeQuiz()">✕</button></div>`;
-  if(QZ.step==='start'){
-    el.innerHTML=top+`<div class="q-card q-in"><div class="q-big">🤔</div><h2>¿No sabes qué pedir?</h2>
-    <p class="q-sub">Responde unas preguntas divertidas y descubre <b>qué helado es para ti</b>. Tenemos más de <b>100 preguntas</b>: cada vez te tocan otras.</p>
-    <div class="q-opts">
-      <button class="q-opt" onclick="quizStart(6)"><b>⚡ Rápido</b><small>6 preguntas · 1 minuto</small></button>
-      <button class="q-opt" onclick="quizStart(10)"><b>🍨 Normal</b><small>10 preguntas · el favorito</small></button>
-      <button class="q-opt" onclick="quizStart(18)"><b>🕵️ Detective</b><small>18 preguntas · máxima precisión</small></button>
-    </div></div>`;
-  }else if(QZ.step==='q')quizQuestion(el,top);
-  else quizResult(el,top);
-}
-function quizStart(n){
-  QZ={step:'q',n,ans:[],qs:[QANCHOR[0]],i:0};quizDraw();
-}
-function quizState(){
-  const st={tr:{},sp:[],bud:0,pet:{cabano:0,mango:0,fresa:0,galleta:0}};
-  QZ.ans.forEach((oi,qi)=>{
-    const f=QZ.qs[qi].o[oi].f;
-    Object.entries(f.tr).forEach(([k,x])=>st.tr[k]=(st.tr[k]||0)+x);
-    f.sp.forEach(t=>{
-      if(/^B\d+$/.test(t))st.bud=+t.slice(1)*1000;
-      else if(t.startsWith('p:'))st.pet[t.slice(2)]++;
-      else st.sp.push(t);
-    });
-  });
-  return st;
-}
-const QMSG=['¡Vamos bien! 🍦','Esto se pone interesante… 🔍','¡Ya casi te conozco! 😏','Hmm, tengo una sospecha 🤭','Última recta, campeón/a 🏁'];
-function quizQuestion(el,top){
-  const q=QZ.qs[QZ.i], total=QZ.qs.length>1&&QZ.pet?QZ.qs.length:QZ.n;
-  const pct=Math.round(QZ.i/total*100);
-  el.innerHTML=top+`<div class="q-card q-in" key="${QZ.i}">
-    <div class="q-prog"><i style="width:${pct}%"></i></div>
-    <small class="q-count">Pregunta ${QZ.i+1} de ${total}${QZ.i>0&&QZ.i%3===0?' · '+QMSG[(QZ.i/3-1)%QMSG.length]:''}</small>
-    <div class="q-big">${q.e}</div><h2>${esc(q.t)}</h2>
-    <div class="q-opts">${q.o.map((o,oi)=>`<button class="q-opt" onclick="quizAnswer(${oi})">${esc(o.a)}</button>`).join('')}</div>
-    ${QZ.i>0?'<button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="quizBack()">← Atrás</button>':''}</div>`;
-}
-function quizAnswer(oi){
-  QZ.ans.push(oi);
-  const f=QZ.qs[QZ.i].o[oi].f;
-  if(QZ.i===0){      // la primera respuesta decide el camino
-    if(f.sp.includes('PET')){QZ.pet=true;QZ.qs=[QZ.qs[0],...QPET]}
-    else{const rest=shuffle(QBANK).slice(0,Math.max(0,QZ.n-3));QZ.qs=[QZ.qs[0],QANCHOR[1],QANCHOR[2],...rest]}
-  }
-  QZ.i++;
-  if(QZ.i>=QZ.qs.length)QZ.step='result';
-  quizDraw();
-}
-function quizBack(){
-  if(QZ.i<=0)return;
-  QZ.ans.pop();QZ.i--;
-  if(QZ.i===0){QZ.qs=[QANCHOR[0]];QZ.pet=false}
-  quizDraw();
-}
-function confetti(){
-  const E=['🍓','🍫','✨','🍦','🎉','🥭','🍪'];
-  return `<div class="conf">${[...Array(16)].map((_,i)=>`<span style="left:${Math.random()*96}%;animation-delay:${(Math.random()*1.4).toFixed(2)}s;font-size:${(1.1+Math.random()*1.1).toFixed(1)}rem">${E[i%E.length]}</span>`).join('')}</div>`;
-}
-function quizResult(el,top){
-  const st=quizState();
-  if(QZ.pet)return quizPetResult(el,top,st);
-  const rank=quizScore(st), best=rank[0], answered=QZ.ans.length;
-  const topPct=Math.round(Math.min(97,76+answered*1.7));
-  const pct=r=>Math.round(topPct*Math.max(0.55,Math.min(1,best.s>0?r.s/best.s:0.6)));
-  const traits=Object.entries(st.tr).filter(([k,x])=>x>0).sort((a,b)=>b[1]-a[1]);
-  const persona=traits.length?TRP[traits[0][0]]:'Todoterreno 🌎';
-  const maxT=traits.length?traits[0][1]:1;
-  const why=traits.slice(0,2).map(([k])=>TRL[k]);
-  const alts=rank.slice(1,3);
-  el.innerHTML=top+`<div class="q-card q-in q-res">${confetti()}
-    <small class="q-count">Tu perfil heladero</small><h2 style="margin-bottom:12px">${persona}</h2>
-    <div class="q-bars">${traits.slice(0,4).map(([k,x])=>`<div><span>${TRL[k]}</span><i><b style="width:${Math.round(x/maxT*100)}%"></b></i></div>`).join('')}</div>
-    <div class="q-win"><small>Tu helado ideal es…</small>
-      <h3>${best.p.emoji} ${esc(best.p.name)}</h3><span class="q-pct">${pct(best)}% de compatibilidad</span>
-      <p>${esc(best.p.desc)}</p>
-      ${why.length?`<p class="q-why">💡 Te lo recomendamos porque te gusta ${why.join(' y ')}.</p>`:''}
-      <div class="q-price">${money(best.p.price)}</div>
-      <button class="btn btn-primary block" onclick="quizAdd(${best.p.id})">Armarlo y agregarlo 🛒</button></div>
-    <h4>También te podrían encantar</h4>
-    ${alts.map(a=>`<div class="q-alt"><div><b>${a.p.emoji} ${esc(a.p.name)}</b><br><small>${pct(a)}% · ${money(a.p.price)}</small></div><button class="btn btn-ghost btn-sm" onclick="quizAdd(${a.p.id})">Agregar</button></div>`).join('')}
-    <div class="q-end"><button class="btn btn-ghost" onclick="openQuiz()">🔄 Jugar otra vez</button><button class="btn btn-ghost" onclick="quizSee(${best.p.id})">Verlo en la carta</button></div></div>`;
-}
-function quizPetResult(el,top,st){
-  const big=st.sp.includes('SZ1'), p=DB.products.find(x=>x.name===(big?'Helado para Mascotas Grande':'Helado para Mascotas Pequeño'));
-  const best=Object.entries(st.pet).sort((a,b)=>b[1]-a[1])[0][0];
-  const NM={cabano:'Cabano',mango:'Mango',fresa:'Fresa',galleta:'Galleta'};
-  const turron=DB.products.find(x=>x.name==='Turrón de Pollo');
-  el.innerHTML=top+`<div class="q-card q-in q-res">${confetti()}
-    <small class="q-count">Para tu peludo 🐶</small><h2 style="margin-bottom:12px">Su helado ideal</h2>
-    <div class="q-win"><small>Le va a encantar…</small><h3>🐶 ${esc(p.name)}</h3><span class="q-pct">Sabor sugerido: ${NM[best]}</span>
-      <p>${esc(p.desc)}</p><div class="q-price">${money(p.price)}</div>
-      <button class="btn btn-primary block" onclick="quizAdd(${p.id})">Agregarlo 🛒</button></div>
-    ${st.sp.includes('TURRON')?`<h4>Y de regalo extra…</h4><div class="q-alt"><div><b>🍗 ${esc(turron.name)}</b><br><small>${money(turron.price)}</small></div><button class="btn btn-ghost btn-sm" onclick="quizAdd(${turron.id})">Agregar</button></div>`:''}
-    <div class="q-end"><button class="btn btn-ghost" onclick="openQuiz()">🔄 Jugar otra vez</button><button class="btn btn-ghost" onclick="closeQuiz()">Cerrar</button></div></div>`;
-}
-function quizAdd(id){closeQuiz();tapItem(id)}
-function quizSee(id){
-  closeQuiz();
-  const el=document.querySelector(`.it[data-id="${id}"]`); if(!el)return;
-  el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('hl');void el.offsetWidth;el.classList.add('hl');
-}
+<!-- ======================= ADMINISTRACIÓN ======================= -->
+<div id="adminRoot" hidden></div>
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
-function loginView(){return `
-<div class="login"><form class="card" onsubmit="doLogin(event)">
-  <div class="brand"><img class="logo-img" src="icon-192.png" alt="">Gro’smania</div>
-  <p>Administración del Club</p>
-  <div class="field"><label>Usuario</label><input id="lg_u" value="admin" autocomplete="username"></div>
-  <div class="field"><label>Contraseña</label><input id="lg_p" type="password" value="admin123" autocomplete="current-password"></div>
-  <button class="btn btn-primary block">Entrar</button>
-  <button type="button" class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="go('store')">← Volver a la carta</button>
-  <div class="demo">Demostración: usuario <b>admin</b> · contraseña <b>admin123</b></div>
-</form></div>`}
-function doLogin(e){
-  e.preventDefault();
-  if($('#lg_u').value==='admin'&&$('#lg_p').value==='admin123'){
-    isAdmin=true;try{sessionStorage.setItem('gm.admin','1')}catch(_){}
-    adminTab='resumen';go('admin');toast('¡Bienvenido/a! 👋');
-  }else toast('Credenciales incorrectas ❌');
-}
-function logout(){isAdmin=false;try{sessionStorage.removeItem('gm.admin')}catch(_){}go('store')}
-
-/* =========================================================
-   ADMINISTRACIÓN DEL CLUB
-   ========================================================= */
-const ATABS=[['resumen','💚','Resumen'],['clientes','👥','Clientes'],['registrar','🧾','Registrar compra'],['pedidos','🛵','Pedidos en línea'],['guia','📖','Cómo funciona']];
-const pendingOnline=()=>DB.orders.filter(o=>o.src==='online'&&['Pendiente','Preparando','Listo'].includes(o.status));
-function adminView(){
-  const pend=pendingOnline().length;
-  const T={resumen:['Resumen del Club','Miembros, puntos y qué tanto cuesta fidelizar'],clientes:['Clientes del Club','Registra, busca y corrige a los afiliados'],registrar:['Registrar compra','Afilia a una persona y registra lo que compró en el local'],pedidos:['Pedidos en línea','Marca como entregado para que el cliente reciba sus puntos'],guia:['Cómo funcionan los beneficios','Todo lo que necesitas saber para atender a los afiliados']}[adminTab];
-  return `<div class="adm">
-  <div class="adm-top">
-    <div class="adm-bar"><div class="brand"><img class="logo-img" style="width:34px;height:34px" src="icon-192.png" alt="">Club · Admin</div>
-      <div class="acts"><button class="btn btn-ghost btn-sm" onclick="go('store')">🏪 Ver carta</button><button class="btn btn-ghost btn-sm" onclick="logout()">Salir</button></div></div>
-    <div class="tabs">${ATABS.map(t=>`<button class="tab ${adminTab===t[0]?'active':''}" onclick="setTab('${t[0]}')">${t[1]} ${t[2]}${t[0]==='pedidos'&&pend?` (${pend})`:''}</button>`).join('')}</div>
-  </div>
-  <h1>${T[0]}</h1><p class="sub">${T[1]}</p>
-  ${({resumen:resumenTab,clientes:clientesTab,registrar:registrarTab,pedidos:pedidosTab,guia:guiaTab})[adminTab]()}
-  </div>`;
-}
-function setTab(t){adminTab=t;render()}
-const lastBuy=m=>{const x=DB.orders.filter(o=>o.phone===m.phone&&o.status!=='Cancelado').sort((a,b)=>new Date(b.date)-new Date(a.date))[0];return x?x.date:null};
-
-/* ----- Resumen ----- */
-function resumenTab(){
-  const ms=DB.members, cost=DB.club.cost;
-  const sales=DB.orders.filter(o=>o.status==='Entregado'&&ms.some(m=>m.phone===o.phone)).reduce((a,o)=>a+(o.base??o.total),0);
-  const redeemed=DB.orders.filter(o=>o.rew&&o.status!=='Cancelado').reduce((a,o)=>a+o.rew.value,0);
-  const comboSav=DB.orders.filter(o=>o.status!=='Cancelado').reduce((a,o)=>a+(o.combo||0),0);
-  const inCirc=ms.reduce((a,m)=>a+m.points,0);
-  const dormant=ms.filter(m=>{const l=lastBuy(m);return l&&Date.now()-new Date(l)>30*864e5}).length;
-  return `
-  <div class="kpis">
-    <div class="kpi k1" data-e="💚"><small>Miembros</small><b>${ms.length}</b><span>${dormant} sin comprar hace +30 días</span></div>
-    <div class="kpi k2" data-e="🏷️"><small>Puntos en circulación</small><b>${inCirc}</b><span>≈ ${money(inCirc*100)} en premios si se canjean todos</span></div>
-    <div class="kpi k3" data-e="🎁"><small>Premios canjeados</small><b>${money(redeemed)}</b><span>costo real ≈ ${money(Math.round(redeemed*cost))} (${Math.round(cost*100)}% de costo)</span></div>
-    <div class="kpi k4" data-e="📈"><small>Ventas de miembros</small><b>${money(sales)}</b><span>${sales?Math.round(redeemed/sales*1000)/10:0}% devuelto en premios · combos: ${money(comboSav)}</span></div>
-  </div>
-  <div class="panel"><h3>${ms.length} miembros</h3>
-  ${[...ms].sort((a,b)=>b.lifetime-a.lifetime).map(m=>{const {t,visits}=tierOf(DB,m),l=lastBuy(m),old=l&&Date.now()-new Date(l)>30*864e5;return `
-    <div class="mini"><div class="grow"><b>${esc(m.name)}</b> <span class="status ${t.mult>1?'st-top':''}">${t.e} ${t.n}</span><br><small>📞 ${m.phone}${m.birthday?' · 🎂 '+m.birthday:''} · ${visits} compras en 90 días</small><br><small>Última compra: ${l?fmtDate(l):'—'}</small>${old?' <span class="warn">⚠️ reactivar</span>':''}</div>
-    <div style="text-align:right"><div style="font-family:Fredoka;font-size:1.5rem;color:var(--pink);font-weight:700">${m.points}</div><small style="color:var(--muted)">puntos</small></div>
-    <div style="display:flex;gap:6px"><button class="btn btn-ghost btn-sm" onclick="openMember('${m.phone}')">Historial</button><button class="btn btn-ghost btn-sm" onclick="adjPoints('${m.phone}')">± Puntos</button></div></div>`}).join('')||'<p class="empty">Aún no hay miembros. Afilia al primero en «Registrar compra».</p>'}
-  </div>
-  <p style="color:var(--muted);font-size:.88rem">Los puntos se suman cuando la compra queda <b>entregada</b> y se devuelven si se cancela.</p>
-  <button class="btn btn-ghost btn-sm" style="margin-top:12px" onclick="resetDemo()">↺ Restaurar datos de demostración</button>`;
-}
-function openMember(ph){
-  const m=findMember(DB,ph),{t,visits}=tierOf(DB,m);
-  openModal(`<h3>${esc(m.name)}</h3><p style="color:var(--muted);margin:-8px 0 12px">📞 ${m.phone}${m.birthday?' · 🎂 '+m.birthday:''} · afiliado/a el ${new Date(m.joined).toLocaleDateString('es-CO')}${m.ref?'<br>Lo/a invitó el '+m.ref:''}</p>
-  <p><span class="tierpill">${t.e} ${t.n} · x${t.mult}</span> <b style="margin-left:8px">${m.points} puntos</b> · ${visits} compras en 90 días</p>
-  <div class="hist" style="margin:14px 0">${m.ledger.map(l=>`<div><span>${fmtDate(l.d)} · ${esc(l.desc)}</span><b style="color:${l.pts>=0?'#2f9a5d':'var(--rose)'}">${l.pts>0?'+':''}${l.pts}</b></div>`).join('')||'<div>Sin movimientos todavía.</div>'}</div>
-  <div class="modal-actions"><button class="btn btn-primary" onclick="closeModal()">Cerrar</button></div>`);
-}
-function adjPoints(ph){
-  const m=findMember(DB,ph);const v=parseInt(prompt('Ajustar puntos de '+m.name+' (ej. 10 o -10). Saldo actual: '+m.points,'0'),10);
-  if(!v)return;const why=prompt('Motivo del ajuste:','Ajuste manual')||'Ajuste manual';
-  m.points=Math.max(0,m.points+v);addLedger(m,v,why);save();render(true);toast('Puntos de '+m.name+' actualizados');
-}
-function resetDemo(){if(!confirm('¿Restaurar los datos de demostración? Se borrarán los miembros y compras que hayas registrado.'))return;DB=seed();save();cart=[];setClubPhone('');render(true);toast('Datos de demostración restaurados')}
-
-/* ----- Clientes (afiliados): el celular es la clave de cada cliente ----- */
-let clFilter='';
-const ageOf=b=>{const [y,mo,d]=b.split('-').map(Number),n=new Date();let a=n.getFullYear()-y;if(n<new Date(n.getFullYear(),mo-1,d))a--;return a};
-function birthText(m){
-  if(m.birth){const [y,mo,d]=m.birth.split('-').map(Number);return new Date(y,mo-1,d).toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'})+' ('+ageOf(m.birth)+' años)'}
-  if(m.birthday){const [mo,d]=m.birthday.split('-').map(Number);return new Date(2000,mo-1,d).toLocaleDateString('es-CO',{day:'numeric',month:'long'})}
-  return 'sin fecha';
-}
-const showPhone=p=>p.length===10?p.slice(0,3)+' '+p.slice(3,6)+' '+p.slice(6):p;
-function clList(){
-  const q=norm(clFilter), dq=digits(clFilter);
-  const list=[...DB.members].filter(m=>!q||norm(m.name).includes(q)||(dq&&m.phone.includes(dq))).sort((a,b)=>a.name.localeCompare(b.name,'es'));
-  if(!list.length)return '<p class="empty">'+(DB.members.length?'Nadie coincide con esa búsqueda.':'Aún no hay clientes. Toca «Nuevo cliente» para registrar el primero.')+'</p>';
-  return list.map(m=>{const {t}=tierOf(DB,m),l=lastBuy(m);return `
-    <div class="mini"><div class="grow"><b>${esc(m.name)}</b> <span class="status ${t.mult>1?'st-top':''}">${t.e} ${t.n}</span><br>
-      <small>📞 ${showPhone(m.phone)} · 🎂 ${birthText(m)}</small><br><small>Última compra: ${l?fmtDate(l):'—'}${bdayEligible(m)?' · 🎂 ¡cumpleaños esta semana!':''}</small></div>
-    <div style="text-align:right"><div style="font-family:Fredoka;font-size:1.5rem;color:var(--pink);font-weight:700">${m.points}</div><small style="color:var(--muted)">puntos</small></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-ghost btn-sm" onclick="openMember('${m.phone}')">Historial</button><button class="btn btn-ghost btn-sm" onclick="adjPoints('${m.phone}')">± Puntos</button><button class="btn btn-ghost btn-sm" onclick="openClientForm('${m.phone}')">✏️ Editar</button></div></div>`}).join('');
-}
-function clientesTab(){
-  return `<div class="panel"><div class="cl-bar">
-    <input id="cl_q" type="search" placeholder="Buscar por nombre o celular…" value="${esc(clFilter)}" oninput="clFilter=this.value;$('#cl_list').innerHTML=clList()" autocomplete="off">
-    <button class="btn btn-primary" onclick="openClientForm()">＋ Nuevo cliente</button>
-    <button class="btn btn-ghost" onclick="exportClientes()">⬇ Excel (CSV)</button></div>
-    <h3>${DB.members.length} cliente${DB.members.length===1?'':'s'} en el Club</h3><div id="cl_list">${clList()}</div></div>
-  <p style="color:var(--muted);font-size:.88rem">El <b>celular</b> es la clave de cada cliente: con él se suman sus puntos y se une todo su historial. Por eso no se puede cambiar una vez registrado.</p>`;
-}
-function openClientForm(ph){
-  const m=ph?findMember(DB,ph):null;
-  openModal(`<h3>${m?'Editar cliente':'Nuevo cliente'}</h3>
-  <div class="field"><label>Nombre completo</label><input id="cf_n" value="${m?esc(m.name):''}" autocomplete="off"></div>
-  <div class="field"><label>Celular ${m?'(es la clave, no se puede cambiar)':'(10 dígitos)'}</label><input id="cf_p" inputmode="numeric" placeholder="300 000 0000" value="${m?m.phone:''}" ${m?'readonly':''} autocomplete="off"></div>
-  <div class="field"><label>Fecha de nacimiento</label><input id="cf_b" type="date" max="${new Date().toISOString().slice(0,10)}" value="${m&&m.birth?m.birth:''}"></div>
-  ${m&&!m.birth&&m.birthday?'<p class="hint" style="color:var(--muted);margin:-4px 0 10px">Tenía registrado solo el día y mes de cumpleaños. Completa la fecha de nacimiento.</p>':''}
-  <div class="modal-actions">${m?'<button class="btn btn-danger" style="margin-right:auto" onclick="deleteClient(\''+m.phone+'\')">Eliminar</button>':''}<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="saveClient('${m?m.phone:''}')">Guardar</button></div>`);
-}
-function saveClient(ph){
-  const name=$('#cf_n').value.trim().replace(/\s+/g,' '), birth=$('#cf_b').value;
-  let phone=ph||digits($('#cf_p').value);
-  if(!ph&&phone.length===12&&phone.startsWith('57'))phone=phone.slice(2);
-  if(name.length<3){toast('Escribe el nombre completo');return}
-  if(!/^\d{10}$/.test(phone)){toast('El celular debe tener 10 dígitos');return}
-  if(!birth||new Date(birth)>new Date()||ageOf(birth)>110){toast('Revisa la fecha de nacimiento');return}
-  if(ph){const m=findMember(DB,ph);m.name=name;m.birth=birth;m.birthday=birth.slice(5)}
-  else{
-    if(findMember(DB,phone)){toast('Ese celular ya está en el Club');return}
-    newMember(DB,name,phone,birth.slice(5),'').birth=birth;
-  }
-  save();closeModal();render(true);toast(ph?'Cliente actualizado ✅':'¡'+name.split(' ')[0]+' ya está en el Club! 💚');
-}
-function deleteClient(ph){
-  const m=findMember(DB,ph); if(!m)return;
-  if(!confirm('¿Eliminar a '+m.name+' del Club? Pierde sus '+m.points+' puntos y su historial. Esto no se puede deshacer.'))return;
-  DB.members=DB.members.filter(x=>x.phone!==ph);save();closeModal();render(true);toast('Cliente eliminado');
-}
-function exportClientes(){
-  const c=v=>{v=String(v??'');return /[;"\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
-  const rows=[['Celular','Nombre','Fecha de nacimiento','Puntos','Puntos acumulados','Nivel','Afiliado desde','Última compra']];
-  DB.members.forEach(m=>{const l=lastBuy(m);rows.push([m.phone,m.name,m.birth||m.birthday||'',m.points,m.lifetime,tierOf(DB,m).t.n,m.joined.slice(0,10),l?l.slice(0,10):''])});
-  const blob=new Blob(['\ufeff'+rows.map(r=>r.map(c).join(';')).join('\r\n')],{type:'text/csv;charset=utf-8'});
-  const a=Object.assign(document.createElement('a'),{href:URL.createObjectURL(blob),download:'grosmania_club_'+new Date().toISOString().slice(0,10)+'.csv'});
-  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);
-  toast('⬇ '+DB.members.length+' clientes descargados');
-}
-
-/* ----- Registrar compra / afiliar ----- */
-function registrarTab(){
-  return `<div class="panel"><h3>1. ¿Quién compra?</h3>
-  <div class="field"><label>Celular de la persona</label><input id="rc_p" inputmode="numeric" placeholder="300 000 0000" oninput="rcPreview(true)"></div>
-  <div id="rc_who" class="hint" style="color:var(--muted);margin:-4px 0 10px">Escribe el celular (10 dígitos).</div>
-  <div id="rc_new" hidden>
-    <div class="note">Esta persona todavía no está afiliada. Completa sus datos para afiliarla ahora.</div>
-    <div class="field"><label>Nombre completo</label><input id="rc_n" placeholder="Nombre y apellido" autocomplete="off"></div>
-    <div class="two"><div class="field"><label>Cumpleaños (opcional)</label><input id="rc_b" type="date"></div>
-    <div class="field"><label>Celular de quien la invitó (opcional)</label><input id="rc_r" inputmode="numeric" placeholder="Solo si fue invitada"></div></div>
-  </div>
-  <h3 style="margin-top:8px">2. ¿Cuánto compró?</h3>
-  <div class="field"><label>Valor de la compra en COP (antes de premios)</label><input id="rc_a" inputmode="numeric" placeholder="Ej. 32000" oninput="rcPreview(true)"></div>
-  <div id="rc_rwbox" hidden><h3>3. ¿Canjea un premio?</h3><div class="field"><select id="rc_rw" onchange="rcPreview(false)"></select></div></div>
-  <div id="rc_info" class="okbox" hidden></div>
-  <button class="btn btn-primary block" onclick="registerPurchase()">Registrar</button>
-  <p class="hint" style="color:var(--muted);margin-top:10px">Si dejas el valor vacío, solo se afilia a la persona (sin compra).</p></div>`;
-}
-function rcPreview(rebuild){
-  const ph=digits($('#rc_p').value), m=ph.length>=10?findMember(DB,ph):null, amount=parseInt(digits($('#rc_a').value))||0;
-  $('#rc_new').hidden=!(ph.length>=10&&!m);
-  $('#rc_who').innerHTML=ph.length<10?'Escribe el celular (10 dígitos).':m?`✅ <b>${esc(m.name)}</b> · ${tierOf(DB,m).t.e} ${tierOf(DB,m).t.n} · <b>${m.points}</b> puntos${bdayEligible(m)?' · 🎂 ¡cumpleaños esta semana!':''}`:'Persona nueva.';
-  const sel=$('#rc_rw');let cur=sel.value;
-  if(rebuild){
-    const opts=m&&amount?rewardsFor(m,amount):[];
-    sel.innerHTML='<option value="">No canjea premio</option>'+opts.map(r=>`<option value="${r.id}">${r.label} · −${money(Math.min(r.value,amount))}${r.pts?' ('+r.pts+' pts)':' (gratis)'}</option>`).join('');
-    if(opts.some(r=>r.id===cur))sel.value=cur;
-    $('#rc_rwbox').hidden=!opts.length;cur=sel.value;
-  }
-  const r=cur?rewardById(cur):null, rew=r?Math.min(r.value,amount):0, base=amount-rew;
-  const mult=m?tierOf(DB,m).t.mult:1, pts=Math.floor(base/1000*mult);
-  const box=$('#rc_info');box.hidden=!(amount&&ph.length>=10);
-  box.innerHTML=amount?`Cobrar al cliente: <b>${money(base)}</b>${rew?` <small>(compra ${money(amount)} − premio ${money(rew)})</small>`:''}<br>Puntos que ganará: <b>${pts}</b>${mult>1?` (nivel x${mult})`:''}`:'';
-}
-function registerPurchase(){
-  const ph=digits($('#rc_p').value), amount=parseInt(digits($('#rc_a').value))||0;
-  if(ph.length<10){toast('El celular debe tener 10 dígitos');return}
-  let m=findMember(DB,ph), affiliated=false;
-  if(!m){
-    const name=$('#rc_n').value.trim(); if(!name){toast('Escribe el nombre para afiliarla');return}
-    const ref=digits($('#rc_r').value); if(ref&&!findMember(DB,ref)){toast('El celular de quien la invitó no está afiliado');return}
-    const b=$('#rc_b').value; m=newMember(DB,name,ph,b?b.slice(5):'',ref);m.birth=b||'';affiliated=true;
-  }
-  if(!amount){save();render();adminTab='registrar';toast(affiliated?'✅ '+m.name+' quedó afiliado/a al Club':'Ya estaba afiliado/a');return}
-  const rid=$('#rc_rw').value, r=rid?rewardById(rid):null;
-  if(r&&!(r.pts===0?bdayEligible(m):m.points>=r.pts)||(r&&amount<r.value)){toast('Ese premio no está disponible para esta compra');return}
-  const rew=r?Math.min(r.value,amount):0, base=amount-rew, id=Math.max(...DB.orders.map(o=>o.id),999)+1;
-  const o={id,customer:m.name,phone:m.phone,items:[],total:base,base,ship:0,combo:0,rew:r?{id:r.id,pts:r.pts,value:rew}:null,status:'Pendiente',date:new Date().toISOString(),method:'Mostrador',src:'mostrador'};
-  DB.orders.push(o);
-  if(r)spendReward(m,r,id);
-  clubOnStatus(o,'Entregado');o.status='Entregado';
-  save();render();
-  toast(`✅ ${m.name}: +${o.pointsAwarded||0} puntos${affiliated?' · afiliado/a':''}`);
-}
-
-/* ----- Pedidos en línea ----- */
-function pedidosTab(){
-  const list=pendingOnline().sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const done=DB.orders.filter(o=>o.src==='online'&&!['Pendiente','Preparando','Listo'].includes(o.status)).length;
-  return `<div class="panel"><h3>${list.length} por entregar</h3>
-  ${list.map(o=>`<div class="mini"><div class="grow"><b>#${o.id} · ${esc(o.customer)}</b> <span class="status">${o.status}</span><br><small>${fmtDate(o.date)} · ${o.method==='Local'?'🏪':'🛵'} ${o.method}${o.phone?' · 📞 '+o.phone:''}${o.address?'<br>📍 '+esc(o.address):''}</small>
-    <div style="margin-top:6px;font-size:.88rem">${o.items.map(i=>{const p=prod(i.id);return p?`${i.qty}× ${esc(p.name)}${lineDetail(i)?'<br><small>'+esc(lineDetail(i))+'</small>':''}`:''}).join('<br>')}</div>
-    ${o.rew?`<small>🎁 Premio: ${money(o.rew.value)}${o.rew.pts?' ('+o.rew.pts+' pts)':''}</small>`:''}</div>
-    <div style="text-align:right"><b>${money(o.total)}</b><br><small style="color:var(--muted)">${findMember(DB,o.phone)?'Socio/a del Club':'Sin Club'}</small></div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-primary btn-sm" onclick="setOrderStatus(${o.id},'Entregado')">Entregado ✅</button><button class="btn btn-danger btn-sm" onclick="setOrderStatus(${o.id},'Cancelado')">Cancelar</button></div></div>`).join('')||'<p class="empty">No hay pedidos pendientes 🎉<br><small>Los pedidos hechos desde la carta aparecen aquí.</small></p>'}
-  </div><p style="color:var(--muted);font-size:.88rem">${done} pedido(s) en línea ya cerrados. Al marcar «Entregado», el cliente recibe sus puntos; si cancelas, se le devuelven los puntos que haya canjeado.</p>`;
-}
-function setOrderStatus(id,s){
-  const o=DB.orders.find(o=>o.id===id);clubOnStatus(o,s);o.status=s;save();render(true);toast('Pedido #'+id+' → '+s);
-}
-
-/* ----- Guía para la persona administradora ----- */
-function guiaTab(){
-  const c=DB.club.cost;
-  const pct=r=>Math.round(r.value/(r.pts*1000)*1000)/10;
-  return `<div class="guide">
-  <div class="panel"><h3>🎯 ¿Para qué sirve el Club?</h3>
-    <p>Hace que el cliente vuelva: cada compra suma puntos, y los puntos se cambian por helado. Para la heladería el premio cuesta bastante menos que su precio de venta, y los combos suben el valor de cada pedido.</p></div>
-
-  <div class="panel"><h3>🍨 Cómo se ganan los puntos</h3><ul>
-    <li>✔ <b>1 punto por cada $1.000</b> que paga el cliente (se redondea hacia abajo: $16.500 = 16 puntos).</li>
-    <li>✔ Los puntos se calculan sobre lo que <b>realmente pagó</b>: si usó un premio, se descuenta antes.</li>
-    <li>✔ Se suman cuando la compra está <b>entregada</b>. Si es un pedido en línea, usa «Entregado» en la pestaña Pedidos.</li>
-    <li>✔ Si se cancela una compra entregada, los puntos se quitan; si había canjeado un premio, se le devuelve.</li>
-    <li>✔ Solo cuenta lo comprado a la carta; el domicilio no suma puntos.</li></ul></div>
-
-  <div class="panel"><h3>🏆 Niveles</h3><p>Dependen de cuántas compras hizo el cliente en los últimos 90 días. A mayor nivel, más puntos por compra:</p>
-    <div class="tw"><table><thead><tr><th>Nivel</th><th>Compras en 90 días</th><th>Multiplicador</th></tr></thead><tbody>${TIERS.map(t=>`<tr><td>${t.e} <b>${t.n}</b></td><td>${t.min?t.min+' o más':'Desde que se afilia'}</td><td>x${t.mult}</td></tr>`).join('')}</tbody></table></div>
-    <p class="hint" style="color:var(--muted)">El nivel baja solo si el cliente deja de comprar: es lo que lo motiva a volver.</p></div>
-
-  <div class="panel"><h3>🎁 Premios y cuánto cuestan</h3>
-    <div class="tw"><table><thead><tr><th>Premio</th><th>Puntos</th><th>Valor</th><th>% que se devuelve</th><th>Costo real*</th></tr></thead><tbody>
-    ${REWARDS.map(r=>`<tr><td><b>${r.label}</b></td><td>${r.pts}</td><td>${money(r.value)}</td><td>${pct(r)}%</td><td>≈ ${money(Math.round(r.value*c))}</td></tr>`).join('')}
-    <tr><td><b>${BDAY.label}</b></td><td>gratis</td><td>${money(BDAY.value)}</td><td>—</td><td>≈ ${money(Math.round(BDAY.value*c))}</td></tr></tbody></table></div>
-    <p class="hint" style="color:var(--muted)">*Con un costo de producto del ${Math.round(c*100)}% del precio de venta. Un premio de $15.500 le cuesta a la heladería unos ${money(Math.round(15500*c))}.</p>
-    <div class="note">El premio <b>no puede dejar la compra en negativo</b>: la compra debe valer al menos lo que vale el premio (ej. para la copa de la casa, una compra de ${money(15500)} o más).</div></div>
-
-  <div class="panel"><h3>🤝 Cumpleaños, referidos y combos</h3><ul>
-    <li>🎂 <b>Cumpleaños:</b> en la semana de su cumpleaños (±3 días) tiene una adición gratis, una vez al año. Aparece como opción al registrar la compra.</li>
-    <li>🤝 <b>Referidos:</b> si una persona se afilia con el celular de un socio/a y su primera compra es de ${money(10000)} o más, ambos ganan ${REF_BONUS} puntos.</li>
-    <li>🍨 <b>Dúo de copas:</b> 2 copas ahorran ${money(COMBO_COPAS)}. 🧇 <b>Waffle medio + jugo natural en agua:</b> ahorra ${money(COMBO_WAFFLE)}. En la carta en línea se aplican solos; en el local, descuéntalos del valor que registres.</li></ul></div>
-
-  <div class="panel"><h3>🧾 Paso a paso: compra en el local</h3><ol>
-    <li>Ve a <b>Registrar compra</b> y escribe el celular del cliente.</li>
-    <li>Si ya está afiliado/a, verás su nombre, nivel y puntos. Si no, completa nombre (y cumpleaños / quién lo invitó si lo sabe) y quedará afiliado/a en el mismo paso.</li>
-    <li>Escribe el valor de la compra. Si le alcanzan los puntos, aparecerá la opción de <b>canjear un premio</b>.</li>
-    <li>Revisa el resumen («Cobrar al cliente» y «Puntos que ganará») y toca <b>Registrar</b>.</li>
-    <li>Cobra el valor que indica el resumen. Los puntos se suman al instante.</li></ol>
-    <div class="okbox">¿Solo quiere afiliarse sin comprar? Deja el valor vacío y toca Registrar.</div></div>
-
-  <div class="panel"><h3>🛵 Paso a paso: pedido en línea</h3><ol>
-    <li>El cliente pide desde la carta (con su celular, si quiere sumar puntos). Si canjea un premio, los puntos se descuentan al pedir.</li>
-    <li>El pedido aparece en <b>Pedidos en línea</b>, con lo que armó, las notas y el premio.</li>
-    <li>Cuando lo entregues, toca <b>Entregado ✅</b>: el cliente recibe sus puntos. Si no se pudo entregar, toca <b>Cancelar</b> y se le devuelven los puntos canjeados.</li></ol></div>
-
-  <div class="panel"><h3>⚠️ Antes de entregar un premio</h3><ul>
-    <li>Confirma que el celular es el de la persona (el número es su «llave»).</li>
-    <li>Un premio por compra; no se acumulan dos premios ni se cambian por dinero.</li>
-    <li>¿Te equivocaste? En <b>Resumen → ± Puntos</b> puedes corregir el saldo y queda anotado el motivo en el historial.</li>
-    <li>Revisa <b>⚠️ reactivar</b> en el Resumen: son afiliados que llevan más de 30 días sin comprar. Un mensaje a tiempo los trae de vuelta.</li></ul></div>
-
-  <div class="panel"><h3>📊 ¿Cómo sé si el Club funciona?</h3>
-    <p>En el <b>Resumen</b> mira: cuántos miembros hay, cuántos puntos hay sin canjear, cuánto se ha regalado en premios (y su costo real) y qué porcentaje de las ventas de socios representa. La meta es que el Club devuelva entre un 10% y un 13% en premios (≈ ${Math.round(10*c*10)/10}% a ${Math.round(13*c*10)/10}% de costo real) y que los afiliados compren más seguido.</p>
-    <div class="note">Esta es una demostración: los datos se guardan solo en este dispositivo.</div></div>
-  </div>`;
-}
-
-/* ---------- Arranque ---------- */
-$('#overlay').addEventListener('click',closeAll);
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAll();closeQuiz()}});
-render();
-</script>
+<div class="toasts" id="toasts" aria-live="polite" role="status"></div>
+<script src="script.js"></script>
 </body>
 </html>
