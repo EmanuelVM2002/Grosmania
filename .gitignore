@@ -1,0 +1,8 @@
+# Nunca subir claves ni datos locales
+.dev.vars
+.env
+datos-locales.sqlite*
+*.sqlite
+node_modules/
+.wrangler/
+.claude/

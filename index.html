@@ -36,12 +36,16 @@
 <!-- ========================== PÁGINA ========================== -->
 <div id="site">
 
+  <!-- Aviso cuando el local está cerrado (lo enciende script.js según el horario) -->
+  <div class="closed-banner" id="closedBanner" role="status" hidden></div>
+
   <header class="top">
     <div class="wrap top-row">
       <a class="brand" href="#menu" aria-label="Gro’smania Heladería, ir a la carta"><img src="logos/logo-teal-h.svg" alt="Gro’smania Heladería" width="127" height="62"></a>
       <nav class="main-nav" aria-label="Secciones">
         <a href="#menu">Carta</a>
         <a href="#club">Club de puntos</a>
+        <a href="#opiniones">Opiniones</a>
         <a href="#donde">Dónde estamos</a>
       </nav>
       <div class="top-actions">
@@ -53,7 +57,7 @@
 
   <div class="info-strip">
     <div class="wrap">
-      <span><svg aria-hidden="true"><use href="#i-clock"/></svg>Abrimos todos los días desde <span data-text="open"></span></span>
+      <span><svg aria-hidden="true"><use href="#i-clock"/></svg><span data-text="hours"></span></span>
       <a href="#donde"><svg aria-hidden="true"><use href="#i-pin"/></svg>Cómo llegar</a>
     </div>
   </div>
@@ -65,7 +69,7 @@
       <div class="wrap">
         <div class="sec-head">
           <h1 id="menuTitle"><span class="sr-only">Gro’smania Heladería · </span>Nuestra carta</h1>
-          <p>Toca <b>Agregar</b> en lo que se te antoje y envía tu pedido por WhatsApp.</p>
+          <p>Toca <b>Agregar</b> en lo que se te antoje, elige tus sabores de helado y envía tu pedido por WhatsApp.</p>
         </div>
         <div class="chips" id="chips" role="group" aria-label="Filtrar la carta por tipo"></div>
         <div class="grid" id="grid"></div>
@@ -83,7 +87,7 @@
 
         <div class="steps">
           <div class="step"><b>1</b><h3>Únete</h3><p>Te registramos con tu nombre, celular y fecha de cumpleaños.</p></div>
-          <div class="step"><b>2</b><h3>Suma puntos</h3><p>Ganas <strong data-text="ppp"></strong> con cada compra en la heladería.</p></div>
+          <div class="step"><b>2</b><h3>Suma puntos</h3><p>Ganas <strong data-text="ppp"></strong> en productos. El domicilio no suma.</p></div>
           <div class="step"><b>3</b><h3>Canjea premios</h3><p>Cambia tus puntos por adiciones, conos y copas.</p></div>
         </div>
 
@@ -93,6 +97,9 @@
             <ul class="rewards" id="rewardsList"></ul>
             <div class="levels" id="levelsList" aria-label="Niveles del Club"></div>
             <p class="gift" id="giftNote"></p>
+
+            <h3 class="terms-title" id="termsTitle">Políticas y condiciones del Club</h3>
+            <ol class="terms" id="termsList" aria-labelledby="termsTitle"></ol>
           </div>
 
           <div class="forms">
@@ -109,11 +116,48 @@
 
             <form class="panel" id="pointsForm" novalidate>
               <h3>¿Cuántos puntos tengo?</h3>
-              <div class="field"><label for="qp">Tu celular</label><input id="qp" inputmode="numeric" autocomplete="tel" placeholder="300 123 4567" required></div>
+              <div class="two">
+                <div class="field"><label for="qp">Tu celular</label><input id="qp" inputmode="numeric" autocomplete="tel" placeholder="300 123 4567" required></div>
+                <div class="field"><label for="qb">Tu cumpleaños</label><input id="qb" type="date" required></div>
+              </div>
               <p class="field err" id="pointsErr" role="alert" hidden></p>
-              <button class="btn btn-primary btn-block" type="submit">Consultar por WhatsApp</button>
+              <div class="points-result" id="pointsResult" role="status" hidden></div>
+              <button class="btn btn-primary btn-block" type="submit" id="pointsBtn">Ver mis puntos</button>
+              <p class="fine" style="margin:10px 0 0">¿Algo no cuadra? <a data-wa="puntos" target="_blank" rel="noopener" href="#">Pregúntanos por WhatsApp</a>.</p>
             </form>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPINIONES DE LOS CLIENTES -->
+    <section id="opiniones" aria-labelledby="reviewsTitle">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 id="reviewsTitle">Lo que dicen nuestros clientes</h2>
+          <p id="reviewsSummary">Cuéntanos cómo te fue. Tu opinión nos ayuda a mejorar.</p>
+        </div>
+        <div class="reviews-grid">
+          <div class="reviews" id="reviewsList" aria-live="polite"></div>
+          <form class="panel" id="reviewForm" novalidate>
+            <h3>Deja tu comentario</h3>
+            <div class="field"><label for="rv_n">Tu nombre</label><input id="rv_n" autocomplete="given-name" maxlength="60"></div>
+            <fieldset class="field rating-field">
+              <legend>¿Cómo te pareció?</legend>
+              <div class="rating" id="rv_rating">
+                <input type="radio" name="rv_r" id="rv_r5" value="5"><label for="rv_r5" title="5 estrellas" aria-label="5 estrellas">★</label>
+                <input type="radio" name="rv_r" id="rv_r4" value="4"><label for="rv_r4" title="4 estrellas" aria-label="4 estrellas">★</label>
+                <input type="radio" name="rv_r" id="rv_r3" value="3"><label for="rv_r3" title="3 estrellas" aria-label="3 estrellas">★</label>
+                <input type="radio" name="rv_r" id="rv_r2" value="2"><label for="rv_r2" title="2 estrellas" aria-label="2 estrellas">★</label>
+                <input type="radio" name="rv_r" id="rv_r1" value="1"><label for="rv_r1" title="1 estrella" aria-label="1 estrella">★</label>
+              </div>
+            </fieldset>
+            <div class="field"><label for="rv_t">Tu comentario</label><textarea id="rv_t" rows="3" maxlength="500" placeholder="Lo que más te gustó, lo que podemos mejorar…"></textarea></div>
+            <input class="trap" name="website" id="rv_w" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <p class="field err" id="reviewErr" role="alert" hidden></p>
+            <button class="btn btn-primary btn-block" type="submit" id="reviewBtn">Enviar comentario</button>
+            <p class="fine" style="margin:10px 0 0">Revisamos los comentarios antes de publicarlos.</p>
+          </form>
         </div>
       </div>
     </section>
@@ -129,8 +173,8 @@
           <div class="panel">
             <ul>
               <li><svg aria-hidden="true"><use href="#i-pin"/></svg><div><b>Nuestro local</b>Mira la ubicación en el mapa y toca el botón para que Google Maps te guíe hasta la puerta.</div></li>
-              <li><svg aria-hidden="true"><use href="#i-clock"/></svg><div><b>Horario</b>Todos los días desde <span data-text="open"></span>.</div></li>
-              <li><svg aria-hidden="true"><use href="#i-bike"/></svg><div><b>Domicilios</b>Pide por WhatsApp. El costo del domicilio se confirma según tu dirección.</div></li>
+              <li><svg aria-hidden="true"><use href="#i-clock"/></svg><div><b>Horario</b><span data-text="hours"></span>.</div></li>
+              <li><svg aria-hidden="true"><use href="#i-bike"/></svg><div><b>Domicilios</b><span id="deliveryInfo"></span></div></li>
             </ul>
             <a class="btn btn-primary" id="mapsBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-pin"/></svg>Cómo llegar con Google Maps</a>
             <a class="btn btn-ghost" data-wa="hola" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Escribirnos por WhatsApp</a>
@@ -151,8 +195,8 @@
             <a class="btn btn-wa" data-wa="hola" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg>Pedir por WhatsApp</a>
           </div>
           <div class="insta-info">
-            <span>Todos los días desde <span data-text="open"></span></span>
-            <span>Domicilios por WhatsApp</span>
+            <span data-text="hours"></span>
+            <span id="deliveryChip">Domicilios por WhatsApp</span>
             <span>Club de puntos</span>
           </div>
         </div>
@@ -166,12 +210,12 @@
       <div class="foot">
         <img src="logos/logo-cream-h.svg" alt="Gro’smania Heladería" width="171" height="84" loading="lazy">
         <nav aria-label="Enlaces del pie de página">
-          <a href="#menu">Carta</a><a href="#club">Club de puntos</a><a href="#donde">Dónde estamos</a>
+          <a href="#menu">Carta</a><a href="#club">Club de puntos</a><a href="#opiniones">Opiniones</a><a href="#donde">Dónde estamos</a>
         </nav>
       </div>
       <div class="credit">
         <span>© <span id="year"></span> Gro’smania Heladería. Todos los derechos reservados.</span>
-        <span>Página creada por <a href="#" id="sonetix">Sonetix</a> · Páginas web a la medida. <a class="admin-link" href="#admin">Acceso administrador</a></span>
+        <span>Página creada por <a href="#" id="sonetix">Sonetix</a> · Páginas web a la medida. <a class="admin-link" href="admin.html">Acceso administrador</a></span>
       </div>
     </div>
   </footer>
@@ -187,10 +231,9 @@
   </aside>
 </div>
 
-<!-- ======================= ADMINISTRACIÓN ======================= -->
-<div id="adminRoot" hidden></div>
-
 <div class="toasts" id="toasts" aria-live="polite" role="status"></div>
+<script src="common.js"></script>
+<script src="menu-fallback.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -244,9 +244,129 @@ footer { background: var(--teal-dark); color: #d6f2ee; padding: 40px 0 120px; }
 .bar { height: 14px; border-radius: 7px; background: var(--teal-soft); overflow: hidden; margin: 6px 0 4px; }
 .bar i { display: block; height: 100%; background: var(--teal); border-radius: 7px; }
 
+/* ---------- Aviso de local cerrado ---------- */
+.closed-banner { background: #a3123a; color: #fff; font-size: 1.1rem; }
+.closed-banner .wrap { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; justify-content: center; padding: 12px 0; text-align: center; }
+.closed-banner .dot { width: 14px; height: 14px; border-radius: 50%; background: #fff; flex: none; }
+.closed-note { background: #fdecef; color: #7d0d2b; border-radius: 12px; padding: 10px 14px; font-weight: 600; margin-bottom: 12px; font-size: .98rem; }
+.btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+/* ---------- Carta: sabores, forma de pago, productos sin foto ---------- */
+.flv-note { color: var(--teal) !important; font-weight: 700; flex: 0 !important; }
+.in-cart { color: var(--berry); font-weight: 700; width: 100%; }
+.card-noimg { width: 100%; height: 100%; display: grid; place-items: center; background: linear-gradient(135deg, #e0f7f4, #fff7d8); }
+.card-noimg img { width: 38%; height: auto; opacity: .85; }
+.cart-item img.noimg { object-fit: contain; background: var(--teal-soft); padding: 8px; }
+.cart-item small.fl { color: var(--teal); font-weight: 600; }
+.radios label.off { opacity: .5; cursor: not-allowed; background: #f3f3f3; }
+.pay-note { background: var(--cream); border-radius: 14px; padding: 12px 16px; font-size: 1rem; }
+.field select { appearance: auto; }
+.grid > .extras { grid-column: 1 / -1; background: #fff; border-radius: var(--r); box-shadow: var(--shadow); padding: 22px 24px; }
+.extras h3 { font-size: 1.6rem; color: var(--teal-dark); }
+.extras .fine { margin: 2px 0 12px; }
+.extras-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 0 28px; }
+.extras-list li { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.extras-list .ex-name { font-weight: 600; }
+.extras-list .price { font-size: 1.25rem; }
+.extras-list .add-area { display: flex; align-items: center; gap: 8px; }
+.extras-list .btn { min-height: 44px; padding: 6px 18px; }
+.extras-list .stepper button { width: 40px; height: 40px; font-size: 1.4rem; }
+.extras-list .in-cart { width: auto; }
+
+/* ---------- Club: políticas y consulta de puntos ---------- */
+.terms-title { margin: 24px 0 10px; font-size: 1.35rem; }
+.terms { margin: 0; padding-left: 24px; display: grid; gap: 10px; color: var(--muted); font-size: 1rem; }
+.terms b { color: var(--ink); }
+.points-result { background: var(--teal-soft); border: 2px solid var(--teal); border-radius: 16px; padding: 14px 18px; margin-bottom: 14px; }
+.points-result strong { font: 700 1.5rem var(--ff-head); color: var(--teal-dark); }
+
+/* ---------- Opiniones ---------- */
+#opiniones { background: #fff; }
+.reviews-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 26px; align-items: start; }
+.reviews { display: grid; gap: 14px; }
+.review { background: var(--teal-soft); border-radius: 18px; padding: 18px 22px; }
+.review p { margin: 6px 0 8px; font-size: 1.08rem; }
+.review small { color: var(--muted); }
+.stars, .avg { color: #e69500; letter-spacing: 2px; font-size: 1.25rem; }
+.rating-field { border: 0; padding: 0; margin: 0 0 14px; }
+.rating-field legend { font-weight: 700; padding: 0; margin-bottom: 6px; }
+.rating { display: inline-flex; flex-direction: row-reverse; gap: 2px; }
+.rating input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rating label { font-size: 2.6rem; line-height: 1; color: #c9d6d4; cursor: pointer; padding: 2px 4px; }
+.rating label:hover, .rating label:hover ~ label, .rating input:checked ~ label { color: #e69500; }
+.rating input:focus-visible + label { outline: 4px solid #ffb000; border-radius: 8px; }
+.trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+/* ---------- Administración: barra de estado, pestañas, interruptores ---------- */
+.statusbar { display: flex; flex-wrap: wrap; gap: 14px; margin: 22px 0 6px; }
+.status-card { flex: 1 1 300px; background: #fff; border-radius: 20px; padding: 16px 20px; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+.status-card b { display: block; font-size: 1.15rem; }
+.status-card small { color: var(--muted); }
+.pill { display: inline-block; border-radius: 999px; padding: 3px 14px; font-weight: 800; font-size: .95rem; }
+.pill.on { background: #d6f5e3; color: #0b6a35; } .pill.off { background: #fdecef; color: #a3123a; } .pill.wait { background: #fff0b5; color: #7a5a00; }
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0 18px; }
+.tab { min-height: 48px; padding: 8px 22px; border-radius: 999px; border: 2px solid var(--teal); background: #fff; color: var(--teal); font-weight: 700; font-size: 1.02rem; }
+.tab[aria-selected="true"] { background: var(--teal); color: #fff; }
+.tab .n { background: var(--berry); color: #fff; border-radius: 12px; padding: 0 8px; margin-left: 6px; font-size: .85rem; }
+.switch { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; cursor: pointer; }
+.switch input { position: absolute; opacity: 0; }
+.switch i { width: 56px; height: 32px; border-radius: 16px; background: #b9c8c6; position: relative; transition: background .15s; flex: none; }
+.switch i::after { content: ''; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform .15s; }
+.switch input:checked + i { background: var(--teal); }
+.switch input:checked + i::after { transform: translateX(24px); }
+.switch input:focus-visible + i { outline: 4px solid #ffb000; }
+
+/* Productos, sabores */
+.prod-row { display: grid; grid-template-columns: 64px 2fr 1fr 1fr auto; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.prod-row.inactive { opacity: .55; }
+.prod-row .thumb { width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: var(--teal-soft); }
+.prod-row .thumb.none { display: grid; place-items: center; font-size: 1.6rem; }
+.prod-row b { display: block; }
+.prod-row small { color: var(--muted); }
+.price-in { width: 120px; min-height: 46px; padding: 8px 12px; border-radius: 12px; border: 2px solid #9fc3be; }
+.flavor-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.flavor-row.inactive b { opacity: .5; text-decoration: line-through; }
+.flavor-row b { flex: 1 1 160px; }
+.add-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.add-row input { flex: 1 1 220px; min-height: 52px; padding: 10px 18px; border-radius: 999px; border: 2px solid #9fc3be; }
+
+/* Reportes */
+.rep-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+.goal { margin-bottom: 16px; }
+.goal .top-line { display: flex; justify-content: space-between; gap: 10px; font-weight: 700; flex-wrap: wrap; }
+.goal .bar { height: 18px; }
+.goal .bar i.done { background: #0b7a3c; }
+.goal small { color: var(--muted); }
+.mchart { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; align-items: end; height: 190px; margin-top: 8px; }
+.mchart .col { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; height: 100%; gap: 4px; font-size: .85rem; text-align: center; }
+.mchart .bars { display: flex; align-items: flex-end; gap: 4px; height: 140px; width: 100%; justify-content: center; }
+.mchart .bars i { display: block; width: 40%; max-width: 26px; border-radius: 6px 6px 0 0; min-height: 2px; }
+.mchart .b-issued { background: var(--teal); } .mchart .b-redeemed { background: var(--berry); }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: .95rem; color: var(--muted); }
+.legend i { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 6px; }
+.mini-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.mini-list li { display: flex; justify-content: space-between; gap: 10px; background: var(--teal-soft); border-radius: 12px; padding: 10px 14px; }
+.kpis.five { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+.kpi.k-red { border-color: var(--berry) !important; } .kpi.k-gray { border-color: #8a9a98 !important; }
+
+/* Comentarios y ajustes */
+.cm { border-bottom: 1px solid var(--line); padding: 14px 0; display: grid; gap: 6px; }
+.cm .meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; color: var(--muted); }
+.cm .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+.set-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 22px; align-items: start; }
+.set-grid .adm-panel { margin-bottom: 0; }
+.days { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.days label { display: inline-flex; align-items: center; gap: 6px; border: 2px solid #9fc3be; border-radius: 999px; padding: 8px 14px; font-weight: 600; cursor: pointer; text-transform: capitalize; }
+.days input { accent-color: var(--teal); width: 18px; height: 18px; }
+.ed-row { display: grid; grid-template-columns: 1fr 120px auto; gap: 8px; margin-bottom: 8px; align-items: center; }
+.ed-row input { min-height: 48px; padding: 8px 12px; border-radius: 12px; border: 2px solid #9fc3be; width: 100%; }
+.policy-note { background: var(--cream); border-radius: 14px; padding: 12px 16px; margin-bottom: 14px; font-size: .98rem; }
+
 /* ---------- Pantallas pequeñas ---------- */
 @media (max-width: 900px) {
-  .club-grid, .where, .insta-inner { grid-template-columns: 1fr; }
+  .club-grid, .where, .insta-inner, .reviews-grid { grid-template-columns: 1fr; }
+  .prod-row { grid-template-columns: 56px 1fr auto; }
+  .prod-row .cat, .prod-row .pricecell { grid-column: 2 / -1; }
   .insta-photo { max-width: 280px; margin: 0 auto; }
   .client { grid-template-columns: 1fr 1fr; }
   .client.head { display: none; }

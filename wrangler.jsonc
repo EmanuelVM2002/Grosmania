@@ -1,0 +1,22 @@
+{
+  // Cloudflare Worker + archivos estáticos de la página.
+  // El nombre «grosmania» da la dirección https://grosmania.<tu-subdominio>.workers.dev
+  "name": "grosmania",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-09-01",
+
+  "assets": {
+    "directory": "./",              // lo que NO debe publicarse se excluye en .assetsignore
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]  // /api/* lo atiende el Worker; el resto son archivos estáticos
+  },
+
+  // Base de datos D1 (gratis, de Cloudflare). Crea la base en el panel de Cloudflare (o con Publicar-Grosmania.bat) y
+  // reemplaza PEGAR-AQUI-EL-ID por su «Database ID». Las tablas se crean solas.
+  "d1_databases": [
+    { "binding": "DB", "database_name": "grosmania-db", "database_id": "PEGAR-AQUI-EL-ID" }
+  ]
+
+  // (Alternativa Neon: quitar d1_databases y guardar el secreto DATABASE_URL con
+  //  `npx wrangler secret put DATABASE_URL`.)
+}

@@ -1,0 +1,12 @@
+{
+  "name": "grosmania",
+  "private": true,
+  "type": "module",
+  "description": "Página de Gro’smania Heladería: Cloudflare Worker + Neon. Sin dependencias de ejecución.",
+  "scripts": {
+    "test": "node --test test/api.test.mjs",
+    "local": "node test/dev-server.mjs",
+    "dev": "npx wrangler dev",
+    "deploy": "npx wrangler deploy"
+  }
+}

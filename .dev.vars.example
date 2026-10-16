@@ -1,0 +1,5 @@
+# Copia este archivo como .dev.vars para probar con «npx wrangler dev» en tu equipo.
+# En Cloudflare estos valores NO van en un archivo: se guardan con «npx wrangler secret put NOMBRE».
+DATABASE_URL=postgresql://USUARIO:CLAVE@ep-xxxx.sa-east-1.aws.neon.tech/neondb?sslmode=require
+ADMIN_PASSWORD=pon-aqui-una-clave-larga
+SESSION_SECRET=pon-aqui-un-texto-largo-y-aleatorio-de-40-caracteres-o-mas
