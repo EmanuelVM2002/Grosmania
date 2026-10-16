@@ -12,9 +12,9 @@
   },
 
   // Base de datos D1 (gratis, de Cloudflare). Crea la base en el panel de Cloudflare (o con Publicar-Grosmania.bat) y
-  // reemplaza PEGAR-AQUI-EL-ID por su «Database ID». Las tablas se crean solas.
+  // reemplaza 08b2da9d-e189-4727-8474-c620787c1bb7 por su «Database ID». Las tablas se crean solas.
   "d1_databases": [
-    { "binding": "DB", "database_name": "grosmania-db", "database_id": "PEGAR-AQUI-EL-ID" }
+    { "binding": "DB", "database_name": "grosmania-db", "database_id": "08b2da9d-e189-4727-8474-c620787c1bb7" }
   ]
 
   // (Alternativa Neon: quitar d1_databases y guardar el secreto DATABASE_URL con
