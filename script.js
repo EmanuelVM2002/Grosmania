@@ -197,6 +197,43 @@ function refreshCart() {
 /* --- Panel del pedido --- */
 let drawerOpen = false;
 const orderForm = { name: '', mode: 'Domicilio', addr: '', pay: 'Efectivo', cash: '', phone: '', notes: '' };
+/* Ubicación del cliente para el domicilio por metros: { lat, lng, meters, approx } (en memoria, no se guarda). */
+let custLoc = null, locBusy = false, locError = '';
+
+/* Costo del domicilio con la ubicación compartida; null si todavía no se puede calcular (se muestra el máximo). */
+const domFee = () => (hasMeterRate(S()) && custLoc ? deliveryFee(custLoc.meters, S()) : null);
+
+function locInfoHtml() {
+  if (locBusy) return '<span>Calculando la distancia…</span>';
+  if (locError) return `<span class="loc-err">${esc(locError)}</span>`;
+  if (!custLoc) return '';
+  const fee = domFee(), capped = fee === Number(S().delivery_fee_max) && custLoc.meters * Number(S().delivery_per_meter) > fee;
+  return `<span>Estás a <b>${fmtMeters(custLoc.meters)}</b>${custLoc.approx ? ' (aprox.)' : ''} del local: domicilio <b>${money(fee)}</b>${capped ? ' (valor máximo)' : ''}.</span>`;
+}
+
+function shareLocation() {
+  if (!navigator.geolocation) { locError = 'Tu celular no permite compartir la ubicación. Escribe la dirección y te confirmamos el valor por WhatsApp.'; updateLocInfo(); return; }
+  locBusy = true; locError = ''; updateLocInfo();
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const here = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    const r = await routeMeters({ lat: Number(S().store_lat), lng: Number(S().store_lng) }, here);
+    custLoc = { ...here, ...r }; locBusy = false; updateLocInfo();
+  }, (err) => {
+    locBusy = false; custLoc = null;
+    locError = err.code === 1
+      ? 'No diste permiso para ver tu ubicación. Puedes activarlo en el navegador, o escribir la dirección y confirmamos el valor por WhatsApp.'
+      : 'No pudimos obtener tu ubicación. Escribe la dirección y confirmamos el valor por WhatsApp.';
+    updateLocInfo();
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+}
+
+function updateLocInfo() {
+  const el = $('#locInfo');
+  if (el) { el.innerHTML = locInfoHtml(); el.hidden = !el.innerHTML; }
+  const btn = $('#shareLoc');
+  if (btn) { btn.disabled = locBusy; btn.lastChild.textContent = custLoc ? 'Actualizar mi ubicación' : 'Compartir mi ubicación'; }
+  if (drawerOpen) renderCartItems();
+}
 
 function openDrawer() {
   drawerOpen = true;
@@ -228,7 +265,11 @@ function renderDrawer() {
         ${delivery ? '' : '<span class="hint">Por ahora no hacemos domicilios. ¡Te esperamos en el local!</span>'}
       </div>
       <div class="field" id="addrField"><label for="o_addr">Dirección de entrega</label><input id="o_addr" autocomplete="street-address" value="${esc(orderForm.addr)}">
-        <span class="hint">El domicilio cuesta como máximo ${pk(S().delivery_fee_max)}; lo confirmamos por WhatsApp.</span></div>
+        ${hasMeterRate(S())
+          ? `<button class="btn btn-ghost btn-sm" type="button" id="shareLoc" style="align-self:flex-start"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>${custLoc ? 'Actualizar mi ubicación' : 'Compartir mi ubicación'}</span></button>
+             <div class="pay-note" id="locInfo" aria-live="polite" ${locInfoHtml() ? '' : 'hidden'}>${locInfoHtml()}</div>
+             <span class="hint">Comparte tu ubicación y calculamos el domicilio según la distancia (máximo ${pk(S().delivery_fee_max)}).</span>`
+          : `<span class="hint">El domicilio cuesta como máximo ${pk(S().delivery_fee_max)}; lo confirmamos por WhatsApp.</span>`}</div>
       <div class="field"><span style="font-weight:700">¿Cómo vas a pagar?</span>
         <div class="radios">
           <label><input type="radio" name="o_pay" value="Efectivo" ${orderForm.pay === 'Efectivo' ? 'checked' : ''}> Efectivo</label>
@@ -277,10 +318,12 @@ function renderCartItems() {
   }).join('');
 
   const st = storeStatus(S());
-  const fee = S().delivery_fee_max, dom = orderForm.mode === 'Domicilio';
+  const fee = S().delivery_fee_max, dom = orderForm.mode === 'Domicilio', exact = domFee();
   foot.innerHTML = `
     <div class="total-row"><span>Productos</span><span>${pk(cartTotal())}</span></div>
-    ${dom ? `<p class="fine">+ Domicilio: <b>máximo ${pk(fee)}</b> (se confirma por WhatsApp según tu dirección). Total máximo: <b>${pk(cartTotal() + fee)}</b>.</p>` : '<p class="fine">Recoges en el local: sin costo de domicilio.</p>'}
+    ${dom ? (exact !== null
+      ? `<div class="total-row"><span>Domicilio (${fmtMeters(custLoc.meters)})</span><span>${pk(exact)}</span></div><div class="total-row"><b>Total</b><b>${pk(cartTotal() + exact)}</b></div>`
+      : `<p class="fine">+ Domicilio: <b>máximo ${pk(fee)}</b> (se confirma por WhatsApp según tu dirección). Total máximo: <b>${pk(cartTotal() + fee)}</b>.</p>`) : '<p class="fine">Recoges en el local: sin costo de domicilio.</p>'}
     ${st.open ? '' : `<p class="closed-note">${esc(st.reason)} ${esc(st.next)} Podrás enviar el pedido cuando abramos.</p>`}
     <button class="btn btn-wa btn-block" type="button" id="sendOrder" ${st.open ? '' : 'disabled'}><svg aria-hidden="true"><use href="#i-wa"/></svg>${st.open ? 'Enviar pedido por WhatsApp' : 'Local cerrado'}</button>`;
 }
@@ -310,15 +353,18 @@ function sendOrder() {
     return `• ${l.q} x ${p.name}${l.sel.length ? ` (${selText(l.sel, '; ')})` : ''} — ${money(p.price * l.q)}`;
   });
   const phone = normPhone(orderForm.phone), cash = parseInt(orderForm.cash, 10);
-  const fee = S().delivery_fee_max;
+  const fee = S().delivery_fee_max, exact = dom ? domFee() : null;
   const msg = [
     'Hola Gro’smania 👋 Quiero hacer este pedido:', '',
     ...lines, '',
     `Total de productos: ${money(cartTotal())}`,
-    dom ? `Domicilio: máximo ${money(fee)} (lo confirman por aquí) → total máximo ${money(cartTotal() + fee)}` : null, '',
+    !dom ? null
+      : exact !== null ? `Domicilio: ${money(exact)} (${fmtMeters(custLoc.meters)}${custLoc.approx ? ' aprox.' : ''} desde el local) → Total: ${money(cartTotal() + exact)}`
+      : `Domicilio: máximo ${money(fee)} (lo confirman por aquí) → total máximo ${money(cartTotal() + fee)}`, '',
     `Nombre: ${orderForm.name}`,
     `Modalidad: ${orderForm.mode}`,
     dom ? `Dirección: ${orderForm.addr}` : null,
+    dom && custLoc ? `Ubicación: https://www.google.com/maps?q=${custLoc.lat.toFixed(6)},${custLoc.lng.toFixed(6)}` : null,
     `Forma de pago: ${orderForm.pay}`,
     orderForm.pay === 'Efectivo' && cash ? `Pago con: ${money(cash)}` : null,
     orderForm.pay === 'Transferencia' ? 'Les envío el comprobante por aquí.' : null,
@@ -342,7 +388,9 @@ function renderStatus() {
   if (!st.open) banner.innerHTML = `<div class="wrap"><span class="dot" aria-hidden="true"></span><strong>${esc(st.reason)}</strong> <span>${esc(st.next)}</span></div>`;
   $$('[data-text="hours"]').forEach((el) => { el.textContent = hoursText(s); });
   $('#deliveryInfo').textContent = s.delivery_enabled
-    ? `Pide por WhatsApp. El domicilio cuesta como máximo ${pk(s.delivery_fee_max)}, según tu dirección, y se confirma por WhatsApp.`
+    ? (hasMeterRate(s)
+      ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local (${money(s.delivery_per_meter)} por metro, máximo ${pk(s.delivery_fee_max)}).`
+      : `Pide por WhatsApp. El domicilio cuesta como máximo ${pk(s.delivery_fee_max)}, según tu dirección, y se confirma por WhatsApp.`)
     : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp y recoger en el local.';
   $('#deliveryChip').textContent = s.delivery_enabled ? 'Domicilios por WhatsApp' : 'Pedidos para recoger en el local';
   if (drawerOpen) renderCartItems();
@@ -486,6 +534,7 @@ function init() {
     else if (e.target.closest('#drawerClose') || e.target.id === 'overlay') closeDrawer();
     else if (e.target.closest('#sendOrder')) sendOrder();
     else if (e.target.closest('#retryMenu')) startMenu();
+    else if (e.target.closest('#shareLoc')) shareLocation();
     else if (e.target.closest('#goMenu')) { closeDrawer(); location.hash = '#menu'; }
     else if (e.target.closest('#clearOrder')) { if (confirm('¿Vaciar todo tu pedido?')) { cart = []; saveCart(); renderGrid(); refreshCart(); } }
   });

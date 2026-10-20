@@ -260,6 +260,8 @@ footer { background: var(--teal-dark); color: #d6f2ee; padding: 40px 0 120px; }
 .cart-item small.fl { color: var(--teal); font-weight: 600; }
 .radios label.off { opacity: .5; cursor: not-allowed; background: #f3f3f3; }
 .pay-note { background: var(--cream); border-radius: 14px; padding: 12px 16px; font-size: 1rem; }
+#locInfo { margin: 2px 0; }
+.loc-err { color: #a33a2a; font-weight: 600; }
 .field select { appearance: auto; }
 .grid > .extras { grid-column: 1 / -1; background: #fff; border-radius: var(--r); box-shadow: var(--shadow); padding: 22px 24px; }
 .extras h3 { font-size: 1.6rem; color: var(--teal-dark); }

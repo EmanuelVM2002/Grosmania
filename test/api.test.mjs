@@ -217,3 +217,32 @@ test('menu-fallback.js está al día con src/seed.js', async () => {
   const { fallbackSource } = await import('./build-fallback.mjs');
   assert.equal(fs.readFileSync(new URL('../menu-fallback.js', import.meta.url), 'utf8'), fallbackSource(), 'ejecuta: node test/build-fallback.mjs');
 });
+
+test('domicilio por metros: valor por metro y ubicación del local se editan y validan', async () => {
+  const pub = (await call('GET', '/api/menu')).data.settings;
+  assert.equal(pub.delivery_per_meter, 3);
+  assert.ok(Math.abs(pub.store_lat - 6.2378006) < 1e-6);
+  await call('PUT', '/api/admin/settings', { delivery_per_meter: '3,5', store_lat: 6.25, store_lng: '-75.56' }, token);
+  const s = (await call('GET', '/api/menu')).data.settings;
+  assert.equal(s.delivery_per_meter, 3.5);
+  assert.equal(s.store_lng, -75.56);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_per_meter: -1 }, token)).status, 400);
+  assert.equal((await call('PUT', '/api/admin/settings', { store_lat: 120 }, token)).status, 400);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_per_meter: 'abc' }, token)).status, 400);
+});
+
+test('domicilio por metros: la tarifa del navegador (common.js) redondea a $100 y respeta el máximo', async () => {
+  const vm = await import('node:vm');
+  const ctx = { Intl, Math, Number, AbortController, fetch: undefined, document: { addEventListener() {} }, localStorage: {} };
+  vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(new URL('../common.js', import.meta.url), 'utf8') + '\nthis.deliveryFee = deliveryFee; this.straightMeters = straightMeters; this.hasMeterRate = hasMeterRate;', ctx);
+  const s = { delivery_per_meter: 3, delivery_fee_max: 15500, store_lat: 6.2, store_lng: -75.5 };
+  assert.equal(ctx.deliveryFee(1000, s), 3000);
+  assert.equal(ctx.deliveryFee(1234, s), 3800);     // 3.702 → sube a 3.800
+  assert.equal(ctx.deliveryFee(9000, s), 15500);    // 27.000 → tope
+  assert.equal(ctx.deliveryFee(0, s), 0);
+  assert.ok(ctx.hasMeterRate(s));
+  assert.ok(!ctx.hasMeterRate({ ...s, delivery_per_meter: 0 }));
+  const d = ctx.straightMeters({ lat: 6.2378006, lng: -75.5397747 }, { lat: 6.2378006 + 0.009, lng: -75.5397747 });
+  assert.ok(d > 990 && d < 1010, `0,009° de latitud ≈ 1 km (dio ${d})`);
+});

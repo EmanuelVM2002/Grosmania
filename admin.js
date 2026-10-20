@@ -94,7 +94,7 @@ function statusBar(s) {
     <div class="status-card"><div><b>Local: <span class="pill ${st.open ? 'on' : 'off'}">${st.open ? 'Abierto' : 'Cerrado'}</span></b>
       <small>${manual ? 'Manual: ignora el horario hasta que lo devuelvas.' : esc(hoursText(s))}</small></div>${storeBtn}</div>
     <div class="status-card"><div><b>Domicilios: <span class="pill ${s.delivery_enabled ? 'on' : 'off'}">${s.delivery_enabled ? 'Activos' : 'Desactivados'}</span></b>
-      <small>Costo máximo ${money(s.delivery_fee_max)}. Al desactivar, la página solo deja «Recoger en el local».</small></div>
+      <small>${s.delivery_per_meter > 0 ? `${money(s.delivery_per_meter)} por metro, máximo ${money(s.delivery_fee_max)}` : `Costo máximo ${money(s.delivery_fee_max)}`}. Al desactivar, la página solo deja «Recoger en el local».</small></div>
       <button class="btn ${s.delivery_enabled ? 'btn-danger' : 'btn-primary'} btn-sm" type="button" data-act="delivery-toggle">${s.delivery_enabled ? 'Desactivar domicilios' : 'Activar domicilios'}</button></div>
   </div>`;
 }
@@ -426,7 +426,14 @@ function tabAjustes() {
 
     <form class="adm-panel" data-save="domicilio" novalidate><h2>Domicilios y pagos</h2>
       <label class="switch" style="margin-bottom:14px"><input type="checkbox" id="dm_on" ${s.delivery_enabled ? 'checked' : ''}><i></i><span>Domicilios activos</span></label>
-      <div class="field"><label for="dm_fee">Costo máximo del domicilio (pesos)</label><input id="dm_fee" inputmode="numeric" value="${s.delivery_fee_max}"><span class="hint">La página muestra «máximo ${money(s.delivery_fee_max)}»; el valor final se confirma por WhatsApp.</span></div>
+      <div class="field"><label for="dm_pm">Valor por metro (pesos)</label><input id="dm_pm" inputmode="decimal" value="${s.delivery_per_meter}">
+        <span class="hint">El domicilio = metros de distancia × este valor (redondeado a $100). Ej.: ${money(s.delivery_per_meter)} por metro → 1 km = ${money(s.delivery_per_meter * 1000)}. Pon 0 para no calcular por metros.</span></div>
+      <div class="field"><label for="dm_fee">Costo máximo del domicilio (pesos)</label><input id="dm_fee" inputmode="numeric" value="${s.delivery_fee_max}"><span class="hint">Tope: aunque la distancia sea mayor, nunca se cobra más de ${money(s.delivery_fee_max)}.</span></div>
+      <div class="field"><span style="font-weight:700">Ubicación del local (desde aquí se miden los metros)</span>
+        <div class="two"><div class="field"><label for="dm_lat">Latitud</label><input id="dm_lat" inputmode="decimal" value="${s.store_lat}"></div>
+          <div class="field"><label for="dm_lng">Longitud</label><input id="dm_lng" inputmode="decimal" value="${s.store_lng}"></div></div>
+        <button class="btn btn-ghost btn-sm" type="button" data-act="store-here" style="align-self:flex-start">Usar mi ubicación actual</button>
+        <span class="hint">Si estás en el local, toca el botón. O pega las coordenadas de Google Maps (clic derecho en el punto del local). <a id="dm_map" href="https://www.google.com/maps?q=${s.store_lat},${s.store_lng}" target="_blank" rel="noopener">Ver este punto en el mapa</a></span></div>
       <div class="field"><label for="dm_tr">Datos para pagar por transferencia</label><textarea id="dm_tr" rows="2" maxlength="300" placeholder="Ej.: Nequi 300 123 4567 a nombre de…">${esc(s.transfer_info)}</textarea>
         <span class="hint">Si lo dejas vacío, la página dice que los datos se envían por WhatsApp.</span></div>
       ${errBox('e_domicilio')}<button class="btn btn-primary" type="submit">Guardar</button></form>
@@ -459,7 +466,7 @@ function saveSettings(which, form) {
   const num0 = (id) => $(id, form).value;
   const bodies = {
     horario: () => ({ open_time: $('#st_o', form).value, close_time: $('#st_c', form).value, open_days: $$('input[name="st_d"]:checked', form).map((i) => Number(i.value)), closed_message: $('#st_m', form).value }),
-    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_fee_max: num0('#dm_fee'), transfer_info: $('#dm_tr', form).value }),
+    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_fee_max: num0('#dm_fee'), delivery_per_meter: num0('#dm_pm'), store_lat: num0('#dm_lat'), store_lng: num0('#dm_lng'), transfer_info: $('#dm_tr', form).value }),
     club: () => ({ points_per: num0('#cl_per'), points_valid_months: num0('#cl_mo'), birthday_gift: num0('#cl_gift'), rewards: readRows('reward', 'pts'), levels: readRows('level', 'min') }),
     metas: () => ({ goal_monthly_sales: num0('#mt_s'), goal_monthly_members: num0('#mt_m'), goal_monthly_redeemed: num0('#mt_r') })
   };
@@ -518,6 +525,14 @@ function setup() {
       case 'store-auto': setS({ status_override: 'auto' }, 'Se usa el horario automático'); break;
       case 'delivery-toggle':
         setS({ delivery_enabled: !D.settings.delivery_enabled }, D.settings.delivery_enabled ? 'Domicilios desactivados' : 'Domicilios activados');
+        break;
+      case 'store-here':
+        if (!navigator.geolocation) { toast('Este navegador no permite obtener la ubicación.'); break; }
+        navigator.geolocation.getCurrentPosition((pos) => {
+          $('#dm_lat').value = pos.coords.latitude.toFixed(7); $('#dm_lng').value = pos.coords.longitude.toFixed(7);
+          $('#dm_map').href = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+          toast('Ubicación puesta. Toca «Guardar» para confirmar.');
+        }, () => toast('No se pudo obtener la ubicación. Pega las coordenadas a mano.'), { enableHighAccuracy: true, timeout: 15000 });
         break;
       case 'new': clientForm(null); break;
       case 'buy': c && purchaseForm(c); break;

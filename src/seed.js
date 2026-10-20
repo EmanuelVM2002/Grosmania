@@ -5,7 +5,10 @@
 
 export const DEFAULT_SETTINGS = {
   delivery_enabled: true,
-  delivery_fee_max: 15500,            // costo máximo del domicilio (pesos)
+  delivery_fee_max: 15500,            // costo máximo del domicilio (pesos): tope del cálculo por metros
+  delivery_per_meter: 3,              // pesos por metro de distancia (POR CONFIRMAR). 0 = sin cálculo: se muestra el máximo
+  store_lat: 6.2378006,               // ubicación del local (la misma del mapa de la página)
+  store_lng: -75.5397747,
   open_time: '13:30',
   close_time: '21:00',                // POR CONFIRMAR: no se conoce la hora de cierre
   open_days: [0, 1, 2, 3, 4, 5, 6],   // 0 = domingo
@@ -32,7 +35,7 @@ export const DEFAULT_SETTINGS = {
 
 /* Claves que ve el público (las metas y demás no salen del panel). */
 export const PUBLIC_SETTINGS = [
-  'delivery_enabled', 'delivery_fee_max', 'open_time', 'close_time', 'open_days', 'status_override',
+  'delivery_enabled', 'delivery_fee_max', 'delivery_per_meter', 'store_lat', 'store_lng', 'open_time', 'close_time', 'open_days', 'status_override',
   'closed_message', 'transfer_info', 'points_per', 'points_valid_months', 'birthday_gift', 'rewards', 'levels'
 ];
 

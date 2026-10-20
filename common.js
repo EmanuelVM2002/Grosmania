@@ -136,3 +136,37 @@ function hoursText(s) {
   const days = s.open_days.length === 7 ? 'Todos los días' : s.open_days.length ? 'Abrimos ' + s.open_days.map((d) => DAYS[d]).join(', ') : 'Sin días de atención';
   return `${days} de ${fmtTime(s.open_time)} a ${fmtTime(s.close_time)}`;
 }
+
+/* --- Domicilio por metros --- */
+/* ¿El local tiene tarifa por metro y ubicación? Si no, se muestra el costo máximo y se confirma por WhatsApp. */
+const hasMeterRate = (s) => Number(s.delivery_per_meter) > 0 && Number.isFinite(Number(s.store_lat)) && Number.isFinite(Number(s.store_lng));
+
+/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100 y sin pasar del máximo. */
+function deliveryFee(meters, s) {
+  const raw = Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
+  return Math.min(raw, Number(s.delivery_fee_max));
+}
+
+/* Distancia en línea recta (metros) entre dos puntos. */
+function straightMeters(a, b) {
+  const R = 6371000, rad = (d) => (d * Math.PI) / 180;
+  const dLat = rad(b.lat - a.lat), dLng = rad(b.lng - a.lng);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/* Metros para llegar por la calle (OSRM, gratuito y sin clave). Si no responde, línea recta × 1,3 y se marca como aproximado. */
+async function routeMeters(from, to) {
+  try {
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 7000);
+    const url = `https://router.project-osrm.org/route/v1/driving/${from.lng},${from.lat};${to.lng},${to.lat}?overview=false`;
+    const res = await fetch(url, { signal: ctl.signal });
+    clearTimeout(t);
+    const d = await res.json();
+    const m = d && d.routes && d.routes[0] && d.routes[0].distance;
+    if (res.ok && d.code === 'Ok' && Number.isFinite(m)) return { meters: Math.round(m), approx: false };
+  } catch (_) { /* sin red o servicio caído: se usa la línea recta */ }
+  return { meters: Math.round(straightMeters(from, to) * 1.3), approx: true };
+}
+
+const fmtMeters = (m) => (m >= 1000 ? `${new Intl.NumberFormat('es-CO', { maximumFractionDigits: 1 }).format(m / 1000)} km` : `${num(m)} m`);

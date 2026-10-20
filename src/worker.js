@@ -34,6 +34,13 @@ function int(v, min, max, label) {
   if (!Number.isInteger(n) || n < min || n > max) throw bad(`${label}: debe ser un número entre ${min} y ${max}.`);
   return n;
 }
+/* Número con decimales (hasta 2), p. ej. pesos por metro o coordenadas (hasta 7). */
+function dec(v, min, max, label, places = 2) {
+  const n = typeof v === 'number' ? v : Number(String(v ?? '').trim().replace(',', '.'));
+  if (!Number.isFinite(n) || n < min || n > max) throw bad(`${label}: debe ser un número entre ${min} y ${max}.`);
+  const k = 10 ** places;
+  return Math.round(n * k) / k;
+}
 const flag = (v) => (v === true || v === 1 || v === '1' || v === 'true' ? 1 : 0);
 const isPhone = (p) => /^3\d{9}$/.test(p);
 const normPhone = (raw) => { let d = String(raw || '').replace(/\D/g, ''); if (d.length === 12 && d.startsWith('57')) d = d.slice(2); return d; };
@@ -247,6 +254,9 @@ const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 const SETTING_RULES = {
   delivery_enabled: (v) => v === true || v === false ? v : (() => { throw bad('Domicilios: valor no válido.'); })(),
   delivery_fee_max: (v) => int(v, 0, 200000, 'El costo máximo del domicilio'),
+  delivery_per_meter: (v) => dec(v, 0, 1000, 'El valor por metro'),
+  store_lat: (v) => dec(v, -90, 90, 'La latitud del local', 7),
+  store_lng: (v) => dec(v, -180, 180, 'La longitud del local', 7),
   open_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de apertura debe ser HH:MM.'); return v; },
   close_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de cierre debe ser HH:MM.'); return v; },
   open_days: (v) => {
