@@ -227,11 +227,111 @@ function shareLocation() {
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
 }
 
+/* --- Marcar la dirección en el mapa: se busca la dirección, se pone un pin y el cliente confirma que es ahí --- */
+let leafletLoading = null;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve();
+  if (!leafletLoading) {
+    leafletLoading = new Promise((ok, fail) => {
+      const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'leaflet/leaflet.css'; document.head.appendChild(css);
+      const js = document.createElement('script'); js.src = 'leaflet/leaflet.js';
+      js.onload = () => { L.Icon.Default.imagePath = 'leaflet/images/'; ok(); };
+      js.onerror = () => { leafletLoading = null; fail(new Error('mapa')); };
+      document.head.appendChild(js);
+    });
+  }
+  return leafletLoading;
+}
+
+/* Las direcciones de Colombia («Cra 43A # 10-20») se reescriben como las entiende el buscador de mapas. */
+function addressQueries(raw) {
+  const full = raw.replace(/\b(cra|cr|kra|kr|carr)\b\.?/gi, 'Carrera').replace(/\b(cl|cll)\b\.?/gi, 'Calle')
+    .replace(/\b(av|avda)\b\.?/gi, 'Avenida').replace(/\b(dg|diag)\b\.?/gi, 'Diagonal').replace(/\b(tv|transv)\b\.?/gi, 'Transversal')
+    .replace(/\s+/g, ' ').trim();
+  const [street, rest] = full.split(/\s*(?:#|n[°ºo]\.?)\s*/i);
+  const out = [rest ? `${street} ${rest}` : full];
+  if (rest && street) out.push(street);             // si el número exacto no está en el mapa, al menos la calle
+  return out;
+}
+
+async function geocodeAddress(raw) {
+  const lat = Number(S().store_lat), lng = Number(S().store_lng), d = 0.25;     // se busca cerca del local
+  const box = `${lng - d},${lat + d},${lng + d},${lat - d}`;
+  for (const q of addressQueries(raw)) {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&countrycodes=co&accept-language=es&viewbox=${box}&bounded=1&q=${encodeURIComponent(q)}`;
+      const r = await (await fetch(url)).json();
+      if (r && r[0]) return { lat: Number(r[0].lat), lng: Number(r[0].lon), name: r[0].display_name, exact: q === addressQueries(raw)[0] };
+    } catch (_) { /* sin red: se sigue con la siguiente búsqueda */ }
+  }
+  return null;
+}
+
+async function openAddressMap() {
+  readOrderForm();
+  openModal(`
+    <h2>Marca tu dirección en el mapa</h2>
+    <div class="field"><label for="m_addr">Tu dirección</label>
+      <div class="map-search"><input id="m_addr" autocomplete="street-address" value="${esc(orderForm.addr)}" placeholder="Ej.: Cra 43A # 10-20"><button class="btn btn-primary btn-sm" type="button" id="m_search">Buscar</button></div></div>
+    <button class="btn btn-ghost btn-sm" type="button" id="m_gps"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Usar mi ubicación (GPS)</span></button>
+    <div id="pickMap" aria-label="Mapa para marcar tu dirección"></div>
+    <p class="fine" id="pickMsg" aria-live="polite">Cargando el mapa…</p>
+    <div class="modal-actions"><button class="btn btn-ghost" type="button" data-close>Cancelar</button><button class="btn btn-primary" type="button" id="pickOk" disabled>Sí, es aquí</button></div>`);
+  const msg = (t) => { const el = $('#pickMsg'); if (el) el.innerHTML = t; };
+  try { await loadLeaflet(); } catch (_) { msg('No pudimos cargar el mapa. Usa «Compartir mi ubicación» o escribe la dirección y confirmamos el valor por WhatsApp.'); return; }
+  if (!$('#pickMap')) return;                       // cerraron la ventana mientras cargaba
+
+  const store = [Number(S().store_lat), Number(S().store_lng)];
+  const map = L.map('pickMap', { scrollWheelZoom: false }).setView(custLoc ? [custLoc.lat, custLoc.lng] : store, custLoc ? 17 : 14);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap' }).addTo(map);
+  L.circleMarker(store, { radius: 7, color: '#0b5d57', fillColor: '#fff', fillOpacity: 1, weight: 3 }).addTo(map).bindTooltip('Gro’smania');
+  let pin = null;
+  const place = (lat, lng, zoom) => {
+    if (pin) pin.setLatLng([lat, lng]);
+    else { pin = L.marker([lat, lng], { draggable: true }).addTo(map); pin.on('dragend', () => msg('Pin movido. Si ahí es tu puerta, toca «Sí, es aquí».')); }
+    if (zoom) map.setView([lat, lng], zoom);
+    $('#pickOk').disabled = false;
+  };
+  map.on('click', (e) => { place(e.latlng.lat, e.latlng.lng); msg('Pin puesto donde tocaste. Si ahí es tu puerta, toca «Sí, es aquí».'); });
+  setTimeout(() => map.invalidateSize(), 50);
+
+  let searching = false;
+  const search = async () => {
+    const q = $('#m_addr').value.trim();
+    if (!q) { msg('Escribe tu dirección, o toca el mapa donde vives.'); return; }
+    if (searching) return; searching = true; msg('Buscando tu dirección…');
+    const r = await geocodeAddress(q); searching = false;
+    if (!$('#pickMap')) return;
+    if (!r) { msg('No encontramos esa dirección. <b>Toca el mapa</b> donde vives (puedes acercarlo con + y −) o usa el GPS.'); return; }
+    place(r.lat, r.lng, 17);
+    msg(`${r.exact ? 'Encontramos' : 'Encontramos solo la calle'}: <b>${esc(r.name.split(',').slice(0, 3).join(','))}</b>.<br>¿Es aquí? Si no, <b>arrastra el pin</b> o toca el mapa en tu puerta. Luego toca «Sí, es aquí».`);
+  };
+  $('#m_search').addEventListener('click', search);
+  $('#m_addr').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); search(); } });
+  $('#m_gps').addEventListener('click', () => {
+    if (!navigator.geolocation) { msg('Tu celular no permite compartir la ubicación. Toca el mapa donde vives.'); return; }
+    msg('Buscando tu ubicación…');
+    navigator.geolocation.getCurrentPosition((pos) => {
+      if (!$('#pickMap')) return;
+      place(pos.coords.latitude, pos.coords.longitude, 17); msg('Esta es tu ubicación. Si es correcta toca «Sí, es aquí»; si no, arrastra el pin.');
+    }, () => msg('No pudimos obtener tu ubicación. Escribe la dirección o toca el mapa donde vives.'), { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
+  });
+  $('#pickOk').addEventListener('click', async () => {
+    const { lat, lng } = pin.getLatLng(), btn = $('#pickOk');
+    btn.disabled = true; btn.textContent = 'Calculando…';
+    const r = await routeMeters({ lat: store[0], lng: store[1] }, { lat, lng });
+    custLoc = { lat, lng, ...r, confirmed: true }; locError = '';
+    if (!orderForm.addr && $('#m_addr').value.trim()) { orderForm.addr = $('#m_addr').value.trim(); const a = $('#o_addr'); if (a) a.value = orderForm.addr; }
+    closeModal(); updateLocInfo();
+  });
+  if ($('#m_addr').value.trim()) search(); else msg('Escribe tu dirección y toca «Buscar», o toca el mapa donde vives.');
+}
+
 function updateLocInfo() {
   const el = $('#locInfo');
   if (el) { el.innerHTML = locInfoHtml(); el.hidden = !el.innerHTML; }
   const btn = $('#shareLoc');
-  if (btn) { btn.disabled = locBusy; btn.lastChild.textContent = custLoc ? 'Actualizar mi ubicación' : 'Compartir mi ubicación'; }
+  if (btn) { btn.disabled = locBusy; btn.lastChild.textContent = custLoc ? 'Actualizar mi ubicación' : 'Usar mi ubicación (GPS)'; }
   if (drawerOpen) renderCartItems();
 }
 
@@ -266,9 +366,11 @@ function renderDrawer() {
       </div>
       <div class="field" id="addrField"><label for="o_addr">Dirección de entrega</label><input id="o_addr" autocomplete="street-address" value="${esc(orderForm.addr)}">
         ${hasMeterRate(S())
-          ? `<button class="btn btn-ghost btn-sm" type="button" id="shareLoc" style="align-self:flex-start"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>${custLoc ? 'Actualizar mi ubicación' : 'Compartir mi ubicación'}</span></button>
+          ? `<div class="loc-btns">
+               <button class="btn btn-primary btn-sm" type="button" id="pickOnMap"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Marcar mi dirección en el mapa</span></button>
+               <button class="btn btn-ghost btn-sm" type="button" id="shareLoc"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>${custLoc ? 'Actualizar mi ubicación' : 'Usar mi ubicación (GPS)'}</span></button></div>
              <div class="pay-note" id="locInfo" aria-live="polite" ${locInfoHtml() ? '' : 'hidden'}>${locInfoHtml()}</div>
-             <span class="hint">Comparte tu ubicación y calculamos el domicilio según la distancia (máximo ${pk(S().delivery_fee_max)}).</span>`
+             <span class="hint">Marca tu dirección en el mapa y confirma el punto: calculamos el domicilio según la distancia (máximo ${pk(S().delivery_fee_max)}).</span>`
           : `<span class="hint">El domicilio cuesta como máximo ${pk(S().delivery_fee_max)}; lo confirmamos por WhatsApp.</span>`}</div>
       <div class="field"><span style="font-weight:700">¿Cómo vas a pagar?</span>
         <div class="radios">
@@ -364,7 +466,7 @@ function sendOrder() {
     `Nombre: ${orderForm.name}`,
     `Modalidad: ${orderForm.mode}`,
     dom ? `Dirección: ${orderForm.addr}` : null,
-    dom && custLoc ? `Ubicación: https://www.google.com/maps?q=${custLoc.lat.toFixed(6)},${custLoc.lng.toFixed(6)}` : null,
+    dom && custLoc ? `Ubicación${custLoc.confirmed ? ' (confirmada en el mapa)' : ''}: https://www.google.com/maps?q=${custLoc.lat.toFixed(6)},${custLoc.lng.toFixed(6)}` : null,
     `Forma de pago: ${orderForm.pay}`,
     orderForm.pay === 'Efectivo' && cash ? `Pago con: ${money(cash)}` : null,
     orderForm.pay === 'Transferencia' ? 'Les envío el comprobante por aquí.' : null,
@@ -535,6 +637,7 @@ function init() {
     else if (e.target.closest('#sendOrder')) sendOrder();
     else if (e.target.closest('#retryMenu')) startMenu();
     else if (e.target.closest('#shareLoc')) shareLocation();
+    else if (e.target.closest('#pickOnMap')) openAddressMap();
     else if (e.target.closest('#goMenu')) { closeDrawer(); location.hash = '#menu'; }
     else if (e.target.closest('#clearOrder')) { if (confirm('¿Vaciar todo tu pedido?')) { cart = []; saveCart(); renderGrid(); refreshCart(); } }
   });
