@@ -6,9 +6,10 @@
 export const DEFAULT_SETTINGS = {
   delivery_enabled: true,
   delivery_min_order: 15500,          // pedido mínimo (solo productos) para hacer domicilio. OJO: 15.500 NO es un tope del costo del domicilio (aclarado el 22/10/2026)
-  /* Tramos del domicilio por metros por calle (22/10/2026): hasta 200 m $3.000; 201–550 m $4.000; 551 m–2 km $5.000.
-     Pasados 2 km: el valor del último tramo + `delivery_per_meter` por cada metro que pase. */
-  delivery_tiers: [{ upTo: 200, fee: 3000 }, { upTo: 550, fee: 4000 }, { upTo: 2000, fee: 5000 }],
+  /* Tramos del domicilio por metros por calle (22/10/2026): hasta 200 m $3.000; 201–550 m $4.000; 551 m–2 km $5.000;
+     2–3 km $6.000; 3–4 km $7.000. Desde los 4 km no se cubre (`delivery_max_meters`). Si algún día se pasa del último tramo
+     sin límite de distancia: su valor + `delivery_per_meter` por cada metro que pase. */
+  delivery_tiers: [{ upTo: 200, fee: 3000 }, { upTo: 550, fee: 4000 }, { upTo: 2000, fee: 5000 }, { upTo: 3000, fee: 6000 }, { upTo: 4000, fee: 7000 }],
   delivery_max_meters: 4000,          // distancia máxima por calle a la que se hace domicilio (POR CONFIRMAR; 0 = sin límite). Los barrios de la lista quedan entre 1 y 3 km
   delivery_per_meter: 3,              // pesos por metro de distancia (POR CONFIRMAR). 0 = sin cálculo: se muestra el máximo
   store_lat: 6.2378006,               // ubicación del local (la misma del mapa de la página)
