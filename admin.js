@@ -434,6 +434,10 @@ function tabAjustes() {
           <div class="field"><label for="dm_lng">Longitud</label><input id="dm_lng" inputmode="decimal" value="${s.store_lng}"></div></div>
         <button class="btn btn-ghost btn-sm" type="button" data-act="store-here" style="align-self:flex-start">Usar mi ubicación actual</button>
         <span class="hint">Si estás en el local, toca el botón. O pega las coordenadas de Google Maps (clic derecho en el punto del local). <a id="dm_map" href="https://www.google.com/maps?q=${s.store_lat},${s.store_lng}" target="_blank" rel="noopener">Ver este punto en el mapa</a></span></div>
+      <div class="field"><label for="dm_zones">Barrios con domicilio (uno por línea)</label><textarea id="dm_zones" rows="8" maxlength="2500">${esc((s.delivery_zones || []).join('\n'))}</textarea>
+        <span class="hint">El cliente elige su barrio de esta lista al pedir domicilio. Si la dejas vacía, no se pide barrio.</span></div>
+      <div class="field"><label for="dm_note">Nota de cobertura (límites)</label><textarea id="dm_note" rows="3" maxlength="300">${esc(s.delivery_note || '')}</textarea>
+        <span class="hint">Se muestra bajo la lista de barrios, p. ej. hasta dónde llegan hacia arriba.</span></div>
       <div class="field"><label for="dm_tr">Datos para pagar por transferencia</label><textarea id="dm_tr" rows="2" maxlength="300" placeholder="Ej.: Nequi 300 123 4567 a nombre de…">${esc(s.transfer_info)}</textarea>
         <span class="hint">Si lo dejas vacío, la página dice que los datos se envían por WhatsApp.</span></div>
       ${errBox('e_domicilio')}<button class="btn btn-primary" type="submit">Guardar</button></form>
@@ -466,7 +470,7 @@ function saveSettings(which, form) {
   const num0 = (id) => $(id, form).value;
   const bodies = {
     horario: () => ({ open_time: $('#st_o', form).value, close_time: $('#st_c', form).value, open_days: $$('input[name="st_d"]:checked', form).map((i) => Number(i.value)), closed_message: $('#st_m', form).value }),
-    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_fee_max: num0('#dm_fee'), delivery_per_meter: num0('#dm_pm'), store_lat: num0('#dm_lat'), store_lng: num0('#dm_lng'), transfer_info: $('#dm_tr', form).value }),
+    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_fee_max: num0('#dm_fee'), delivery_per_meter: num0('#dm_pm'), store_lat: num0('#dm_lat'), store_lng: num0('#dm_lng'), delivery_zones: num0('#dm_zones').split('\n'), delivery_note: num0('#dm_note'), transfer_info: $('#dm_tr', form).value }),
     club: () => ({ points_per: num0('#cl_per'), points_valid_months: num0('#cl_mo'), birthday_gift: num0('#cl_gift'), rewards: readRows('reward', 'pts'), levels: readRows('level', 'min') }),
     metas: () => ({ goal_monthly_sales: num0('#mt_s'), goal_monthly_members: num0('#mt_m'), goal_monthly_redeemed: num0('#mt_r') })
   };

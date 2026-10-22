@@ -257,6 +257,13 @@ const SETTING_RULES = {
   delivery_per_meter: (v) => dec(v, 0, 1000, 'El valor por metro'),
   store_lat: (v) => dec(v, -90, 90, 'La latitud del local', 7),
   store_lng: (v) => dec(v, -180, 180, 'La longitud del local', 7),
+  delivery_zones: (v) => {
+    if (!Array.isArray(v)) throw bad('Los barrios de domicilio no son válidos.');
+    const names = [...new Set(v.map((n) => str(n, 0, 60, 'El nombre del barrio')).filter(Boolean))];
+    if (names.length > 80) throw bad('Pon como máximo 80 barrios.');
+    return names;                       // lista vacía = domicilio sin restricción de barrio
+  },
+  delivery_note: (v) => str(v, 0, 300, 'La nota de cobertura'),
   open_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de apertura debe ser HH:MM.'); return v; },
   close_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de cierre debe ser HH:MM.'); return v; },
   open_days: (v) => {

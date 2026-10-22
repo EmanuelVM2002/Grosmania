@@ -196,9 +196,12 @@ function refreshCart() {
 
 /* --- Panel del pedido --- */
 let drawerOpen = false;
-const orderForm = { name: '', mode: 'Domicilio', addr: '', pay: 'Efectivo', cash: '', phone: '', notes: '' };
+const orderForm = { name: '', mode: 'Domicilio', barrio: '', addr: '', pay: 'Efectivo', cash: '', phone: '', notes: '' };
 /* Ubicación del cliente para el domicilio por metros: { lat, lng, meters, approx } (en memoria, no se guarda). */
 let custLoc = null, locBusy = false, locError = '';
+
+/* Barrios con domicilio (lista vacía = sin restricción). */
+const zones = () => (Array.isArray(S().delivery_zones) ? S().delivery_zones : []);
 
 /* Costo del domicilio con la ubicación compartida; null si todavía no se puede calcular (se muestra el máximo). */
 const domFee = () => (hasMeterRate(S()) && custLoc ? deliveryFee(custLoc.meters, S()) : null);
@@ -364,7 +367,10 @@ function renderDrawer() {
         </div>
         ${delivery ? '' : '<span class="hint">Por ahora no hacemos domicilios. ¡Te esperamos en el local!</span>'}
       </div>
-      <div class="field" id="addrField"><label for="o_addr">Dirección de entrega</label><input id="o_addr" autocomplete="street-address" value="${esc(orderForm.addr)}">
+      <div class="field" id="addrField">${zones().length ? `<label for="o_barrio">Barrio</label>
+        <select id="o_barrio"><option value="">Elige tu barrio…</option>${zones().map((z) => `<option value="${esc(z)}" ${orderForm.barrio === z ? 'selected' : ''}>${esc(z)}</option>`).join('')}</select>
+        <span class="hint">${esc(S().delivery_note || '')} Si tu barrio no está en la lista, no llegamos hasta allá: puedes recoger en el local.</span>` : ''}
+        <label for="o_addr">Dirección de entrega</label><input id="o_addr" autocomplete="street-address" value="${esc(orderForm.addr)}">
         ${hasMeterRate(S())
           ? `<div class="loc-btns">
                <button class="btn btn-primary btn-sm" type="button" id="pickOnMap"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Marcar mi dirección en el mapa</span></button>
@@ -435,6 +441,7 @@ function readOrderForm() {
   orderForm.name = $('#o_name').value.trim();
   orderForm.mode = ($('input[name="o_mode"]:checked') || {}).value || orderForm.mode;
   orderForm.addr = $('#o_addr').value.trim();
+  orderForm.barrio = $('#o_barrio') ? $('#o_barrio').value : orderForm.barrio;
   orderForm.pay = ($('input[name="o_pay"]:checked') || {}).value || 'Efectivo';
   orderForm.cash = $('#o_cash').value.replace(/\D/g, '');
   orderForm.phone = $('#o_phone').value.trim();
@@ -448,6 +455,7 @@ function sendOrder() {
   if (!orderForm.name) { toast('Escribe tu nombre para enviar el pedido.'); $('#o_name').focus(); return; }
   const dom = orderForm.mode === 'Domicilio';
   if (dom && !S().delivery_enabled) return toast('Por ahora no hacemos domicilios. Elige «Recoger en el local».');
+  if (dom && zones().length && !zones().includes(orderForm.barrio)) { toast('Elige tu barrio de la lista. Si no aparece, no llegamos hasta allá: puedes recoger en el local.'); $('#o_barrio').focus(); return; }
   if (dom && !orderForm.addr) { toast('Escribe la dirección de entrega.'); $('#o_addr').focus(); return; }
 
   const lines = cart.map((l) => {
@@ -465,6 +473,7 @@ function sendOrder() {
       : `Domicilio: máximo ${money(fee)} (lo confirman por aquí) → total máximo ${money(cartTotal() + fee)}`, '',
     `Nombre: ${orderForm.name}`,
     `Modalidad: ${orderForm.mode}`,
+    dom && orderForm.barrio ? `Barrio: ${orderForm.barrio}` : null,
     dom ? `Dirección: ${orderForm.addr}` : null,
     dom && custLoc ? `Ubicación${custLoc.confirmed ? ' (confirmada en el mapa)' : ''}: https://www.google.com/maps?q=${custLoc.lat.toFixed(6)},${custLoc.lng.toFixed(6)}` : null,
     `Forma de pago: ${orderForm.pay}`,
@@ -494,6 +503,7 @@ function renderStatus() {
       ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local (${money(s.delivery_per_meter)} por metro, máximo ${pk(s.delivery_fee_max)}).`
       : `Pide por WhatsApp. El domicilio cuesta como máximo ${pk(s.delivery_fee_max)}, según tu dirección, y se confirma por WhatsApp.`)
     : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp y recoger en el local.';
+  if (s.delivery_enabled && zones().length) $('#deliveryInfo').textContent += ` Llegamos a: ${zones().join(', ')}. ${s.delivery_note || ''}`.trimEnd();
   $('#deliveryChip').textContent = s.delivery_enabled ? 'Domicilios por WhatsApp' : 'Pedidos para recoger en el local';
   if (drawerOpen) renderCartItems();
 }

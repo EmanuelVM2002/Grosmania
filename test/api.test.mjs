@@ -231,6 +231,21 @@ test('domicilio por metros: valor por metro y ubicación del local se editan y v
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_per_meter: 'abc' }, token)).status, 400);
 });
 
+test('domicilio por barrios: la lista es pública, se edita sin repetidos ni vacíos y se valida', async () => {
+  const pub = (await call('GET', '/api/menu')).data.settings;
+  assert.equal(pub.delivery_zones.length, 21);
+  assert.ok(pub.delivery_zones.includes('Enciso') && pub.delivery_zones.includes('8 de Marzo'));
+  assert.ok(!pub.delivery_zones.includes('Santa Elena'));
+  assert.match(pub.delivery_note, /Santa Elena/);
+  await call('PUT', '/api/admin/settings', { delivery_zones: ['Enciso', ' Enciso ', '', 'Villatina'], delivery_note: 'Hasta Enciso' }, token);
+  const s = (await call('GET', '/api/menu')).data.settings;
+  assert.deepEqual(s.delivery_zones, ['Enciso', 'Villatina']);
+  assert.equal(s.delivery_note, 'Hasta Enciso');
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_zones: 'Enciso' }, token)).status, 400);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_zones: ['x'.repeat(61)] }, token)).status, 400);
+  await call('PUT', '/api/admin/settings', { delivery_zones: pub.delivery_zones, delivery_note: pub.delivery_note }, token);
+});
+
 test('domicilio por metros: la tarifa del navegador (common.js) redondea a $100 y respeta el máximo', async () => {
   const vm = await import('node:vm');
   const ctx = { Intl, Math, Number, AbortController, fetch: undefined, document: { addEventListener() {} }, localStorage: {} };
