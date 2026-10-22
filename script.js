@@ -206,12 +206,23 @@ const zones = () => (Array.isArray(S().delivery_zones) ? S().delivery_zones : []
 /* Costo del domicilio con la ubicación compartida; null si todavía no se puede calcular (se muestra el máximo). */
 const domFee = () => (hasMeterRate(S()) && custLoc ? deliveryFee(custLoc.meters, S()) : null);
 
+/* Motivo por el que este pedido a domicilio no se puede enviar ('' si todo bien): muy lejos o por debajo del mínimo. */
+function domBlock() {
+  if (orderForm.mode !== 'Domicilio') return '';
+  if (custLoc && tooFar(custLoc.meters, S())) return `Tu ubicación queda a ${fmtMeters(custLoc.meters)}: más lejos de lo que llegamos (${fmtMeters(Number(S().delivery_max_meters))}). Puedes recoger en el local.`;
+  const min = deliveryMin(S());
+  if (min && cartTotal() < min) return `El pedido mínimo para domicilio es ${money(min)} en productos. Te faltan ${money(min - cartTotal())}.`;
+  return '';
+}
+
 function locInfoHtml() {
   if (locBusy) return '<span>Calculando la distancia…</span>';
   if (locError) return `<span class="loc-err">${esc(locError)}</span>`;
   if (!custLoc) return '';
-  const fee = domFee(), capped = fee === Number(S().delivery_fee_max) && custLoc.meters * Number(S().delivery_per_meter) > fee;
-  return `<span>Estás a <b>${fmtMeters(custLoc.meters)}</b>${custLoc.approx ? ' (aprox.)' : ''} del local: domicilio <b>${money(fee)}</b>${capped ? ' (valor máximo)' : ''}.</span>`;
+  const far = tooFar(custLoc.meters, S());
+  return `<span>Estás a <b>${fmtMeters(custLoc.meters)}</b>${custLoc.approx ? ' (aprox.)' : ''} del local: ${far
+    ? `<b>queda fuera de nuestra zona de domicilios</b> (llegamos hasta ${fmtMeters(Number(S().delivery_max_meters))}). Puedes recoger en el local.`
+    : `domicilio <b>${money(domFee())}</b>.`}</span>`;
 }
 
 function shareLocation() {
@@ -399,8 +410,8 @@ function renderDrawer() {
                <button class="btn btn-primary btn-sm" type="button" id="pickOnMap"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>Marcar mi dirección en el mapa</span></button>
                <button class="btn btn-ghost btn-sm" type="button" id="shareLoc"><svg aria-hidden="true"><use href="#i-pin"/></svg><span>${custLoc ? 'Actualizar mi ubicación' : 'Usar mi ubicación (GPS)'}</span></button></div>
              <div class="pay-note" id="locInfo" aria-live="polite" ${locInfoHtml() ? '' : 'hidden'}>${locInfoHtml()}</div>
-             <span class="hint">Marca tu dirección en el mapa y confirma el punto: calculamos el domicilio según la distancia (máximo ${pk(S().delivery_fee_max)}).</span>`
-          : `<span class="hint">El domicilio cuesta como máximo ${pk(S().delivery_fee_max)}; lo confirmamos por WhatsApp.</span>`}</div>
+             <span class="hint">Marca tu dirección en el mapa y confirma el punto: calculamos el domicilio según la distancia${Number(S().delivery_max_meters) > 0 ? ` (llegamos hasta ${fmtMeters(Number(S().delivery_max_meters))})` : ''}.</span>`
+          : `<span class="hint">El valor del domicilio lo confirmamos por WhatsApp.</span>`}</div>
       <div class="field"><span style="font-weight:700">¿Cómo vas a pagar?</span>
         <div class="radios">
           <label><input type="radio" name="o_pay" value="Efectivo" ${orderForm.pay === 'Efectivo' ? 'checked' : ''}> Efectivo</label>
@@ -449,14 +460,15 @@ function renderCartItems() {
   }).join('');
 
   const st = storeStatus(S());
-  const fee = S().delivery_fee_max, dom = orderForm.mode === 'Domicilio', exact = domFee();
+  const dom = orderForm.mode === 'Domicilio', exact = domFee(), block = domBlock();
   foot.innerHTML = `
     <div class="total-row"><span>Productos</span><span>${pk(cartTotal())}</span></div>
-    ${dom ? (exact !== null
+    ${dom ? (exact !== null && !tooFar(custLoc.meters, S())
       ? `<div class="total-row"><span>Domicilio (${fmtMeters(custLoc.meters)})</span><span>${pk(exact)}</span></div><div class="total-row"><b>Total</b><b>${pk(cartTotal() + exact)}</b></div>`
-      : `<p class="fine">+ Domicilio: <b>máximo ${pk(fee)}</b> (se confirma por WhatsApp según tu dirección). Total máximo: <b>${pk(cartTotal() + fee)}</b>.</p>`) : '<p class="fine">Recoges en el local: sin costo de domicilio.</p>'}
+      : '<p class="fine">+ Domicilio: se calcula con tu ubicación (o lo confirmamos por WhatsApp según tu dirección).</p>') : '<p class="fine">Recoges en el local: sin costo de domicilio.</p>'}
     ${st.open ? '' : `<p class="closed-note">${esc(st.reason)} ${esc(st.next)} Podrás enviar el pedido cuando abramos.</p>`}
-    <button class="btn btn-wa btn-block" type="button" id="sendOrder" ${st.open ? '' : 'disabled'}><svg aria-hidden="true"><use href="#i-wa"/></svg>${st.open ? 'Enviar pedido por WhatsApp' : 'Local cerrado'}</button>`;
+    ${block ? `<p class="closed-note">${esc(block)}</p>` : ''}
+    <button class="btn btn-wa btn-block" type="button" id="sendOrder" ${st.open && !block ? '' : 'disabled'}><svg aria-hidden="true"><use href="#i-wa"/></svg>${st.open ? 'Enviar pedido por WhatsApp' : 'Local cerrado'}</button>`;
 }
 
 function readOrderForm() {
@@ -480,20 +492,22 @@ function sendOrder() {
   if (dom && !S().delivery_enabled) return toast('Por ahora no hacemos domicilios. Elige «Recoger en el local».');
   if (dom && zones().length && !zones().includes(orderForm.barrio)) { toast('Elige tu barrio de la lista. Si no aparece, no llegamos hasta allá: puedes recoger en el local.'); $('#o_barrio').focus(); return; }
   if (dom && !orderForm.addr) { toast('Escribe la dirección de entrega.'); $('#o_addr').focus(); return; }
+  const block = domBlock();
+  if (block) return toast(block);
 
   const lines = cart.map((l) => {
     const p = prod(l.id);
     return `• ${l.q} x ${p.name}${l.sel.length ? ` (${selText(l.sel, '; ')})` : ''} — ${money(p.price * l.q)}`;
   });
   const phone = normPhone(orderForm.phone), cash = parseInt(orderForm.cash, 10);
-  const fee = S().delivery_fee_max, exact = dom ? domFee() : null;
+  const exact = dom ? domFee() : null;
   const msg = [
     'Hola Gro’smania 👋 Quiero hacer este pedido:', '',
     ...lines, '',
     `Total de productos: ${money(cartTotal())}`,
     !dom ? null
       : exact !== null ? `Domicilio: ${money(exact)} (${fmtMeters(custLoc.meters)}${custLoc.approx ? ' aprox.' : ''} desde el local) → Total: ${money(cartTotal() + exact)}`
-      : `Domicilio: máximo ${money(fee)} (lo confirman por aquí) → total máximo ${money(cartTotal() + fee)}`, '',
+      : 'Domicilio: por confirmar (según la dirección)', '',
     `Nombre: ${orderForm.name}`,
     `Modalidad: ${orderForm.mode}`,
     dom && orderForm.barrio ? `Barrio: ${orderForm.barrio}` : null,
@@ -523,8 +537,8 @@ function renderStatus() {
   $$('[data-text="hours"]').forEach((el) => { el.textContent = hoursText(s); });
   $('#deliveryInfo').textContent = s.delivery_enabled
     ? (hasMeterRate(s)
-      ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local (${money(s.delivery_per_meter)} por metro, máximo ${pk(s.delivery_fee_max)}).`
-      : `Pide por WhatsApp. El domicilio cuesta como máximo ${pk(s.delivery_fee_max)}, según tu dirección, y se confirma por WhatsApp.`)
+      ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local (${money(s.delivery_per_meter)} por metro${Number(s.delivery_max_meters) > 0 ? `, hasta ${fmtMeters(Number(s.delivery_max_meters))}` : ''}).${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`
+      : `Pide por WhatsApp. El valor del domicilio se confirma por WhatsApp según tu dirección.${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`)
     : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp y recoger en el local.';
   if (s.delivery_enabled && zones().length) $('#deliveryInfo').textContent += ` Llegamos a: ${zones().join(', ')}. ${s.delivery_note || ''}`.trimEnd();
   $('#deliveryChip').textContent = s.delivery_enabled ? 'Domicilios por WhatsApp' : 'Pedidos para recoger en el local';

@@ -94,7 +94,7 @@ function statusBar(s) {
     <div class="status-card"><div><b>Local: <span class="pill ${st.open ? 'on' : 'off'}">${st.open ? 'Abierto' : 'Cerrado'}</span></b>
       <small>${manual ? 'Manual: ignora el horario hasta que lo devuelvas.' : esc(hoursText(s))}</small></div>${storeBtn}</div>
     <div class="status-card"><div><b>Domicilios: <span class="pill ${s.delivery_enabled ? 'on' : 'off'}">${s.delivery_enabled ? 'Activos' : 'Desactivados'}</span></b>
-      <small>${s.delivery_per_meter > 0 ? `${money(s.delivery_per_meter)} por metro, máximo ${money(s.delivery_fee_max)}` : `Costo máximo ${money(s.delivery_fee_max)}`}. Al desactivar, la página solo deja «Recoger en el local».</small></div>
+      <small>${s.delivery_per_meter > 0 ? `${money(s.delivery_per_meter)} por metro` : 'Valor por confirmar'}${s.delivery_max_meters > 0 ? `, hasta ${num(s.delivery_max_meters)} m` : ''}, pedido mínimo ${money(s.delivery_min_order)}. Al desactivar, la página solo deja «Recoger en el local».</small></div>
       <button class="btn ${s.delivery_enabled ? 'btn-danger' : 'btn-primary'} btn-sm" type="button" data-act="delivery-toggle">${s.delivery_enabled ? 'Desactivar domicilios' : 'Activar domicilios'}</button></div>
   </div>`;
 }
@@ -428,7 +428,8 @@ function tabAjustes() {
       <label class="switch" style="margin-bottom:14px"><input type="checkbox" id="dm_on" ${s.delivery_enabled ? 'checked' : ''}><i></i><span>Domicilios activos</span></label>
       <div class="field"><label for="dm_pm">Valor por metro (pesos)</label><input id="dm_pm" inputmode="decimal" value="${s.delivery_per_meter}">
         <span class="hint">El domicilio = metros de distancia × este valor (redondeado a $100). Ej.: ${money(s.delivery_per_meter)} por metro → 1 km = ${money(s.delivery_per_meter * 1000)}. Pon 0 para no calcular por metros.</span></div>
-      <div class="field"><label for="dm_fee">Costo máximo del domicilio (pesos)</label><input id="dm_fee" inputmode="numeric" value="${s.delivery_fee_max}"><span class="hint">Tope: aunque la distancia sea mayor, nunca se cobra más de ${money(s.delivery_fee_max)}.</span></div>
+      <div class="field"><label for="dm_max">Distancia máxima del domicilio (metros por calle)</label><input id="dm_max" inputmode="numeric" value="${s.delivery_max_meters}"><span class="hint">Si el cliente marca una ubicación más lejos que esto, la página no deja pedir domicilio y le sugiere recoger en el local. Pon 0 para no limitar por distancia. Ej.: ${num(s.delivery_max_meters)} m = ${money(s.delivery_max_meters * s.delivery_per_meter)} de domicilio como máximo.</span></div>
+      <div class="field"><label for="dm_min">Pedido mínimo para domicilio (pesos, solo productos)</label><input id="dm_min" inputmode="numeric" value="${s.delivery_min_order}"><span class="hint">Con un pedido menor a ${money(s.delivery_min_order)} la página no deja enviar el pedido a domicilio (sí para recoger). Pon 0 para no exigir mínimo.</span></div>
       <div class="field"><span style="font-weight:700">Ubicación del local (desde aquí se miden los metros)</span>
         <div class="two"><div class="field"><label for="dm_lat">Latitud</label><input id="dm_lat" inputmode="decimal" value="${s.store_lat}"></div>
           <div class="field"><label for="dm_lng">Longitud</label><input id="dm_lng" inputmode="decimal" value="${s.store_lng}"></div></div>
@@ -470,7 +471,7 @@ function saveSettings(which, form) {
   const num0 = (id) => $(id, form).value;
   const bodies = {
     horario: () => ({ open_time: $('#st_o', form).value, close_time: $('#st_c', form).value, open_days: $$('input[name="st_d"]:checked', form).map((i) => Number(i.value)), closed_message: $('#st_m', form).value }),
-    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_fee_max: num0('#dm_fee'), delivery_per_meter: num0('#dm_pm'), store_lat: num0('#dm_lat'), store_lng: num0('#dm_lng'), delivery_zones: num0('#dm_zones').split('\n'), delivery_note: num0('#dm_note'), transfer_info: $('#dm_tr', form).value }),
+    domicilio: () => ({ delivery_enabled: $('#dm_on', form).checked, delivery_max_meters: num0('#dm_max'), delivery_min_order: num0('#dm_min'), delivery_per_meter: num0('#dm_pm'), store_lat: num0('#dm_lat'), store_lng: num0('#dm_lng'), delivery_zones: num0('#dm_zones').split('\n'), delivery_note: num0('#dm_note'), transfer_info: $('#dm_tr', form).value }),
     club: () => ({ points_per: num0('#cl_per'), points_valid_months: num0('#cl_mo'), birthday_gift: num0('#cl_gift'), rewards: readRows('reward', 'pts'), levels: readRows('level', 'min') }),
     metas: () => ({ goal_monthly_sales: num0('#mt_s'), goal_monthly_members: num0('#mt_m'), goal_monthly_redeemed: num0('#mt_r') })
   };

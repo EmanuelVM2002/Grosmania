@@ -138,14 +138,19 @@ function hoursText(s) {
 }
 
 /* --- Domicilio por metros --- */
-/* ¿El local tiene tarifa por metro y ubicación? Si no, se muestra el costo máximo y se confirma por WhatsApp. */
+/* ¿El local tiene tarifa por metro y ubicación? Si no, el valor del domicilio se confirma por WhatsApp. */
 const hasMeterRate = (s) => Number(s.delivery_per_meter) > 0 && Number.isFinite(Number(s.store_lat)) && Number.isFinite(Number(s.store_lng));
 
-/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100 y sin pasar del máximo. */
+/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100. */
 function deliveryFee(meters, s) {
-  const raw = Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
-  return Math.min(raw, Number(s.delivery_fee_max));
+  return Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
 }
+
+/* ¿Queda más lejos de lo que se atiende? (delivery_max_meters = 0 → sin límite de distancia) */
+const tooFar = (meters, s) => Number(s.delivery_max_meters) > 0 && meters > Number(s.delivery_max_meters);
+
+/* Pedido mínimo (solo productos) para hacer domicilio; 0 = sin mínimo. */
+const deliveryMin = (s) => Math.max(0, Number(s.delivery_min_order) || 0);
 
 /* Distancia en línea recta (metros) entre dos puntos. */
 function straightMeters(a, b) {

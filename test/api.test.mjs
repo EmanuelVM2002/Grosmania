@@ -31,7 +31,9 @@ test('menú público: carga datos iniciales, con helados y sabores', async () =>
   assert.equal(data.flavors.length, SEED_FLAVORS.length);
   assert.ok(data.products.length >= 60, 'carta completa cargada');
   assert.ok(data.products.some((p) => p.groups.length), 'hay productos con opciones (salsa, fruta, topping)');
-  assert.equal(data.settings.delivery_fee_max, 15500);
+  assert.equal(data.settings.delivery_min_order, 15500);
+  assert.equal(data.settings.delivery_max_meters, 4000);
+  assert.equal('delivery_fee_max' in data.settings, false, '15.500 es el pedido mínimo, no un tope del domicilio');
   assert.equal('goal_monthly_sales' in data.settings, false, 'las metas no deben ser públicas');
 });
 
@@ -227,6 +229,13 @@ test('domicilio por metros: valor por metro y ubicación del local se editan y v
   assert.equal(s.delivery_per_meter, 3.5);
   assert.equal(s.store_lng, -75.56);
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_per_meter: -1 }, token)).status, 400);
+  await call('PUT', '/api/admin/settings', { delivery_max_meters: '2500', delivery_min_order: '20000' }, token);
+  const lim = (await call('GET', '/api/menu')).data.settings;
+  assert.equal(lim.delivery_max_meters, 2500);
+  assert.equal(lim.delivery_min_order, 20000);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_max_meters: -5 }, token)).status, 400);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_fee_max: 15500 }, token)).status, 400, 'el tope de costo ya no existe');
+  await call('PUT', '/api/admin/settings', { delivery_max_meters: 4000, delivery_min_order: 15500 }, token);
   assert.equal((await call('PUT', '/api/admin/settings', { store_lat: 120 }, token)).status, 400);
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_per_meter: 'abc' }, token)).status, 400);
 });
@@ -250,12 +259,16 @@ test('domicilio por metros: la tarifa del navegador (common.js) redondea a $100 
   const vm = await import('node:vm');
   const ctx = { Intl, Math, Number, AbortController, fetch: undefined, document: { addEventListener() {} }, localStorage: {} };
   vm.createContext(ctx);
-  vm.runInContext(fs.readFileSync(new URL('../common.js', import.meta.url), 'utf8') + '\nthis.deliveryFee = deliveryFee; this.straightMeters = straightMeters; this.hasMeterRate = hasMeterRate;', ctx);
-  const s = { delivery_per_meter: 3, delivery_fee_max: 15500, store_lat: 6.2, store_lng: -75.5 };
+  vm.runInContext(fs.readFileSync(new URL('../common.js', import.meta.url), 'utf8') + '\nthis.deliveryFee = deliveryFee; this.straightMeters = straightMeters; this.hasMeterRate = hasMeterRate; this.tooFar = tooFar; this.deliveryMin = deliveryMin;', ctx);
+  const s = { delivery_per_meter: 3, delivery_max_meters: 4000, delivery_min_order: 15500, store_lat: 6.2, store_lng: -75.5 };
   assert.equal(ctx.deliveryFee(1000, s), 3000);
   assert.equal(ctx.deliveryFee(1234, s), 3800);     // 3.702 → sube a 3.800
-  assert.equal(ctx.deliveryFee(9000, s), 15500);    // 27.000 → tope
+  assert.equal(ctx.deliveryFee(9000, s), 27000);    // sin tope de costo: lo limita la distancia máxima
   assert.equal(ctx.deliveryFee(0, s), 0);
+  assert.ok(!ctx.tooFar(4000, s) && ctx.tooFar(4001, s), 'más de 4.000 m queda fuera');
+  assert.ok(!ctx.tooFar(99999, { ...s, delivery_max_meters: 0 }), '0 = sin límite de distancia');
+  assert.equal(ctx.deliveryMin(s), 15500);
+  assert.equal(ctx.deliveryMin({}), 0);
   assert.ok(ctx.hasMeterRate(s));
   assert.ok(!ctx.hasMeterRate({ ...s, delivery_per_meter: 0 }));
   const d = ctx.straightMeters({ lat: 6.2378006, lng: -75.5397747 }, { lat: 6.2378006 + 0.009, lng: -75.5397747 });

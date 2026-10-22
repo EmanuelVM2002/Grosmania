@@ -253,7 +253,8 @@ function buildReport({ clients, moves, ledgers, settings, now }) {
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 const SETTING_RULES = {
   delivery_enabled: (v) => v === true || v === false ? v : (() => { throw bad('Domicilios: valor no válido.'); })(),
-  delivery_fee_max: (v) => int(v, 0, 200000, 'El costo máximo del domicilio'),
+  delivery_min_order: (v) => int(v, 0, 1_000_000, 'El pedido mínimo para domicilio'),
+  delivery_max_meters: (v) => int(v, 0, 50000, 'La distancia máxima del domicilio'),
   delivery_per_meter: (v) => dec(v, 0, 1000, 'El valor por metro'),
   store_lat: (v) => dec(v, -90, 90, 'La latitud del local', 7),
   store_lng: (v) => dec(v, -180, 180, 'La longitud del local', 7),
