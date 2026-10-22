@@ -441,7 +441,7 @@ function tabAjustes() {
         <span class="hint">Si estás en el local, toca el botón. O pega las coordenadas de Google Maps (clic derecho en el punto del local). <a id="dm_map" href="https://www.google.com/maps?q=${s.store_lat},${s.store_lng}" target="_blank" rel="noopener">Ver este punto en el mapa</a></span></div>
       <div class="field"><label for="dm_zones">Barrios con domicilio (uno por línea)</label><textarea id="dm_zones" rows="8" maxlength="2500">${esc((s.delivery_zones || []).join('\n'))}</textarea>
         <span class="hint">El cliente elige su barrio de esta lista al pedir domicilio. Si la dejas vacía, no se pide barrio.</span></div>
-      <div class="field"><label for="dm_note">Nota de cobertura (límites)</label><textarea id="dm_note" rows="3" maxlength="300">${esc(s.delivery_note || '')}</textarea>
+      <div class="field"><label for="dm_note">Nota interna de cobertura (la ve solo quien administra)</label><textarea id="dm_note" rows="3" maxlength="300">${esc(s.delivery_note || '')}</textarea>
         <span class="hint">Se muestra bajo la lista de barrios, p. ej. hasta dónde llegan hacia arriba.</span></div>
       <div class="field"><label for="dm_far">Aviso cuando queda fuera de cobertura</label><textarea id="dm_far" rows="3" maxlength="300">${esc(s.delivery_far_note || '')}</textarea>
         <span class="hint">Lo ve el cliente cuando su ubicación pasa de ${num(s.delivery_max_meters)} m o elige «Mi barrio no está en la lista». Puede pedir igual: el pedido llega por WhatsApp marcado «FUERA DE COBERTURA» y tú coordinas el envío por una aplicación de domicilios.</span></div>

@@ -252,19 +252,18 @@ test('domicilio por barrios: la lista es pública, se edita sin repetidos ni vac
   assert.equal(pub.delivery_zones.length, 21);
   assert.ok(pub.delivery_zones.includes('Enciso') && pub.delivery_zones.includes('8 de Marzo'));
   assert.ok(!pub.delivery_zones.includes('Santa Elena'));
-  assert.match(pub.delivery_note, /Santa Elena/);
+  assert.equal('delivery_note' in pub, false, 'los límites de cobertura no se muestran al cliente');
   assert.match(pub.delivery_far_note, /aplicación de domicilios/, 'aviso de fuera de cobertura');
   await call('PUT', '/api/admin/settings', { delivery_far_note: 'Fuera, pero enviamos por app' }, token);
   assert.equal((await call('GET', '/api/menu')).data.settings.delivery_far_note, 'Fuera, pero enviamos por app');
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_far_note: 'x'.repeat(301) }, token)).status, 400);
   await call('PUT', '/api/admin/settings', { delivery_far_note: pub.delivery_far_note }, token);
-  await call('PUT', '/api/admin/settings', { delivery_zones: ['Enciso', ' Enciso ', '', 'Villatina'], delivery_note: 'Hasta Enciso' }, token);
+  await call('PUT', '/api/admin/settings', { delivery_zones: ['Enciso', ' Enciso ', '', 'Villatina'] }, token);
   const s = (await call('GET', '/api/menu')).data.settings;
   assert.deepEqual(s.delivery_zones, ['Enciso', 'Villatina']);
-  assert.equal(s.delivery_note, 'Hasta Enciso');
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_zones: 'Enciso' }, token)).status, 400);
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_zones: ['x'.repeat(61)] }, token)).status, 400);
-  await call('PUT', '/api/admin/settings', { delivery_zones: pub.delivery_zones, delivery_note: pub.delivery_note }, token);
+  await call('PUT', '/api/admin/settings', { delivery_zones: pub.delivery_zones }, token);
 });
 
 test('domicilio por metros: la tarifa del navegador (common.js) redondea a $100 y respeta el máximo', async () => {
