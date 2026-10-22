@@ -141,9 +141,11 @@ function hoursText(s) {
 /* ¿El local tiene tarifa por metro y ubicación? Si no, el valor del domicilio se confirma por WhatsApp. */
 const hasMeterRate = (s) => Number(s.delivery_per_meter) > 0 && Number.isFinite(Number(s.store_lat)) && Number.isFinite(Number(s.store_lng));
 
-/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100. */
+/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100 y nunca menos del valor mínimo
+   (a una cuadra de distancia sale lo mismo que el mínimo; al cliente no se le explica, solo ve el valor). */
 function deliveryFee(meters, s) {
-  return Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
+  const raw = Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
+  return Math.max(raw, Number(s.delivery_min_fee) || 0);
 }
 
 /* ¿Queda más lejos de lo que se atiende? (delivery_max_meters = 0 → sin límite de distancia) */

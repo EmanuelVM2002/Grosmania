@@ -6,6 +6,7 @@
 export const DEFAULT_SETTINGS = {
   delivery_enabled: true,
   delivery_min_order: 15500,          // pedido mínimo (solo productos) para hacer domicilio. OJO: 15.500 NO es un tope del costo del domicilio (aclarado el 22/10/2026)
+  delivery_min_fee: 3000,             // valor mínimo del domicilio (pesos): si los metros dan menos, se cobra este. No se le explica al cliente
   delivery_max_meters: 4000,          // distancia máxima por calle a la que se hace domicilio (POR CONFIRMAR; 0 = sin límite). Los barrios de la lista quedan entre 1 y 3 km
   delivery_per_meter: 3,              // pesos por metro de distancia (POR CONFIRMAR). 0 = sin cálculo: se muestra el máximo
   store_lat: 6.2378006,               // ubicación del local (la misma del mapa de la página)
@@ -45,7 +46,7 @@ export const DEFAULT_SETTINGS = {
 
 /* Claves que ve el público (las metas y demás no salen del panel). */
 export const PUBLIC_SETTINGS = [
-  'delivery_enabled', 'delivery_min_order', 'delivery_max_meters', 'delivery_per_meter', 'store_lat', 'store_lng', 'delivery_zones', 'delivery_note', 'open_time', 'close_time', 'open_days', 'status_override',
+  'delivery_enabled', 'delivery_min_order', 'delivery_min_fee', 'delivery_max_meters', 'delivery_per_meter', 'store_lat', 'store_lng', 'delivery_zones', 'delivery_note', 'open_time', 'close_time', 'open_days', 'status_override',
   'closed_message', 'transfer_info', 'points_per', 'points_valid_months', 'birthday_gift', 'rewards', 'levels'
 ];
 
