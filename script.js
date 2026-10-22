@@ -219,6 +219,7 @@ function shareLocation() {
   locBusy = true; locError = ''; updateLocInfo();
   navigator.geolocation.getCurrentPosition(async (pos) => {
     const here = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+    fillAddressFromLoc(here.lat, here.lng);
     const r = await routeMeters({ lat: Number(S().store_lat), lng: Number(S().store_lng) }, here);
     custLoc = { ...here, ...r }; locBusy = false; updateLocInfo();
   }, (err) => {
@@ -326,8 +327,30 @@ async function openAddressMap() {
     custLoc = { lat, lng, ...r, confirmed: true }; locError = '';
     if (!orderForm.addr && $('#m_addr').value.trim()) { orderForm.addr = $('#m_addr').value.trim(); const a = $('#o_addr'); if (a) a.value = orderForm.addr; }
     closeModal(); updateLocInfo();
+    fillAddressFromLoc(lat, lng);
   });
   if ($('#m_addr').value.trim()) search(); else msg('Escribe tu dirección y toca «Buscar», o toca el mapa donde vives.');
+}
+
+/* Al fijar la ubicación (GPS o mapa), el campo «Dirección de entrega» se llena solo: primero con las coordenadas
+   y, si el buscador responde, con la calle y el barrio. Nunca pisa lo que el cliente escribió. */
+let autoAddr = '';
+async function fillAddressFromLoc(lat, lng) {
+  const setAddr = (text) => {
+    const a = $('#o_addr');
+    const typed = (a ? a.value.trim() : orderForm.addr) || orderForm.addr;
+    if (typed && typed !== autoAddr) return false;          // lo escribió el cliente
+    autoAddr = orderForm.addr = text; if (a) a.value = text;
+    return true;
+  };
+  if (!setAddr(`Ubicación: ${lat.toFixed(6)}, ${lng.toFixed(6)}`)) return;
+  try {
+    const r = await (await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=18&accept-language=es&lat=${lat}&lon=${lng}`)).json();
+    const a = (r && r.address) || {};
+    const street = [a.road, a.house_number].filter(Boolean).join(' ');
+    const text = [street, a.neighbourhood || a.quarter].filter(Boolean).join(', ');
+    if (text) setAddr(`${text} (${lat.toFixed(6)}, ${lng.toFixed(6)})`);
+  } catch (_) { /* sin red: quedan las coordenadas */ }
 }
 
 function updateLocInfo() {
