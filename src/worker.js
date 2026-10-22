@@ -254,7 +254,12 @@ const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 const SETTING_RULES = {
   delivery_enabled: (v) => v === true || v === false ? v : (() => { throw bad('Domicilios: valor no válido.'); })(),
   delivery_min_order: (v) => int(v, 0, 1_000_000, 'El pedido mínimo para domicilio'),
-  delivery_min_fee: (v) => int(v, 0, 200000, 'El valor mínimo del domicilio'),
+  delivery_tiers: (v) => {
+    if (!Array.isArray(v) || v.length > 8) throw bad('Los tramos del domicilio no son válidos (máximo 8).');
+    const t = v.map((x) => ({ upTo: int(x.upTo, 1, 50000, 'La distancia del tramo'), fee: int(x.fee, 0, 200000, 'El valor del tramo') })).sort((a, b) => a.upTo - b.upTo);
+    if (new Set(t.map((x) => x.upTo)).size !== t.length) throw bad('Dos tramos tienen la misma distancia.');
+    return t;                           // sin tramos: todo se cobra por metro
+  },
   delivery_max_meters: (v) => int(v, 0, 50000, 'La distancia máxima del domicilio'),
   delivery_per_meter: (v) => dec(v, 0, 1000, 'El valor por metro'),
   store_lat: (v) => dec(v, -90, 90, 'La latitud del local', 7),

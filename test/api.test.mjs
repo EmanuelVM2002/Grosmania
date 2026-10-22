@@ -33,7 +33,7 @@ test('menú público: carga datos iniciales, con helados y sabores', async () =>
   assert.ok(data.products.some((p) => p.groups.length), 'hay productos con opciones (salsa, fruta, topping)');
   assert.equal(data.settings.delivery_min_order, 15500);
   assert.equal(data.settings.delivery_max_meters, 4000);
-  assert.equal(data.settings.delivery_min_fee, 3000);
+  assert.deepEqual(data.settings.delivery_tiers, [{ upTo: 200, fee: 3000 }, { upTo: 550, fee: 4000 }, { upTo: 2000, fee: 5000 }]);
   assert.equal('delivery_fee_max' in data.settings, false, '15.500 es el pedido mínimo, no un tope del domicilio');
   assert.equal('goal_monthly_sales' in data.settings, false, 'las metas no deben ser públicas');
 });
@@ -235,10 +235,12 @@ test('domicilio por metros: valor por metro y ubicación del local se editan y v
   assert.equal(lim.delivery_max_meters, 2500);
   assert.equal(lim.delivery_min_order, 20000);
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_max_meters: -5 }, token)).status, 400);
-  assert.equal((await call('PUT', '/api/admin/settings', { delivery_min_fee: -1 }, token)).status, 400);
-  await call('PUT', '/api/admin/settings', { delivery_min_fee: '3500' }, token);
-  assert.equal((await call('GET', '/api/menu')).data.settings.delivery_min_fee, 3500);
-  await call('PUT', '/api/admin/settings', { delivery_min_fee: 3000 }, token);
+  const T0 = [{ upTo: 200, fee: 3000 }, { upTo: 550, fee: 4000 }, { upTo: 2000, fee: 5000 }];
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_tiers: [{ upTo: 100, fee: -1 }] }, token)).status, 400);
+  assert.equal((await call('PUT', '/api/admin/settings', { delivery_tiers: [{ upTo: 100, fee: 1 }, { upTo: 100, fee: 2 }] }, token)).status, 400, 'tramos repetidos');
+  await call('PUT', '/api/admin/settings', { delivery_tiers: [{ upTo: '600', fee: '4500' }, { upTo: '150', fee: '3000' }] }, token);
+  assert.deepEqual((await call('GET', '/api/menu')).data.settings.delivery_tiers, [{ upTo: 150, fee: 3000 }, { upTo: 600, fee: 4500 }], 'se ordenan por distancia');
+  await call('PUT', '/api/admin/settings', { delivery_tiers: T0 }, token);
   assert.equal((await call('PUT', '/api/admin/settings', { delivery_fee_max: 15500 }, token)).status, 400, 'el tope de costo ya no existe');
   await call('PUT', '/api/admin/settings', { delivery_max_meters: 4000, delivery_min_order: 15500 }, token);
   assert.equal((await call('PUT', '/api/admin/settings', { store_lat: 120 }, token)).status, 400);
@@ -270,10 +272,16 @@ test('domicilio por metros: la tarifa del navegador (common.js) redondea a $100 
   assert.equal(ctx.deliveryFee(1234, s), 3800);     // 3.702 → sube a 3.800
   assert.equal(ctx.deliveryFee(9000, s), 27000);    // sin tope de costo: lo limita la distancia máxima
   assert.equal(ctx.deliveryFee(0, s), 0);
-  const m = { ...s, delivery_min_fee: 3000 };
-  assert.equal(ctx.deliveryFee(500, m), 3000);      // una cuadra: 1.500 → sube al mínimo
-  assert.equal(ctx.deliveryFee(1000, m), 3000);
-  assert.equal(ctx.deliveryFee(1234, m), 3800);     // sobre el mínimo manda la distancia
+  const m = { ...s, delivery_tiers: [{ upTo: 200, fee: 3000 }, { upTo: 550, fee: 4000 }, { upTo: 2000, fee: 5000 }] };
+  assert.equal(ctx.deliveryFee(0, m), 3000);
+  assert.equal(ctx.deliveryFee(200, m), 3000);      // el límite del tramo entra en el tramo
+  assert.equal(ctx.deliveryFee(201, m), 4000);
+  assert.equal(ctx.deliveryFee(550, m), 4000);
+  assert.equal(ctx.deliveryFee(551, m), 5000);
+  assert.equal(ctx.deliveryFee(2000, m), 5000);
+  assert.equal(ctx.deliveryFee(2001, m), 5100);     // pasados 2 km: 5.000 + $3 por metro (redondeado a $100)
+  assert.equal(ctx.deliveryFee(2600, m), 6800);     // 600 m × 3 = 1.800
+  assert.equal(ctx.deliveryFee(3100, m), 8300);
   assert.ok(!ctx.tooFar(4000, s) && ctx.tooFar(4001, s), 'más de 4.000 m queda fuera');
   assert.ok(!ctx.tooFar(99999, { ...s, delivery_max_meters: 0 }), '0 = sin límite de distancia');
   assert.equal(ctx.deliveryMin(s), 15500);

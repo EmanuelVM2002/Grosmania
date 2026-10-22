@@ -537,7 +537,7 @@ function renderStatus() {
   $$('[data-text="hours"]').forEach((el) => { el.textContent = hoursText(s); });
   $('#deliveryInfo').textContent = s.delivery_enabled
     ? (hasMeterRate(s)
-      ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local (${money(s.delivery_per_meter)} por metro${Number(s.delivery_max_meters) > 0 ? `, hasta ${fmtMeters(Number(s.delivery_max_meters))}` : ''}).${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`
+      ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local${Number(s.delivery_max_meters) > 0 ? ` (llegamos hasta ${fmtMeters(Number(s.delivery_max_meters))})` : ''}.${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`
       : `Pide por WhatsApp. El valor del domicilio se confirma por WhatsApp según tu dirección.${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`)
     : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp y recoger en el local.';
   if (s.delivery_enabled && zones().length) $('#deliveryInfo').textContent += ` Llegamos a: ${zones().join(', ')}. ${s.delivery_note || ''}`.trimEnd();

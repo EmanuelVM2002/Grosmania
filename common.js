@@ -141,11 +141,13 @@ function hoursText(s) {
 /* ¿El local tiene tarifa por metro y ubicación? Si no, el valor del domicilio se confirma por WhatsApp. */
 const hasMeterRate = (s) => Number(s.delivery_per_meter) > 0 && Number.isFinite(Number(s.store_lat)) && Number.isFinite(Number(s.store_lng));
 
-/* Costo del domicilio: metros × valor por metro, redondeado hacia arriba a los $100 y nunca menos del valor mínimo
-   (a una cuadra de distancia sale lo mismo que el mínimo; al cliente no se le explica, solo ve el valor). */
+/* Costo del domicilio por tramos de distancia (delivery_tiers: «hasta X metros, $Y»). Pasado el último tramo se cobra su valor
+   más el valor por metro de lo que pase, redondeado hacia arriba a los $100. Sin tramos, todo va por metro. */
 function deliveryFee(meters, s) {
-  const raw = Math.ceil((meters * Number(s.delivery_per_meter)) / 100) * 100;
-  return Math.max(raw, Number(s.delivery_min_fee) || 0);
+  const tiers = (Array.isArray(s.delivery_tiers) ? s.delivery_tiers : []).slice().sort((a, b) => a.upTo - b.upTo);
+  for (const t of tiers) if (meters <= Number(t.upTo)) return Number(t.fee);
+  const last = tiers[tiers.length - 1], base = last ? Number(last.upTo) : 0;
+  return (last ? Number(last.fee) : 0) + Math.ceil(((meters - base) * Number(s.delivery_per_meter)) / 100) * 100;
 }
 
 /* ¿Queda más lejos de lo que se atiende? (delivery_max_meters = 0 → sin límite de distancia) */
