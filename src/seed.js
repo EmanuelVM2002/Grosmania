@@ -22,6 +22,8 @@ export const DEFAULT_SETTINGS = {
     'Clínica Sagrado Corazón', 'El Salvador', 'Villatina', 'Campo Santo', 'Tinajas', 'Sol de Oriente'
   ],
   /* Límites «hacia arriba» (el de Enciso es el punto de Google Maps que envió el cliente: 6.2450165, -75.5422245). */
+  /* Aviso cuando el cliente queda fuera de cobertura (más de 4 km o «Mi barrio no está en la lista»): el pedido se puede enviar igual. */
+  delivery_far_note: 'Estás fuera de nuestra zona de cobertura, pero igual te lo podemos enviar por una aplicación de domicilios o mensajería. Te confirmamos el valor por WhatsApp.',
   delivery_note: 'Hacia arriba llegamos hasta el 8 de Marzo (Calle 46 # 1B-104) y, por Enciso, hasta la Carrera 24B. Más arriba (hacia Santa Elena) no hacemos domicilio.',
   open_time: '13:30',
   close_time: '21:00',                // POR CONFIRMAR: no se conoce la hora de cierre
@@ -49,7 +51,7 @@ export const DEFAULT_SETTINGS = {
 
 /* Claves que ve el público (las metas y demás no salen del panel). */
 export const PUBLIC_SETTINGS = [
-  'delivery_enabled', 'delivery_min_order', 'delivery_tiers','delivery_max_meters', 'delivery_per_meter', 'store_lat', 'store_lng', 'delivery_zones', 'delivery_note', 'open_time', 'close_time', 'open_days', 'status_override',
+  'delivery_enabled', 'delivery_min_order', 'delivery_tiers','delivery_max_meters', 'delivery_per_meter', 'store_lat', 'store_lng', 'delivery_zones', 'delivery_note', 'delivery_far_note', 'open_time', 'close_time', 'open_days', 'status_override',
   'closed_message', 'transfer_info', 'points_per', 'points_valid_months', 'birthday_gift', 'rewards', 'levels'
 ];
 

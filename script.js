@@ -206,10 +206,15 @@ const zones = () => (Array.isArray(S().delivery_zones) ? S().delivery_zones : []
 /* Costo del domicilio con la ubicación compartida; null si todavía no se puede calcular (se muestra el máximo). */
 const domFee = () => (hasMeterRate(S()) && custLoc ? deliveryFee(custLoc.meters, S()) : null);
 
-/* Motivo por el que este pedido a domicilio no se puede enviar ('' si todo bien): muy lejos o por debajo del mínimo. */
+/* Fuera de cobertura: la ubicación marcada queda más lejos del límite, o el cliente eligió «Mi barrio no está en la lista».
+   Se puede pedir igual: el envío se hace por una aplicación de domicilios o mensajería y el valor se confirma por WhatsApp. */
+const OTHER_BARRIO = '__otro';
+const isFar = () => orderForm.mode === 'Domicilio' && ((custLoc && tooFar(custLoc.meters, S())) || orderForm.barrio === OTHER_BARRIO);
+const farNote = () => S().delivery_far_note || 'Estás fuera de nuestra zona de cobertura, pero te lo podemos enviar por una aplicación de domicilios. Te confirmamos el valor por WhatsApp.';
+
+/* Motivo por el que este pedido a domicilio no se puede enviar ('' si todo bien): por debajo del mínimo. */
 function domBlock() {
   if (orderForm.mode !== 'Domicilio') return '';
-  if (custLoc && tooFar(custLoc.meters, S())) return `Tu ubicación queda a ${fmtMeters(custLoc.meters)}: más lejos de lo que llegamos (${fmtMeters(Number(S().delivery_max_meters))}). Puedes recoger en el local.`;
   const min = deliveryMin(S());
   if (min && cartTotal() < min) return `El pedido mínimo para domicilio es ${money(min)} en productos. Te faltan ${money(min - cartTotal())}.`;
   return '';
@@ -221,7 +226,7 @@ function locInfoHtml() {
   if (!custLoc) return '';
   const far = tooFar(custLoc.meters, S());
   return `<span>Estás a <b>${fmtMeters(custLoc.meters)}</b>${custLoc.approx ? ' (aprox.)' : ''} del local: ${far
-    ? `<b>queda fuera de nuestra zona de domicilios</b> (llegamos hasta ${fmtMeters(Number(S().delivery_max_meters))}). Puedes recoger en el local.`
+    ? `<b>${esc(farNote())}</b>`
     : `domicilio <b>${money(domFee())}</b>.`}</span>`;
 }
 
@@ -397,13 +402,15 @@ function renderDrawer() {
       <div class="field"><span style="font-weight:700">¿Cómo lo quieres?</span>
         <div class="radios">
           <label class="${delivery ? '' : 'off'}"><input type="radio" name="o_mode" value="Domicilio" ${orderForm.mode === 'Domicilio' ? 'checked' : ''} ${delivery ? '' : 'disabled'}> Domicilio</label>
-          <label><input type="radio" name="o_mode" value="Recoger en el local" ${orderForm.mode !== 'Domicilio' ? 'checked' : ''}> Recoger en el local</label>
+          <label><input type="radio" name="o_mode" value="Recoger en el local" ${orderForm.mode === 'Recoger en el local' ? 'checked' : ''}> Recoger en el local</label>
+          <label><input type="radio" name="o_mode" value="Comer en el local" ${orderForm.mode === 'Comer en el local' ? 'checked' : ''}> Comer en el local</label>
         </div>
         ${delivery ? '' : '<span class="hint">Por ahora no hacemos domicilios. ¡Te esperamos en el local!</span>'}
       </div>
       <div class="field" id="addrField">${zones().length ? `<label for="o_barrio">Barrio</label>
-        <select id="o_barrio"><option value="">Elige tu barrio…</option>${zones().map((z) => `<option value="${esc(z)}" ${orderForm.barrio === z ? 'selected' : ''}>${esc(z)}</option>`).join('')}</select>
-        <span class="hint">${esc(S().delivery_note || '')} Si tu barrio no está en la lista, no llegamos hasta allá: puedes recoger en el local.</span>` : ''}
+        <select id="o_barrio"><option value="">Elige tu barrio…</option>${zones().map((z) => `<option value="${esc(z)}" ${orderForm.barrio === z ? 'selected' : ''}>${esc(z)}</option>`).join('')}<option value="${OTHER_BARRIO}" ${orderForm.barrio === OTHER_BARRIO ? 'selected' : ''}>Mi barrio no está en la lista</option></select>
+        <div class="pay-note" id="farNote" aria-live="polite" ${orderForm.barrio === OTHER_BARRIO ? '' : 'hidden'}>${esc(farNote())}</div>
+        <span class="hint">${esc(S().delivery_note || '')}</span>` : ''}
         <label for="o_addr">Dirección de entrega</label><input id="o_addr" autocomplete="street-address" value="${esc(orderForm.addr)}">
         ${hasMeterRate(S())
           ? `<div class="loc-btns">
@@ -463,9 +470,11 @@ function renderCartItems() {
   const dom = orderForm.mode === 'Domicilio', exact = domFee(), block = domBlock();
   foot.innerHTML = `
     <div class="total-row"><span>Productos</span><span>${pk(cartTotal())}</span></div>
-    ${dom ? (exact !== null && !tooFar(custLoc.meters, S())
+    ${dom ? (isFar()
+      ? '<p class="fine">+ Domicilio: <b>fuera de cobertura</b>, se envía por una aplicación de domicilios y el valor lo confirmamos por WhatsApp.</p>'
+      : exact !== null
       ? `<div class="total-row"><span>Domicilio (${fmtMeters(custLoc.meters)})</span><span>${pk(exact)}</span></div><div class="total-row"><b>Total</b><b>${pk(cartTotal() + exact)}</b></div>`
-      : '<p class="fine">+ Domicilio: se calcula con tu ubicación (o lo confirmamos por WhatsApp según tu dirección).</p>') : '<p class="fine">Recoges en el local: sin costo de domicilio.</p>'}
+      : '<p class="fine">+ Domicilio: se calcula con tu ubicación (o lo confirmamos por WhatsApp según tu dirección).</p>') : `<p class="fine">${orderForm.mode === 'Comer en el local' ? 'Comes en el local' : 'Recoges en el local'}: sin costo de domicilio.</p>`}
     ${st.open ? '' : `<p class="closed-note">${esc(st.reason)} ${esc(st.next)} Podrás enviar el pedido cuando abramos.</p>`}
     ${block ? `<p class="closed-note">${esc(block)}</p>` : ''}
     <button class="btn btn-wa btn-block" type="button" id="sendOrder" ${st.open && !block ? '' : 'disabled'}><svg aria-hidden="true"><use href="#i-wa"/></svg>${st.open ? 'Enviar pedido por WhatsApp' : 'Local cerrado'}</button>`;
@@ -489,8 +498,8 @@ function sendOrder() {
   if (!st.open) return toast('Estamos cerrados. ' + st.next);
   if (!orderForm.name) { toast('Escribe tu nombre para enviar el pedido.'); $('#o_name').focus(); return; }
   const dom = orderForm.mode === 'Domicilio';
-  if (dom && !S().delivery_enabled) return toast('Por ahora no hacemos domicilios. Elige «Recoger en el local».');
-  if (dom && zones().length && !zones().includes(orderForm.barrio)) { toast('Elige tu barrio de la lista. Si no aparece, no llegamos hasta allá: puedes recoger en el local.'); $('#o_barrio').focus(); return; }
+  if (dom && !S().delivery_enabled) return toast('Por ahora no hacemos domicilios. Elige «Recoger en el local» o «Comer en el local».');
+  if (dom && zones().length && !zones().includes(orderForm.barrio) && orderForm.barrio !== OTHER_BARRIO) { toast('Elige tu barrio de la lista. Si no aparece, elige «Mi barrio no está en la lista».'); $('#o_barrio').focus(); return; }
   if (dom && !orderForm.addr) { toast('Escribe la dirección de entrega.'); $('#o_addr').focus(); return; }
   const block = domBlock();
   if (block) return toast(block);
@@ -500,17 +509,18 @@ function sendOrder() {
     return `• ${l.q} x ${p.name}${l.sel.length ? ` (${selText(l.sel, '; ')})` : ''} — ${money(p.price * l.q)}`;
   });
   const phone = normPhone(orderForm.phone), cash = parseInt(orderForm.cash, 10);
-  const exact = dom ? domFee() : null;
+  const far = isFar(), exact = dom && !far ? domFee() : null;
   const msg = [
     'Hola Gro’smania 👋 Quiero hacer este pedido:', '',
     ...lines, '',
     `Total de productos: ${money(cartTotal())}`,
     !dom ? null
+      : far ? `Domicilio: FUERA DE COBERTURA${custLoc ? ` (${fmtMeters(custLoc.meters)}${custLoc.approx ? ' aprox.' : ''} desde el local)` : ''} → se envía por aplicación de domicilios; valor por confirmar`
       : exact !== null ? `Domicilio: ${money(exact)} (${fmtMeters(custLoc.meters)}${custLoc.approx ? ' aprox.' : ''} desde el local) → Total: ${money(cartTotal() + exact)}`
       : 'Domicilio: por confirmar (según la dirección)', '',
     `Nombre: ${orderForm.name}`,
     `Modalidad: ${orderForm.mode}`,
-    dom && orderForm.barrio ? `Barrio: ${orderForm.barrio}` : null,
+    dom && orderForm.barrio ? `Barrio: ${orderForm.barrio === OTHER_BARRIO ? '(no está en la lista; está en la dirección)' : orderForm.barrio}` : null,
     dom ? `Dirección: ${orderForm.addr}` : null,
     dom && custLoc ? `Ubicación${custLoc.confirmed ? ' (confirmada en el mapa)' : ''}: https://www.google.com/maps?q=${custLoc.lat.toFixed(6)},${custLoc.lng.toFixed(6)}` : null,
     `Forma de pago: ${orderForm.pay}`,
@@ -539,9 +549,9 @@ function renderStatus() {
     ? (hasMeterRate(s)
       ? `Pide por WhatsApp. El domicilio se calcula según la distancia desde el local${Number(s.delivery_max_meters) > 0 ? ` (llegamos hasta ${fmtMeters(Number(s.delivery_max_meters))})` : ''}.${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`
       : `Pide por WhatsApp. El valor del domicilio se confirma por WhatsApp según tu dirección.${deliveryMin(s) ? ` Pedido mínimo para domicilio: ${pk(deliveryMin(s))}.` : ''}`)
-    : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp y recoger en el local.';
+    : 'Por ahora no tenemos domicilios. Puedes pedir por WhatsApp, recoger o comer en el local.';
   if (s.delivery_enabled && zones().length) $('#deliveryInfo').textContent += ` Llegamos a: ${zones().join(', ')}. ${s.delivery_note || ''}`.trimEnd();
-  $('#deliveryChip').textContent = s.delivery_enabled ? 'Domicilios por WhatsApp' : 'Pedidos para recoger en el local';
+  $('#deliveryChip').textContent = s.delivery_enabled ? 'Domicilio, recoger o comer en el local' : 'Recoger o comer en el local';
   if (drawerOpen) renderCartItems();
 }
 
@@ -691,6 +701,7 @@ function init() {
   document.addEventListener('input', (e) => { if (e.target.id && e.target.id.startsWith('o_')) readOrderForm(); });
   document.addEventListener('change', (e) => {
     if (e.target.name === 'o_mode' || e.target.name === 'o_pay') { readOrderForm(); syncOrderFields(); renderCartItems(); }
+    if (e.target.id === 'o_barrio') { readOrderForm(); const n = $('#farNote'); if (n) n.hidden = orderForm.barrio !== OTHER_BARRIO; renderCartItems(); }
   });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && drawerOpen) closeDrawer(); });
   window.addEventListener('hashchange', route);

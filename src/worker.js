@@ -271,6 +271,7 @@ const SETTING_RULES = {
     return names;                       // lista vacía = domicilio sin restricción de barrio
   },
   delivery_note: (v) => str(v, 0, 300, 'La nota de cobertura'),
+  delivery_far_note: (v) => str(v, 0, 300, 'El aviso de fuera de cobertura'),
   open_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de apertura debe ser HH:MM.'); return v; },
   close_time: (v) => { if (!HHMM.test(v)) throw bad('La hora de cierre debe ser HH:MM.'); return v; },
   open_days: (v) => {
