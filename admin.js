@@ -11,10 +11,21 @@ try { token = sessionStorage.getItem(TOKEN_KEY); } catch (_) { /* nada */ }
 
 let D = null;                 // todo lo que devuelve /api/admin/data
 let tab = 'resumen';
+try { const t0 = sessionStorage.getItem('gm.admin.tab'); if (t0) tab = t0; } catch (_) { /* nada */ }
 let search = '';
 let commentFilter = 'pendiente';
 
 const TABS = [['resumen', 'Resumen'], ['clientes', 'Clientes'], ['productos', 'Productos'], ['sabores', 'Sabores'], ['comentarios', 'Comentarios'], ['ajustes', 'Ajustes']];
+/* Iconos de la barra de navegación (trazo simple, 24×24). */
+const TAB_ICON = {
+  resumen: '<path d="M5 20V11M12 20V4M19 20v-6M3 20h18"/>',
+  clientes: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14c2.8 0 4.5 1.8 4.5 4.5"/>',
+  productos: '<path d="M7 10a5 5 0 0 1 10 0"/><path d="M5.5 10h13l-6.5 12z"/>',
+  sabores: '<circle cx="12" cy="8.5" r="5"/><path d="M7.5 13l4.5 9 4.5-9"/>',
+  comentarios: '<path d="M4 5h16v11H9.5L4 20.5z"/>',
+  ajustes: '<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'
+};
+const icon = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
 const MOVE_LABEL = { compra: 'Compra', canje: 'Canje', ajuste: 'Ajuste', cumple: 'Regalo de cumpleaños' };
 const bogotaDay = (iso) => new Date(new Date(iso).getTime() - 5 * 3600e3).toISOString().slice(0, 10);
 const monthName = (ym) => parseYMD(ym + '-01').toLocaleDateString('es-CO', { month: 'short' });
@@ -29,7 +40,7 @@ function setToken(t) {
   token = t;
   try { t ? sessionStorage.setItem(TOKEN_KEY, t) : sessionStorage.removeItem(TOKEN_KEY); } catch (_) { /* nada */ }
 }
-async function refresh() { D = await call('data'); render(); }
+async function refresh() { const y = window.scrollY; D = await call('data'); render(); window.scrollTo(0, y); }
 
 /* Ejecuta una acción, muestra el error en pantalla si falla y recarga los datos si sale bien. */
 async function run(fn, okMsg, errEl) {
@@ -50,23 +61,23 @@ const errBox = (id) => `<p class="field err" id="${id}" role="alert" hidden></p>
 
 function render() {
   const root = $('#adminRoot');
+  document.body.classList.toggle('is-admin', !!(token && D));
   if (!token || !D) { renderLogin(root); return; }
   const s = D.settings, pending = D.comments.filter((c) => c.status === 'pendiente').length;
+  const svg = (p) => `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
   root.innerHTML = `
-  <div class="admin">
-    <header class="adm-top"><div class="wrap">
+  <div class="admin adm-shell">
+    <aside class="adm-side">
       <div class="adm-brand"><img src="logos/logo-cream-v.svg" alt="Gro’smania"><h1>Administración</h1></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn btn-light btn-sm" href="index.html">Ver la página</a>
-        <button class="btn btn-ghost btn-sm" type="button" data-act="logout" style="color:#fff;border-color:#fff">Cerrar sesión</button>
+      <div class="adm-side-actions">
+        <button class="adm-icon-btn" type="button" data-act="reload" aria-label="Actualizar datos">${svg('<path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v5h-5"/>')}<span>Actualizar</span></button>
+        <a class="adm-icon-btn" href="index.html">${svg('<path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/>')}<span>Ver la página</span></a>
+        <button class="adm-icon-btn" type="button" data-act="logout" aria-label="Cerrar sesión">${svg('<path d="M10 4H5v16h5M15 8l4 4-4 4M19 12H9"/>')}<span>Salir</span></button>
       </div>
-    </div></header>
-    <div class="wrap">
-      ${statusBar(s)}
-      <div class="tabs" role="tablist">${TABS.map(([id, label]) =>
-        `<button class="tab" role="tab" type="button" data-tab="${id}" aria-selected="${tab === id}">${label}${id === 'comentarios' && pending ? `<span class="n">${pending}</span>` : ''}</button>`).join('')}</div>
-      <div id="tabBody">${tabBody()}</div>
-    </div>
+      <nav class="adm-nav" role="tablist" aria-label="Secciones">${TABS.map(([id, label]) =>
+        `<button class="tab" role="tab" type="button" data-tab="${id}" aria-selected="${tab === id}">${icon(TAB_ICON[id])}<span class="lbl">${label}</span>${id === 'comentarios' && pending ? `<span class="n">${pending}</span>` : ''}</button>`).join('')}</nav>
+    </aside>
+    <main class="adm-main">${statusBar(s)}<h2 class="adm-title">${(TABS.find((t) => t[0] === tab) || TABS[0])[1]}</h2><div id="tabBody">${tabBody()}</div></main>
   </div>`;
 }
 
@@ -87,15 +98,15 @@ function renderLogin(root) {
 function statusBar(s) {
   const st = storeStatus(s), manual = s.status_override !== 'auto';
   const storeBtn = manual
-    ? '<button class="btn btn-ghost btn-sm" type="button" data-act="store-auto">Volver al horario automático</button>'
-    : st.open ? '<button class="btn btn-danger btn-sm" type="button" data-act="store-closed">Cerrar el local ahora</button>'
-              : '<button class="btn btn-primary btn-sm" type="button" data-act="store-open">Abrir el local ahora</button>';
+    ? '<button class="btn btn-ghost" type="button" data-act="store-auto">Volver al horario</button>'
+    : st.open ? '<button class="btn btn-danger" type="button" data-act="store-closed">Cerrar ahora</button>'
+              : '<button class="btn btn-primary" type="button" data-act="store-open">Abrir ahora</button>';
   return `<div class="statusbar">
-    <div class="status-card"><div><b>Local: <span class="pill ${st.open ? 'on' : 'off'}">${st.open ? 'Abierto' : 'Cerrado'}</span></b>
-      <small>${manual ? 'Manual: ignora el horario hasta que lo devuelvas.' : esc(hoursText(s))}</small></div>${storeBtn}</div>
-    <div class="status-card"><div><b>Domicilios: <span class="pill ${s.delivery_enabled ? 'on' : 'off'}">${s.delivery_enabled ? 'Activos' : 'Desactivados'}</span></b>
-      <small>${(s.delivery_tiers || []).length ? `Desde ${money(s.delivery_tiers[0].fee)} por tramos` : s.delivery_per_meter > 0 ? `${money(s.delivery_per_meter)} por metro` : 'Valor por confirmar'}${s.delivery_max_meters > 0 ? `, hasta ${num(s.delivery_max_meters)} m` : ''}, pedido mínimo ${money(s.delivery_min_order)}. Al desactivar, la página solo deja «Recoger en el local» y «Comer en el local».</small></div>
-      <button class="btn ${s.delivery_enabled ? 'btn-danger' : 'btn-primary'} btn-sm" type="button" data-act="delivery-toggle">${s.delivery_enabled ? 'Desactivar domicilios' : 'Activar domicilios'}</button></div>
+    <div class="status-card ${st.open ? 'is-on' : 'is-off'}"><div class="st-text"><span class="st-name">Local</span><b>${st.open ? 'Abierto' : 'Cerrado'}</b>
+      <small>${manual ? 'Manual (ignora el horario)' : esc(hoursText(s))}</small></div>${storeBtn}</div>
+    <div class="status-card ${s.delivery_enabled ? 'is-on' : 'is-off'}"><div class="st-text"><span class="st-name">Domicilios</span><b>${s.delivery_enabled ? 'Activos' : 'Apagados'}</b>
+      <small>${s.delivery_enabled ? 'Pedido mínimo ' + money(s.delivery_min_order) : 'Solo recoger y comer en el local'}</small></div>
+      <button class="btn ${s.delivery_enabled ? 'btn-danger' : 'btn-primary'}" type="button" data-act="delivery-toggle">${s.delivery_enabled ? 'Apagar' : 'Activar'}</button></div>
   </div>`;
 }
 
@@ -382,12 +393,12 @@ function productForm(p) {
 
 function tabSabores() {
   return `<section class="adm-panel"><h2>Sabores de helado (${D.flavors.length})</h2>
-    <p class="fine">Son los sabores que el cliente puede elegir en los productos con helado. Apaga un sabor cuando se acabe y vuelve a encenderlo cuando haya.</p>
+    <p class="fine">Son los sabores que el cliente puede elegir. <b>Toca la ficha de un sabor para marcarlo como agotado</b> y vuelve a tocarla cuando haya.</p>
     <form class="add-row" id="flavorAdd"><input id="fl_new" placeholder="Nuevo sabor, ej.: Lulo" maxlength="40" aria-label="Nuevo sabor"><button class="btn btn-primary" type="submit">＋ Agregar sabor</button></form>
-    ${D.flavors.map((f) => `<div class="flavor-row ${f.active ? '' : 'inactive'}"><b>${esc(f.name)}</b>
-      <label class="switch"><input type="checkbox" data-flavor-active="${esc(f.id)}" ${f.active ? 'checked' : ''}><i></i><span>${f.active ? 'Disponible' : 'Agotado'}</span></label>
-      <button class="btn btn-ghost btn-sm" type="button" data-act="flavor-rename" data-id="${esc(f.id)}">Renombrar</button>
-      <button class="btn btn-danger btn-sm" type="button" data-act="flavor-del" data-id="${esc(f.id)}">Eliminar</button></div>`).join('') || '<p class="empty">Aún no hay sabores.</p>'}
+    <div class="flavor-grid">${D.flavors.map((f) => `<div class="flavor-tile ${f.active ? '' : 'inactive'}">
+      <label class="switch big"><input type="checkbox" data-flavor-active="${esc(f.id)}" ${f.active ? 'checked' : ''}><i></i><span><b>${esc(f.name)}</b><small>${f.active ? 'Disponible' : 'Agotado'}</small></span></label>
+      <div class="tile-acts"><button class="btn btn-ghost btn-sm" type="button" data-act="flavor-rename" data-id="${esc(f.id)}">Renombrar</button>
+        <button class="btn btn-danger btn-sm" type="button" data-act="flavor-del" data-id="${esc(f.id)}">Eliminar</button></div></div>`).join('') || '<p class="empty">Aún no hay sabores.</p>'}</div>
   </section>`;
 }
 
@@ -524,12 +535,13 @@ function setup() {
 
   root.addEventListener('click', (e) => {
     const tabBtn = e.target.closest('[data-tab]');
-    if (tabBtn) { tab = tabBtn.dataset.tab; render(); return; }
+    if (tabBtn) { tab = tabBtn.dataset.tab; try { sessionStorage.setItem('gm.admin.tab', tab); } catch (_) { /* nada */ } render(); window.scrollTo(0, 0); return; }
     const b = e.target.closest('[data-act]');
     if (!b) return;
     const c = b.dataset.phone ? byPhone(b.dataset.phone) : null, id = b.dataset.id;
     const setS = (body, msg) => run(() => call('settings', { method: 'PUT', body }), msg);
     switch (b.dataset.act) {
+      case 'reload': refresh().then(() => toast('Datos actualizados')).catch((err) => toast(err.message)); break;
       case 'logout': setToken(null); D = null; render(); break;
       case 'store-closed': setS({ status_override: 'closed' }, 'El local quedó como cerrado'); break;
       case 'store-open': setS({ status_override: 'open' }, 'El local quedó como abierto'); break;
@@ -583,7 +595,14 @@ function setup() {
     }
   });
 
-  setInterval(() => { if (D && token && !modalEl && tab !== 'ajustes') { const sb = $('.statusbar'); if (sb) sb.outerHTML = statusBar(D.settings); } }, 60000);
+  /* La tablet se queda abierta todo el día: cada minuto, si nadie está escribiendo ni hay una ventana abierta, se traen los datos nuevos
+     (comentarios pendientes, puntos) y se actualiza la barra de estado (abierto/cerrado por horario). */
+  setInterval(() => {
+    if (!D || !token || modalEl || document.hidden || tab === 'ajustes') return;
+    const ae = document.activeElement;
+    if (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) { const sb = $('.statusbar'); if (sb) sb.outerHTML = statusBar(D.settings); return; }
+    refresh().catch(() => { /* sin red: se reintenta en un minuto */ });
+  }, 60000);
 }
 
 setup();

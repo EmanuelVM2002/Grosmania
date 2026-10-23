@@ -417,3 +417,121 @@ footer { background: var(--teal-dark); color: #d6f2ee; padding: 40px 0 120px; }
 .map-search { display: flex; gap: 8px; }
 .map-search input { flex: 1; min-width: 0; }
 #pickMap { height: 300px; margin: 12px 0 8px; border-radius: 14px; position: relative; z-index: 0; isolation: isolate; }
+
+/* =====================================================================
+   ADMINISTRACIÓN PARA TABLET
+   Menú lateral fijo (tablet horizontal) o barra inferior (tablet vertical),
+   botones y casillas de al menos 54-58 px, interruptores grandes y las dos
+   acciones de todos los días (abrir/cerrar el local y domicilios) siempre a la vista.
+   ===================================================================== */
+body.is-admin { background: #eaf5f3; }
+body.is-admin .toasts { bottom: 110px; }
+.admin { padding-bottom: 0; }
+.admin *, body.is-admin .modal * { -webkit-tap-highlight-color: transparent; }
+.admin button, .admin a, .admin label, body.is-admin .modal button { touch-action: manipulation; }
+.admin button, .admin .tab { -webkit-user-select: none; user-select: none; }
+
+.adm-shell { display: grid; grid-template-columns: 280px minmax(0, 1fr); min-height: 100vh; font-size: 19px; }
+.adm-side { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--teal-dark); color: #fff; padding: 18px 16px; display: flex; flex-direction: column; gap: 16px; }
+.adm-brand { order: 1; display: flex; align-items: center; gap: 12px; }
+.adm-brand img { height: 56px; width: auto; }
+.adm-brand h1 { font-size: 1.3rem; color: #fff; }
+.adm-nav { order: 2; display: grid; gap: 8px; }
+.adm-side-actions { order: 4; margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+.adm-nav .tab { position: relative; display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 0 18px; border-radius: 18px; border: 0; background: transparent; color: #d4f1ed; font-size: 1.2rem; font-weight: 700; text-align: left; margin: 0; }
+.adm-nav .tab svg { width: 30px; height: 30px; flex: none; }
+.adm-nav .tab:active { background: rgba(255, 255, 255, .14); }
+.adm-nav .tab[aria-selected="true"] { background: var(--cream); color: var(--teal-dark); }
+.adm-nav .tab .n { margin-left: auto; background: var(--berry); color: #fff; border-radius: 14px; padding: 1px 10px; font-size: .95rem; }
+
+/* Barra fija arriba del contenido: abrir/cerrar el local y domicilios, siempre a la vista */
+.adm-main .statusbar { position: sticky; top: 0; z-index: 60; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: -24px -32px 20px; padding: 12px 32px; background: rgba(234, 245, 243, .96); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+.adm-main .statusbar > * { min-width: 0; }
+.adm-main .status-card { flex: none; flex-wrap: nowrap; min-width: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border: 3px solid var(--line); border-radius: 20px; padding: 8px 8px 8px 18px; box-shadow: none; }
+.adm-main .status-card.is-on { border-color: #4bbf7f; }
+.adm-main .status-card.is-off { border-color: #e58aa1; }
+.status-card .st-text { min-width: 0; }
+.status-card .st-name { display: inline; font-size: .8rem; letter-spacing: .6px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin-right: 8px; }
+.adm-main .status-card b { display: inline; font-size: 1.45rem; line-height: 1.1; }
+.status-card.is-on b { color: #0b6a35; } .status-card.is-off b { color: #a3123a; }
+.adm-main .status-card small { display: block; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.adm-main .status-card .btn { flex: none; min-width: 150px; }
+
+.adm-icon-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 64px; border-radius: 16px; border: 2px solid rgba(255, 255, 255, .3); background: transparent; color: #fff; font-size: .85rem; font-weight: 600; text-decoration: none; cursor: pointer; }
+.adm-icon-btn svg { width: 26px; height: 26px; }
+.adm-icon-btn:active { background: rgba(255, 255, 255, .16); }
+
+.adm-main { min-width: 0; padding: 24px 32px 70px; }
+.adm-title { font-size: 2.1rem; margin-bottom: 18px; color: var(--teal-dark); }
+
+/* Botones y campos grandes (dedos, no mouse) */
+.admin .btn, body.is-admin .modal .btn { min-height: 58px; padding: 12px 26px; font-size: 1.08rem; }
+.admin .btn-sm, body.is-admin .modal .btn-sm { min-height: 54px; padding: 10px 20px; font-size: 1.02rem; }
+.admin .field label, body.is-admin .modal .field label { font-size: 1.05rem; }
+.admin .field input, .admin .field select, .admin .field textarea, .admin select, .admin .toolbar input[type="search"], .admin .add-row input,
+.admin .price-in, .admin .ed-row input, .admin .tier-row input,
+body.is-admin .modal .field input, body.is-admin .modal .field select, body.is-admin .modal .field textarea { min-height: 58px; font-size: 1.05rem; }
+.admin .price-in { width: 150px; }
+.admin .adm-panel { padding: 26px; border-radius: 24px; }
+.admin .adm-panel h2 { font-size: 1.55rem; }
+.admin .kpi b { font-size: 2.5rem; }
+.admin .days label { min-height: 52px; padding: 10px 18px; font-size: 1.02rem; }
+.admin .days input { width: 24px; height: 24px; }
+.admin .set-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 430px), 1fr)); }
+.admin .client { padding: 20px 0; }
+.admin .client .acts .btn { min-width: 110px; }
+.admin .prod-row { grid-template-columns: 72px 2fr 1fr auto auto; padding: 16px 0; }
+.admin .prod-row .thumb { width: 72px; height: 72px; }
+.admin .cm .acts .btn { min-width: 120px; }
+body.is-admin .modal { width: min(680px, 100%); padding: 32px; }
+body.is-admin .modal-actions { gap: 12px; }
+
+/* Interruptores grandes */
+body.is-admin .switch i, .admin .switch i { width: 72px; height: 40px; border-radius: 20px; }
+body.is-admin .switch i::after, .admin .switch i::after { top: 5px; left: 5px; width: 30px; height: 30px; }
+body.is-admin .switch input:checked + i::after, .admin .switch input:checked + i::after { transform: translateX(32px); }
+
+/* Sabores: fichas táctiles */
+.flavor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; }
+.flavor-tile { display: grid; gap: 10px; border: 2px solid var(--line); border-radius: 20px; padding: 14px; background: #fff; }
+.flavor-tile.inactive { background: #f1f1f1; border-color: #d6d6d6; }
+.flavor-tile.inactive b { opacity: .6; text-decoration: line-through; }
+.switch.big { display: flex; flex-direction: row-reverse; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 64px; cursor: pointer; }
+.switch.big > span b { display: block; font-size: 1.3rem; line-height: 1.2; }
+.switch.big > span small { color: var(--muted); font-weight: 600; }
+.tile-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* Tablet vertical: barra de navegación abajo, estado arriba */
+@media (max-width: 959px) {
+  .adm-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .adm-side { position: static; height: auto; overflow: visible; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 14px 18px; gap: 12px; }
+  .adm-brand { flex: 1 1 auto; }
+  .adm-side-actions { order: 2; margin: 0; display: flex; gap: 8px; }
+  .adm-icon-btn { flex-direction: row; gap: 8px; min-height: 54px; padding: 0 16px; }
+  .adm-main .statusbar { margin: -18px -18px 16px; padding: 10px 18px; }
+  .adm-main .status-card .btn { min-width: 120px; }
+  .adm-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 200; order: 0; grid-template-columns: repeat(6, 1fr); gap: 2px; background: var(--teal-dark); padding: 6px 6px calc(6px + env(safe-area-inset-bottom)); box-shadow: 0 -6px 22px rgba(0, 0, 0, .28); }
+  .adm-nav .tab { flex-direction: column; justify-content: center; gap: 3px; min-height: 68px; padding: 4px 2px; border-radius: 16px; text-align: center; font-size: .85rem; }
+  .adm-nav .tab svg { width: 28px; height: 28px; }
+  .adm-nav .tab .n { position: absolute; top: 2px; right: calc(50% - 30px); margin: 0; font-size: .8rem; padding: 0 7px; }
+  .adm-main { padding: 18px 18px calc(110px + env(safe-area-inset-bottom)); }
+  .adm-title { font-size: 1.8rem; }
+  /* Producto en tablet vertical: foto a la izquierda; nombre, opciones y, abajo, precio + interruptor + Editar */
+  .admin .prod-row { grid-template-columns: 72px auto 1fr; column-gap: 14px; row-gap: 6px; align-items: start; }
+  .admin .prod-row > :nth-child(1) { grid-column: 1; grid-row: 1 / span 3; }
+  .admin .prod-row > :nth-child(2) { grid-column: 2 / -1; grid-row: 1; }
+  .admin .prod-row > :nth-child(3) { grid-column: 2 / -1; grid-row: 2; }
+  .admin .prod-row > :nth-child(4) { grid-column: 2; grid-row: 3; }
+  .admin .prod-row > :nth-child(5) { grid-column: 3; grid-row: 3; justify-self: end; align-items: center; }
+}
+@media (max-width: 640px) {
+  .adm-icon-btn span { display: none; }
+  .adm-icon-btn { width: 54px; padding: 0; justify-content: center; }
+  .adm-main .statusbar { grid-template-columns: 1fr; margin: -14px -12px 14px; padding: 8px 12px; gap: 8px; }
+  .adm-main .status-card .btn { min-width: 0; padding: 10px 16px; }
+  .adm-nav .tab { font-size: .72rem; }
+  .adm-main { padding: 14px 12px calc(110px + env(safe-area-inset-bottom)); }
+  .admin .adm-panel { padding: 18px; }
+}
+.login-card .field input { min-height: 58px; font-size: 1.05rem; }
